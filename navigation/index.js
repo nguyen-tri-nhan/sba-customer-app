@@ -6,10 +6,13 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { useEffect, useState } from "react/cjs/react.production.min";
+import MAuth from "../model/MAuth";
 
 import NotFoundScreen from "../screens/NotFoundScreen";
-import BottomTabNavigator from "./BottomTabNavigator";
+import AuthenticatedNavigator from "./AuthenticatedNavigator";
 import LinkingConfiguration from "./LinkingConfiguration";
+import UnAuthenticatedNavigator from "./UnAuthenticatedNavigator";
 
 export default function Navigation({ colorScheme }) {
   return (
@@ -27,14 +30,15 @@ export default function Navigation({ colorScheme }) {
 const Stack = createStackNavigator();
 
 function RootNavigator() {
+  const isLoggedIn = false;
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Root" component={BottomTabNavigator} />
-      <Stack.Screen
-        name="NotFound"
-        component={NotFoundScreen}
-        options={{ title: "Oops!" }}
-      />
+      {
+        isLoggedIn ?
+          <Stack.Screen name="Root" component={AuthenticatedNavigator} />
+          : <Stack.Screen name="Unauthenticated" component={UnAuthenticatedNavigator}
+          />
+      }
     </Stack.Navigator>
   );
 }

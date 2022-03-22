@@ -4,8 +4,9 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useColorScheme } from "react-native";
-
 import Colors from "../constants/Colors";
+import LoginScreen from "../screens/LoginScreen";
+import NotFoundScreen from "../screens/NotFoundScreen";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 
@@ -24,7 +25,7 @@ export default function BottomTabNavigator() {
         component={TabOneNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="images" color={color} />
           ),
         }}
       />
@@ -33,7 +34,16 @@ export default function BottomTabNavigator() {
         component={TabTwoNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="camera-outline" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="TabThree"
+        component={LoginScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="person-outline" color={color} />
           ),
         }}
       />

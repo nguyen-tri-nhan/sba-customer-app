@@ -6,7 +6,6 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useEffect, useState } from "react/cjs/react.production.min";
 import MAuth from "../model/MAuth";
 
 import NotFoundScreen from "../screens/NotFoundScreen";
@@ -30,7 +29,9 @@ export default function Navigation({ colorScheme }) {
 const Stack = createStackNavigator();
 
 function RootNavigator() {
-  const isLoggedIn = false;
+  const isLoggedIn = MAuth.isLoggedIn();
+  console.log('isLoggedIn', isLoggedIn);
+  console.log('process.env.NODE_ENV', process.env.NODE_ENV);
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {

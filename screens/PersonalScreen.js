@@ -3,18 +3,23 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../utils/context";
 
 
-export default function PersonalScreen({ navigation }) {
+export default function PersonalScreen({ navigation, route }) {
 
-  const { logout, getJwt } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   const onLogoutClick = (e) => {
     logout();
-    getJwt();
   }
+
+  console.log(route.params.user)
+
+  const { user } = route.params;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>This screen doesn't exist.</Text>
+      <Text style={styles.title}>{user.firstname} {user.lastname}</Text>
+      <Text style={styles.title}>{user.email}</Text>
+      <Text style={styles.title}>{user.phoneNumber}</Text>
       <TouchableOpacity
         onPress={onLogoutClick}
         style={styles.link}

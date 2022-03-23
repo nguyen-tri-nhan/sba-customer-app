@@ -21,8 +21,7 @@ import Services from "../utils/Services";
 
 export default function Navigation({ colorScheme }) {
   const [jwt, setJwt] = useState('');
-  const [userDetails, setUserDetails] = useState({});
-
+  const [userDetails, setUserDetails] = useState();
 
   const authContext = useMemo(() => {
     return {
@@ -44,6 +43,7 @@ export default function Navigation({ colorScheme }) {
       },
       logout: () => {
         setJwt('');
+        setUserDetails();
       },
       getJwt: () => {
         return jwt;
@@ -64,7 +64,7 @@ export default function Navigation({ colorScheme }) {
         theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
       >
         {
-          !isEmpty(jwt)
+          !isEmpty(userDetails)
             ?
             <AuthTabs.Navigator>
               <AuthTabs.Screen
@@ -90,6 +90,7 @@ export default function Navigation({ colorScheme }) {
               <AuthTabs.Screen
                 name="Personal"
                 component={PersonalScreen}
+                initialParams={{ user: userDetails, jwt: jwt }}
                 options={{
                   title: "Thông tin cá nhân",
                   tabBarIcon: () => (

@@ -59,6 +59,10 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
+# react-native-config codegen
+ios/react-native-config.xcconfig
+ios/envfile
+
 # Expo
 .expo/*
 web-build/

@@ -6,12 +6,13 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import MAuth from "../model/MAuth";
+import { isLoggedIn } from "../model/MAuth";
 
-import NotFoundScreen from "../screens/NotFoundScreen";
 import AuthenticatedNavigator from "./AuthenticatedNavigator";
 import LinkingConfiguration from "./LinkingConfiguration";
 import UnAuthenticatedNavigator from "./UnAuthenticatedNavigator";
+import Config from "react-native-config";
+import { useState } from "react";
 
 export default function Navigation({ colorScheme }) {
   return (
@@ -29,13 +30,14 @@ export default function Navigation({ colorScheme }) {
 const Stack = createStackNavigator();
 
 function RootNavigator() {
-  const isLoggedIn = MAuth.isLoggedIn();
-  console.log('isLoggedIn', isLoggedIn);
-  console.log('process.env.NODE_ENV', process.env.NODE_ENV);
+  const [loggedIn, setLoggedIn] = useState(false);
+  isLoggedIn().then(data => {
+    setLoggedIn(data);
+  })
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {
-        isLoggedIn ?
+        loggedIn ?
           <Stack.Screen name="Root" component={AuthenticatedNavigator} />
           : <Stack.Screen name="Unauthenticated" component={UnAuthenticatedNavigator}
           />

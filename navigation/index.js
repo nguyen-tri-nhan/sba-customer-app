@@ -7,7 +7,6 @@ import {
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import LinkingConfiguration from "./LinkingConfiguration";
 import { useState, useEffect, useMemo } from "react";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
@@ -60,7 +59,6 @@ export default function Navigation({ colorScheme }) {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer
-        linking={LinkingConfiguration}
         theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
       >
         {

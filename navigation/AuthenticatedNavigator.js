@@ -7,21 +7,22 @@ import { useColorScheme } from "react-native";
 import Colors from "../constants/Colors";
 import LoginScreen from "../screens/LoginScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
+import PersonalScreen from "../screens/PersonalScreen";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 
 const BottomTab = createBottomTabNavigator();
 
-export default function AuthenticatedNavigator() {
+export default function  AuthenticatedNavigator() {
   const colorScheme = useColorScheme();
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Home"
       screenOptions={{ tabBarActiveTintColor: Colors[colorScheme].tint }}
     >
       <BottomTab.Screen
-        name="TabOne"
+        name="Home"
         component={TabOneNavigator}
         options={{
           tabBarIcon: ({ color }) => (
@@ -39,8 +40,8 @@ export default function AuthenticatedNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="TabThree"
-        component={LoginScreen}
+        name="PersonalScreen"
+        component={PersonalScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="person-outline" color={color} />
@@ -79,11 +80,12 @@ const TabTwoStack = createStackNavigator();
 
 function TabTwoNavigator() {
   return (
-    <TabTwoStack.Navigator>
+    <TabTwoStack.Navigator screenOptions={{
+      headerShown: false
+    }}>
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: "Tab Two Title" }}
       />
     </TabTwoStack.Navigator>
   );

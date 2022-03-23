@@ -1,13 +1,15 @@
 import http from './http';
 import Apis from './Apis';
-const URL_PERFIX = process.env.REACT_APP_API;
+import { endPoint } from './Constants';
+const URL_PERFIX = endPoint
 const Services = {
-  getMe() {
-    return http.get(URL_PERFIX + Apis.userMe);
+  getMe(jwt) {
+    return http.get({ url: URL_PERFIX + Apis.userMe, jwt });
   },
 
   login(user) {
-    return http.post(URL_PERFIX + Apis.login, user, {entity: 'STAFF'});
+    // return http.post(URL_PERFIX + Apis.login, user, {entity: 'CUSTOMER'});
+    return http.post({ url: URL_PERFIX + Apis.login, data: user, params: { entity: 'CUSTOMER' } });
   },
 
   search(entity, params) {
@@ -27,7 +29,7 @@ const Services = {
   },
 
   uploadFile(file) {
-    return http.post(URL_PERFIX + Apis.uploadFile, file, null, null, {'Content-Type': 'image/jpg'})
+    return http.post(URL_PERFIX + Apis.uploadFile, file, null, null, { 'Content-Type': 'image/jpg' })
   },
 
   getShowroom(showroomId) {

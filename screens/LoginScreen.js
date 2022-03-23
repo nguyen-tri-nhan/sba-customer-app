@@ -1,6 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View, TextInput } from "react-native";
-import React, { useState } from 'react';
-
+import { StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from "react-native";
+import React, { useState, useContext } from 'react';
+import { Ionicons } from "@expo/vector-icons";
+import { login } from "../model/MAuth";
+import { AuthContext } from "../utils/context";
 
 const styles = StyleSheet.create({
   container: {
@@ -31,10 +33,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: "center",
   },
-  
+
   textInput: {
     height: 50,
     flex: 1,
+  },
+  titleText: {
+    fontSize: 18,
+    textAlign: "center",
+    marginBottom: 24
   }
 });
 
@@ -43,6 +50,8 @@ const LoginScreen = ({ navigation }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const { login } = useContext(AuthContext);
 
   const user = {
     email,
@@ -57,16 +66,22 @@ const LoginScreen = ({ navigation }) => {
     setPassword(text);
   };
 
-  console.log(user);
+  const onLoginPress = (e) => {
+    e.preventDefault();
+    login(user);
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Đăng nhập</Text>
+      <Ionicons name="camera-outline" size={100} />
+      <Text style={styles.titleText}>Ứng dụng hỗ trợ đặt lịch chụp ảnh tại studio</Text>
       <View style={styles.inputView}>
         <TextInput
           style={styles.textInput}
           placeholder="Email"
           autoCapitalize="none"
+          keyboardType="email-address"
+          textContentType="emailAddress"
           placeholderTextColor="#003f5c"
           onChangeText={onEmailChange}
         />
@@ -82,8 +97,12 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={onPasswordChange}
         />
       </View>
+      <Button
+        title="Đăng nhập"
+        onPress={onLoginPress}
+      />
       <TouchableOpacity
-        onPress={() => navigation.navigate("RegisterScreen")}
+        onPress={() => navigation.navigate("Register")}
         style={styles.link}
       >
         <Text style={styles.linkText}>Chưa có tài khoản? Đăng ký ngay</Text>

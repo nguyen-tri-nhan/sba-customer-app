@@ -1,7 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from "react-native";
 import React, { useState, useContext } from 'react';
 import { Ionicons } from "@expo/vector-icons";
-import { login } from "../model/MAuth";
 import { AuthContext } from "../utils/context";
 
 const styles = StyleSheet.create({

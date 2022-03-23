@@ -6,7 +6,6 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { isLoggedIn } from "../model/MAuth";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LinkingConfiguration from "./LinkingConfiguration";
 import { useState, useEffect, useMemo } from "react";

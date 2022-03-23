@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { TextInput, Text, TouchableOpacity, View } from "react-native";
 import { useStyle } from "../utils/style";
-
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 const styles = useStyle();
 
@@ -20,7 +20,20 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Đăng ký</Text>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Email"
+          autoCapitalize="none"
+          keyboardType="email-address"
+          textContentType="emailAddress"
+          placeholderTextColor="#003f5c"
+          onChangeText={setEmail}
+        />
+      </View>
+      <View style={styles.inputView}>
+        <RNDateTimePicker value={new Date()} display="spinner" />
+      </View>
       <TouchableOpacity
         onPress={() => navigation.navigate("Login")}
         style={styles.link}

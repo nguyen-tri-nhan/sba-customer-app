@@ -11,8 +11,6 @@ export default function PersonalScreen({ navigation, route }) {
     logout();
   }
 
-  console.log(route.params.user)
-
   const { user } = route.params;
 
   return (

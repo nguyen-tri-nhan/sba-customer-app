@@ -69,6 +69,7 @@ export default function Navigation({ colorScheme }) {
               <AuthTabs.Screen
                 name="TabOne"
                 component={TabOneScreen}
+                initialParams={{ user: userDetails, jwt: jwt }}
                 options={{
                   title: "Dịch vụ",
                   tabBarIcon: () => (

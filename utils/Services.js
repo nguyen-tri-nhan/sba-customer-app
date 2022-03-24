@@ -12,8 +12,8 @@ const Services = {
     return http.post({ url: URL_PERFIX + Apis.login, data: user, params: { entity: 'CUSTOMER' } });
   },
 
-  search(entity, params) {
-    return http.get(`${URL_PERFIX}/${entity}`, null, params);
+  search(entity, params, jwt) {
+    return http.get({ url: `${URL_PERFIX}/${entity}`, params, jwt});
   },
 
   createManager(manager) {

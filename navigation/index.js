@@ -13,7 +13,7 @@ import RegisterScreen from "../screens/RegisterScreen";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import PersonalScreen from "../screens/PersonalScreen";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { AuthContext } from "../utils/context";
 import { isEmpty } from "lodash";
 import Services from "../utils/Services";
@@ -50,8 +50,9 @@ export default function Navigation({ colorScheme }) {
     };
   }, [])
 
-  function TabBarIcon(props) {
-    return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+  const tabIconProps = {
+    size: 30,
+    style: { marginBottom: -3 }
   }
 
   const UnAuthStack = createStackNavigator();
@@ -69,9 +70,9 @@ export default function Navigation({ colorScheme }) {
                 name="TabOne"
                 component={TabOneScreen}
                 options={{
-                  title: "Tab đầu",
+                  title: "Dịch vụ",
                   tabBarIcon: () => (
-                    <TabBarIcon name="image-outline" />
+                    <MaterialCommunityIcons name="image-outline" {...tabIconProps} />
                   ),
                 }}
               />
@@ -79,9 +80,9 @@ export default function Navigation({ colorScheme }) {
                 name="TabTwo"
                 component={TabTwoScreen}
                 options={{
-                  title: "Tab hai",
+                  title: "Lịch sử",
                   tabBarIcon: () => (
-                    <TabBarIcon name="camera-outline" />
+                    <MaterialCommunityIcons name="table-clock"  {...tabIconProps} />
                   ),
                 }}
               />
@@ -92,7 +93,7 @@ export default function Navigation({ colorScheme }) {
                 options={{
                   title: "Thông tin cá nhân",
                   tabBarIcon: () => (
-                    <TabBarIcon name="person-outline" />
+                    <Ionicons name="person-outline" {...tabIconProps} />
                   ),
                 }}
               />

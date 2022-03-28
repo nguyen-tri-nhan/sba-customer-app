@@ -2,22 +2,24 @@ import React from 'react';
 import { TouchableOpacity, Image } from 'react-native';
 import { Card, Paragraph, Title } from 'react-native-paper';
 import { useStyle } from '../utils/style';
-import { Text } from './Themed';
+import { Text, View } from './Themed';
 
 function PackageService({ pkg, navigation }) {
 
   const styles = useStyle();
 
-  const onPkgPress = (id) => {
-    console.log('press', id)
+  const onPkgPress = () => {
+    console.log('press', pkg.id)
   }
 
   return (
-    <TouchableOpacity onPress={() => onPkgPress(pkg.id)}>
+    <TouchableOpacity onPress={onPkgPress} >
       <Card style={styles.packagesItem}>
         <Card.Content>
           <Title>{pkg.name}</Title>
           <Paragraph>{pkg.description}</Paragraph>
+          <Card.Cover source={{ uri: pkg.images[0].imageUrl }} />
+          <Text style={styles.packagesPrice}>Giá: {pkg.price} VND</Text>
         </Card.Content>
       </Card>
     </TouchableOpacity>

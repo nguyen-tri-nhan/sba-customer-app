@@ -47,11 +47,13 @@ export const useStyle = () => {
     },
     packagesItem: {
       flex: 1,
+      display: 'flex',
+      flexDirection: 'row',
       padding: 10,
       margin: 5
     },
-    cardTitle: {
-      flex: 1,
+    packagesPrice: {
+      textAlign: 'right'
     }
   });
 }

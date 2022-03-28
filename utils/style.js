@@ -39,6 +39,19 @@ export const useStyle = () => {
       fontSize: 18,
       textAlign: "center",
       marginBottom: 24
+    },
+    listItem: {
+      flex: 1,
+      backgroundColor: "#fff",
+      alignItems: "center",
+    },
+    packagesItem: {
+      flex: 1,
+      padding: 10,
+      margin: 5
+    },
+    cardTitle: {
+      flex: 1,
     }
   });
 }

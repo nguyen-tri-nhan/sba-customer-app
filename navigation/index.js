@@ -17,6 +17,7 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { AuthContext } from "../utils/context";
 import { isEmpty } from "lodash";
 import Services from "../utils/Services";
+import { PackagesStack } from "../stack/PackageStack";
 
 export default function Navigation({ colorScheme }) {
   const [jwt, setJwt] = useState('');
@@ -65,10 +66,12 @@ export default function Navigation({ colorScheme }) {
         {
           !isEmpty(userDetails)
             ?
-            <AuthTabs.Navigator>
+            <AuthTabs.Navigator
+              screenOptions={{ headerShown: false }}
+            >
               <AuthTabs.Screen
                 name="TabOne"
-                component={TabOneScreen}
+                component={PackagesStack}
                 initialParams={{ user: userDetails, jwt: jwt }}
                 options={{
                   title: "Dịch vụ",

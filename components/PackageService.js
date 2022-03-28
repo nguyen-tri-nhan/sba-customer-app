@@ -1,6 +1,6 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { Avatar, Card, Paragraph, Title } from 'react-native-paper';
+import { TouchableOpacity, Image } from 'react-native';
+import { Card, Paragraph, Title } from 'react-native-paper';
 import { useStyle } from '../utils/style';
 import { Text } from './Themed';
 

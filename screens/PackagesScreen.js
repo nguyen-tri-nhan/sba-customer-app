@@ -1,6 +1,11 @@
 import React from 'react';
 
-function PackagesScreen(props) {
+function PackagesScreen({navigation, route}) {
+
+  const renderData = (data) => {
+
+  }
+
   return (
     <div>
       

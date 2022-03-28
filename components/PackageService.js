@@ -9,7 +9,7 @@ function PackageService({ pkg, navigation }) {
   const styles = useStyle();
 
   const onPkgPress = () => {
-    console.log('press', pkg.id)
+    navigation.push('PackagesDetails', { pkg: pkg })
   }
 
   return (

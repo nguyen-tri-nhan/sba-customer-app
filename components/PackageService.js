@@ -17,7 +17,7 @@ function PackageService({ pkg, navigation }) {
       <Card style={styles.packagesItem}>
         <Card.Content>
           <Title>{pkg.name}</Title>
-          <Paragraph>{pkg.description}</Paragraph>
+          <Paragraph>Địa điểm: {pkg.location}</Paragraph>
           <Card.Cover source={{ uri: pkg.images[0].imageUrl }} />
           <Text style={styles.packagesPrice}>Giá: {pkg.price} VND</Text>
         </Card.Content>

@@ -14,13 +14,14 @@ const DataLoader = ({
   useFilter = false,
   noCard = false,
   jwt,
+  initialStatus,
   ...props
 }) => {
 
   const [data, setData] = useState();
   const [page, setPage] = useState(getAll ? undefined : 0);
   const [searchText, setSearchText] = useState();
-  const [status, setStatus] = useState();
+  const [status, setStatus] = useState(initialStatus);
 
   const params = {
     page,

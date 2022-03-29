@@ -1,4 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import BookingScreen from "../screens/BookingScreen";
 import PackageDetailsScreen from "../screens/PackageDetailsScreen";
 import PackagesScreen from "../screens/PackagesScreen";
 
@@ -23,6 +24,15 @@ export const PackagesStack = (props) => {
           title: "Chi tiết",
         }}
         component={PackageDetailsScreen}
+        {...props}
+        initialParams={{ user: user, jwt: jwt }}
+      />
+      <Navigation.Screen
+        name="Booking"
+        options={{
+          title: "Đặt lịch",
+        }}
+        component={BookingScreen}
         {...props}
         initialParams={{ user: user, jwt: jwt }}
       />

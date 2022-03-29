@@ -42,7 +42,7 @@ export const useStyle = () => {
     },
     listItem: {
       flex: 1,
-      backgroundColor: "#fff",
+      // backgroundColor: "#fff",
       alignItems: "center",
     },
     packagesItem: {

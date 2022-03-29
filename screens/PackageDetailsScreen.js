@@ -9,9 +9,9 @@ function PackageDetailsScreen(props) {
 
   const styles = useStyle();
 
-  const { params } = props.route;
+  const { navigation, route } = props;
+  const { params } = route;
   const { pkg } = params;
-  console.log(pkg);
 
   const getImagesList = (imgs) => {
     if (imgs) {
@@ -21,6 +21,10 @@ function PackageDetailsScreen(props) {
   }
 
   const images = getImagesList(pkg.images);
+
+  const onBookingPress = () => {
+    navigation.push("Booking", { pkg: pkg });
+  }
 
   return (
 
@@ -37,7 +41,7 @@ function PackageDetailsScreen(props) {
         <Paragraph>{pkg.description}</Paragraph>
       </Card>
       <Card style={styles.packageDetailsFooter}>
-        <TouchableOpacity style={styles.packageDetailsBookingButton}>
+        <TouchableOpacity onPress={onBookingPress} style={styles.packageDetailsBookingButton}>
           <Button>Đặt ngay</Button>
         </TouchableOpacity>
       </Card>

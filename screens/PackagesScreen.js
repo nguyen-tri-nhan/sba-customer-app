@@ -2,7 +2,7 @@ import React from 'react';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import DataLoader from '../model/Dataloader';
-import { ENTITY } from '../utils/Constants';
+import { ENTITY, STATUS } from '../utils/Constants';
 import { isEmpty } from 'lodash';
 import { useStyle } from '../utils/style';
 import PackageService from '../components/PackageService';
@@ -24,7 +24,7 @@ function PackagesScreen({ navigation, route }) {
   return (
     <SafeAreaView style={styles.listItem}>
       <ScrollView>
-        <DataLoader jwt={jwt} entity={ENTITY.PACKAGE} renderData={renderData} getAll />
+        <DataLoader jwt={jwt} entity={ENTITY.PACKAGE} renderData={renderData} getAll initialStatus={STATUS.ENABLE} />
       </ScrollView>
     </SafeAreaView>
   );

@@ -54,6 +54,32 @@ export const useStyle = () => {
     },
     packagesPrice: {
       textAlign: 'right'
+    },
+    packageDetailsTitle: {
+      textAlign: 'center',
+      fontSize: 22,
+      fontWeight: "bold"
+    },
+    packageDetailsPrice: {
+      textAlign: 'right',
+      marginRight: 10,
+    },
+    imageSliderCard: {
+      width: '100%',
+      marginBottom: 10,
+      flex: 3
+    },
+    packageDetailsTitleCard: {
+      marginBottom: 20,
+      flex: 6
+    },
+    packageDetailsFooter: {
+      justifyContent: 'center',
+      flex: 1
+    },
+    
+    packageDetailsContainer: {
+      flex: 1
     }
   });
 }

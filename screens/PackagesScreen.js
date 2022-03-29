@@ -15,7 +15,7 @@ function PackagesScreen({ navigation, route }) {
 
   const renderData = (data) => {
     if (!isEmpty(data)) {
-      return data.map((item) => (<PackageService pkg={item} navigation={navigation} />))
+      return data.map((item) => (<PackageService key={item.id} pkg={item} navigation={navigation} />))
     }
   }
 

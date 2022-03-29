@@ -31,11 +31,13 @@ function PackageDetailsScreen(props) {
       <Card key={'2'} style={styles.packageDetailsTitleCard}>
         <Title style={styles.packageDetailsTitle}>{pkg.name}</Title>
         <Title style={styles.packageDetailsPrice}>Giá: {pkg.price} VND</Title>
+        <Text>Thời gian thực hiện: {pkg.duration} ngày</Text>
+        <Text>Địa điểm: {pkg.location}</Text>
         <Text>Mô tả:</Text>
         <Paragraph>{pkg.description}</Paragraph>
       </Card>
       <Card style={styles.packageDetailsFooter}>
-        <TouchableOpacity>
+        <TouchableOpacity style={styles.packageDetailsBookingButton}>
           <Button>Đặt ngay</Button>
         </TouchableOpacity>
       </Card>

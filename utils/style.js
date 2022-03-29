@@ -77,9 +77,14 @@ export const useStyle = () => {
       justifyContent: 'center',
       flex: 1
     },
-    
     packageDetailsContainer: {
       flex: 1
+    },
+    packageDetailsBookingButton: {
+      flex: 1,
+      borderRadius: 15,
+      alignItems: 'center',
+      justifyContent: 'center',
     }
   });
 }

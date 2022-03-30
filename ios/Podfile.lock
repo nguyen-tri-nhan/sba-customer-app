@@ -15,6 +15,8 @@ PODS:
     - ExpoModulesCore
   - Expo (44.0.6):
     - ExpoModulesCore
+  - ExpoLocalization (12.0.1):
+    - ExpoModulesCore
   - ExpoModulesCore (0.6.5):
     - React-Core
     - ReactCommon/turbomodule/core
@@ -347,6 +349,7 @@ DEPENDENCIES:
   - EXFont (from `../node_modules/expo-font/ios`)
   - EXKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - Expo (from `../node_modules/expo/ios`)
+  - ExpoLocalization (from `../node_modules/expo-localization/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
@@ -410,6 +413,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-keep-awake/ios"
   Expo:
     :path: "../node_modules/expo/ios"
+  ExpoLocalization:
+    :path: "../node_modules/expo-localization/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core/ios"
   EXSplashScreen:
@@ -499,6 +504,7 @@ SPEC CHECKSUMS:
   EXFont: 2597c10ac85a69d348d44d7873eccf5a7576ef5e
   EXKeepAwake: bf48d7f740a5cd2befed6cf9a49911d385c6c47d
   Expo: 534e51e607aba8229293297da5585f4b26f50fa1
+  ExpoLocalization: 72b4524c167da6c4e2a0bbe09176ff8b2c4eddbe
   ExpoModulesCore: 32c0ccb47f477d330ee93db72505380adf0de09a
   EXSplashScreen: 21669e598804ee810547dbb6692c8deb5dd8dbf3
   EXWebBrowser: f1573262c5de753987ed526c630076eda130804d
@@ -539,6 +545,6 @@ SPEC CHECKSUMS:
   RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
 
-PODFILE CHECKSUM: c7dd8f3404fc9a355fff5176a2d3f1492a60f228
+PODFILE CHECKSUM: d0a5c6f2b9fe0b6b5d0e93c1404424798d53f3e4
 
 COCOAPODS: 1.11.3

@@ -1,4 +1,6 @@
 import React from 'react';
+import { SafeAreaView } from 'react-native';
+import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
 
 function BookingScreen(props) {
@@ -6,9 +8,13 @@ function BookingScreen(props) {
   const { params } = route;
   const { pkg } = params;
   return (
-    <Text>
-      {pkg.name}
-    </Text>
+    <SafeAreaView>
+      <BookingStepIndicator currentStep={0} />
+      <Text>
+        {pkg.name}
+      </Text>
+    </SafeAreaView>
+
   );
 }
 

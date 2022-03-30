@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TextInput, Text, TouchableOpacity, View } from "react-native";
 import { useStyle } from "../utils/style";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
+import DatePicker from "../components/DatePicker";
 
 const styles = useStyle();
 
@@ -32,7 +33,7 @@ const RegisterScreen = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputView}>
-        <RNDateTimePicker value={new Date()} display="spinner" />
+        <DatePicker />
       </View>
       <TouchableOpacity
         onPress={() => navigation.navigate("Login")}

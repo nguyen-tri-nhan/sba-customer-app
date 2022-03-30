@@ -20,22 +20,22 @@ if (isHermesEnabled || isAndroid) {  // this line is only needed if you don't us
 
 
   require('@formatjs/intl-pluralrules/polyfill');
-  require('@formatjs/intl-pluralrules/locale-data/en.js'); // USE YOUR OWN LANGUAGE OR MULTIPLE IMPORTS YOU WANT TO SUPPORT
+  require('@formatjs/intl-pluralrules/locale-data/vi.js'); // USE YOUR OWN LANGUAGE OR MULTIPLE IMPORTS YOU WANT TO SUPPORT
 
   require('@formatjs/intl-displaynames/polyfill');
-  require('@formatjs/intl-displaynames/locale-data/en.js'); // USE YOUR OWN LANGUAGE OR MULTIPLE IMPORTS YOU WANT TO SUPPORT
+  require('@formatjs/intl-displaynames/locale-data/vi.js'); // USE YOUR OWN LANGUAGE OR MULTIPLE IMPORTS YOU WANT TO SUPPORT
 
   require('@formatjs/intl-listformat/polyfill');
-  require('@formatjs/intl-listformat/locale-data/en.js'); // USE YOUR OWN LANGUAGE OR MULTIPLE IMPORTS YOU WANT TO SUPPORT
+  require('@formatjs/intl-listformat/locale-data/vi.js'); // USE YOUR OWN LANGUAGE OR MULTIPLE IMPORTS YOU WANT TO SUPPORT
 
   require('@formatjs/intl-numberformat/polyfill');
-  require('@formatjs/intl-numberformat/locale-data/en.js'); // USE YOUR OWN LANGUAGE OR MULTIPLE IMPORTS YOU WANT TO SUPPORT
+  require('@formatjs/intl-numberformat/locale-data/vi.js'); // USE YOUR OWN LANGUAGE OR MULTIPLE IMPORTS YOU WANT TO SUPPORT
 
   require('@formatjs/intl-relativetimeformat/polyfill');
-  require('@formatjs/intl-relativetimeformat/locale-data/en.js'); // USE YOUR OWN LANGUAGE OR MULTIPLE IMPORTS YOU WANT TO SUPPORT
+  require('@formatjs/intl-relativetimeformat/locale-data/vi.js'); // USE YOUR OWN LANGUAGE OR MULTIPLE IMPORTS YOU WANT TO SUPPORT
 
   require('@formatjs/intl-datetimeformat/polyfill');
-  require('@formatjs/intl-datetimeformat/locale-data/en.js'); // USE YOUR OWN LANGUAGE OR MULTIPLE IMPORTS YOU WANT TO SUPPORT
+  require('@formatjs/intl-datetimeformat/locale-data/vi.js'); // USE YOUR OWN LANGUAGE OR MULTIPLE IMPORTS YOU WANT TO SUPPORT
 
   require('@formatjs/intl-datetimeformat/add-golden-tz.js');
 

@@ -8,10 +8,9 @@ const isHermesEnabled = !!global.HermesInternal;
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);
 // It also ensures that whether you load the app in Expo Go or in a native build,
 // the environment is set up appropriately
-console.log('isHermesEnabled', isHermesEnabled)
 console.log('isAndroid', isAndroid)
 
-if (isHermesEnabled || isAndroid) {  // this line is only needed if you don't use an .android.js file
+if (isAndroid) {  // this line is only needed if you don't use an .android.js file
 
 
 
@@ -46,8 +45,13 @@ if (isHermesEnabled || isAndroid) {  // this line is only needed if you don't us
   if ('__setDefaultTimeZone' in Intl.DateTimeFormat) {
 
     // If you are using react-native-cli
-    let RNLocalize = require('react-native-localize');
-    Intl.DateTimeFormat.__setDefaultTimeZone(RNLocalize.getTimeZone());
+    // let RNLocalize = require('react-native-localize');
+    // Intl.DateTimeFormat.__setDefaultTimeZone(RNLocalize.getTimeZone());
+
+    //  Are you using Expo, use this instead of previous 2 lines
+     Intl.DateTimeFormat.__setDefaultTimeZone(
+       'Asia/Ho_Chi_Minh'
+     );
 
   }
 } 

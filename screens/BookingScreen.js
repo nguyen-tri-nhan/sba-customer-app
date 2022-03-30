@@ -9,7 +9,7 @@ function BookingScreen(props) {
   const { pkg } = params;
   return (
     <SafeAreaView>
-      <BookingStepIndicator currentStep={0} />
+      <BookingStepIndicator  currentStep={0} />
       <Text>
         {pkg.name}
       </Text>

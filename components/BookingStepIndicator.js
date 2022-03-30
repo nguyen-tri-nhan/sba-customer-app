@@ -1,0 +1,49 @@
+import StepIndicator from 'react-native-step-indicator';
+
+const labels = ["Dịch vụ bổ sung", "Trang điểm thử", "Thông tin khách hàng", "Thanh toán", "Xác nhận", "Thành công"];
+const customStyles = {
+  stepIndicatorSize: 25,
+  currentStepIndicatorSize: 30,
+  separatorStrokeWidth: 2,
+  currentStepStrokeWidth: 3,
+  stepStrokeCurrentColor: '#fe7013',
+  stepStrokeWidth: 2,
+  stepStrokeFinishedColor: '#fe7013',
+  stepStrokeUnFinishedColor: '#aaaaaa',
+  separatorFinishedColor: '#fe7013',
+  separatorUnFinishedColor: '#aaaaaa',
+  stepIndicatorFinishedColor: '#fe7013',
+  stepIndicatorUnFinishedColor: '#ffffff',
+  stepIndicatorCurrentColor: '#ffffff',
+  stepIndicatorLabelFontSize: 13,
+  currentStepIndicatorLabelFontSize: 13,
+  stepIndicatorLabelCurrentColor: '#fe7013',
+  stepIndicatorLabelFinishedColor: '#ffffff',
+  stepIndicatorLabelUnFinishedColor: '#aaaaaa',
+  labelColor: '#999999',
+  labelSize: 10,
+  currentStepLabelColor: '#fe7013',
+}
+
+import React from 'react';
+import { useStyle } from '../utils/style';
+import { View } from './Themed';
+
+function BookingStepIndicator({ currentStep }) {
+  const styles = useStyle();
+
+  return (
+    <View
+      style={styles.bookingTopIndicator}
+    >
+      <StepIndicator
+        customStyles={customStyles}
+        currentPosition={currentStep}
+        labels={labels}
+        stepCount={6}
+      />
+    </View>
+  );
+}
+
+export default BookingStepIndicator;

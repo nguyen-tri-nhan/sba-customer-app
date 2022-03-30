@@ -85,6 +85,9 @@ export const useStyle = () => {
       borderRadius: 15,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    bookingTopIndicator: {
+      paddingTop: 10,
     }
   });
 }

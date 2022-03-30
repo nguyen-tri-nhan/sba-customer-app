@@ -55,7 +55,7 @@ function DatePicker({ validRange, onConfirm }) {
     [setOpen, setDate]
   );
 
-  console.log(date);
+  console.log('date', date);
 
   const renderDate = () => {
     return `${VietNameseDate[date.getDay()]}, ${date.getDate()} tháng ${date.getMonth()} năm ${date.getFullYear()}`;

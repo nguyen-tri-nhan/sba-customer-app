@@ -26,8 +26,19 @@ registerTranslation("vi", {
   close: 'Đóng',
 });
 
+/**
+ * 
+ * @param {validRange} param0 
+ * ex: {
+ *       startDate: new Date(2021, 1, 2),  // optional
+ *       endDate: new Date(), // optional
+ *       disabledDates: [new Date()] // optional
+ *     }
+ *
+ * @returns 
+ */
 
-function DatePicker(props) {
+function DatePicker({ validRange, onConfirm }) {
   const [date, setDate] = useState(undefined);
   const [open, setOpen] = useState(false);
 
@@ -39,6 +50,7 @@ function DatePicker(props) {
     (params) => {
       setOpen(false);
       setDate(params.date);
+      onConfirm && onConfirm(params.date);
     },
     [setOpen, setDate]
   );
@@ -63,16 +75,7 @@ function DatePicker(props) {
         onDismiss={onDismissSingle}
         date={date}
         onConfirm={onConfirmSingle}
-      // validRange={{
-      //   startDate: new Date(2021, 1, 2),  // optional
-      //   endDate: new Date(), // optional
-      //   disabledDates: [new Date()] // optional
-      // }}
-      // onChange={} // same props as onConfirm but triggered without confirmed by user
-      // saveLabel="Save" // optional
-      // uppercase={false} // optional, default is true
-      // label="Select date" // optional
-      // animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
+        validRange={validRange}
       />
     </>
   );

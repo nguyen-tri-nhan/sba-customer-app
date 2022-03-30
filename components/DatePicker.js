@@ -2,10 +2,11 @@ import {
   registerTranslation,
 } from 'react-native-paper-dates';
 
-import { Button } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { useState, useCallback } from 'react';
-
+import { TouchableOpacity } from 'react-native';
+import { Text } from './Themed';
+import { VietNameseDate } from '../utils/DateHelper';
 registerTranslation("vi", {
   save: 'Đồng ý',
   selectSingle: 'Chọn ngày',
@@ -42,11 +43,19 @@ function DatePicker(props) {
     [setOpen, setDate]
   );
 
+  console.log(date);
+
+  const renderDate = () => {
+    return `${VietNameseDate[date.getDay()]}, ${date.getDate()} tháng ${date.getMonth()} năm ${date.getFullYear()}`;
+  }
+
   return (
     <>
-      <Button onPress={() => setOpen(true)} mode="outlined">
-        Chọn ngày
-      </Button>
+      <TouchableOpacity onPress={() => setOpen(true)}>
+        <Text>
+          {date ? renderDate() : 'Chọn ngày'}
+        </Text>
+      </TouchableOpacity>
       <DatePickerModal
         locale="vi"
         mode="single"
@@ -54,16 +63,16 @@ function DatePicker(props) {
         onDismiss={onDismissSingle}
         date={date}
         onConfirm={onConfirmSingle}
-        // validRange={{
-        //   startDate: new Date(2021, 1, 2),  // optional
-        //   endDate: new Date(), // optional
-        //   disabledDates: [new Date()] // optional
-        // }}
-        // onChange={} // same props as onConfirm but triggered without confirmed by user
-        // saveLabel="Save" // optional
-        // uppercase={false} // optional, default is true
-        // label="Select date" // optional
-        // animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
+      // validRange={{
+      //   startDate: new Date(2021, 1, 2),  // optional
+      //   endDate: new Date(), // optional
+      //   disabledDates: [new Date()] // optional
+      // }}
+      // onChange={} // same props as onConfirm but triggered without confirmed by user
+      // saveLabel="Save" // optional
+      // uppercase={false} // optional, default is true
+      // label="Select date" // optional
+      // animationType="slide" // optional, default is 'slide' on ios/android and 'none' on web
       />
     </>
   );

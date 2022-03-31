@@ -1,8 +1,8 @@
 import React from 'react';
-import { SafeAreaView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import { Button, Card, Paragraph, Title } from 'react-native-paper';
-import { Text, View } from '../components/Themed';
+import { Text } from '../components/Themed';
 import { toVND } from '../utils/CurrencyHelper';
 import { useStyle } from '../utils/style';
 
@@ -34,16 +34,19 @@ function PackageDetailsScreen(props) {
         <SliderBox key={pkg.id} images={images} />
       </Card>
       <Card key={'2'} style={styles.packageDetailsTitleCard}>
-        <Title style={styles.packageDetailsTitle}>{pkg.name}</Title>
-        <Title style={styles.packageDetailsPrice}>Giá: {toVND(pkg.price)}</Title>
-        <Text>Thời gian thực hiện: {pkg.duration} ngày</Text>
-        <Text>Địa điểm: {pkg.location}</Text>
-        <Text>Mô tả:</Text>
-        <Paragraph>{pkg.description}</Paragraph>
+        <ScrollView>
+          <Title style={styles.packageDetailsTitle}>{pkg.name}</Title>
+          <Title style={styles.packageDetailsPrice}>Giá: {toVND(pkg.price)}</Title>
+          <Text>Thời gian thực hiện: {pkg.duration} ngày</Text>
+          <Text>Địa điểm: {pkg.location}</Text>
+          <Text>Mô tả:</Text>
+          <Paragraph>{pkg.description}</Paragraph>
+          <Text>//TODO: Add addtitional item</Text>
+        </ScrollView>
       </Card>
       <Card style={styles.packageDetailsFooter}>
         <TouchableOpacity onPress={onBookingPress} style={styles.packageDetailsBookingButton}>
-          <Button>Đặt ngay</Button>
+          <Button>Đặt ngay: {toVND(pkg.price)}</Button>
         </TouchableOpacity>
       </Card>
     </SafeAreaView>

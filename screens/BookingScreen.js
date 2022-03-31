@@ -25,7 +25,7 @@ function BookingScreen(props) {
 
   console.log(showrooms)
   const onContinuePress = () => {
-    
+    navigation.push("Booking2", { pkg });
   }
 
   return (
@@ -37,7 +37,7 @@ function BookingScreen(props) {
         </Text>
       </Card>
       <Card style={styles.packageDetailsFooter}>
-      <TouchableOpacity onPress={onContinuePress} style={styles.packageDetailsBookingButton}>
+        <TouchableOpacity onPress={onContinuePress} style={styles.packageDetailsBookingButton}>
           <Button>Đặt ngay: {toVND(pkg.price)}</Button>
         </TouchableOpacity>
       </Card>

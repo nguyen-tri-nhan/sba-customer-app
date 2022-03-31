@@ -4,7 +4,6 @@ import BookingScreen2 from "../screens/BookingScreen2";
 import BookingScreen3 from "../screens/BookingScreen3";
 import BookingScreen4 from "../screens/BookingScreen4";
 import BookingScreen5 from "../screens/BookingScreen5";
-import BookingScreen6 from "../screens/BookingScreen6";
 import PackageDetailsScreen from "../screens/PackageDetailsScreen";
 import PackagesScreen from "../screens/PackagesScreen";
 
@@ -74,15 +73,6 @@ export const PackagesStack = (props) => {
           title: "Đặt lịch",
         }}
         component={BookingScreen5}
-        {...props}
-        initialParams={{ user: user, jwt: jwt }}
-      />
-      <Navigation.Screen
-        name="Booking6"
-        options={{
-          title: "Đặt lịch",
-        }}
-        component={BookingScreen6}
         {...props}
         initialParams={{ user: user, jwt: jwt }}
       />

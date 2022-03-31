@@ -1,18 +1,34 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, TouchableOpacity } from 'react-native';
+import { useEffect, useState } from 'react';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
+import Services from '../utils/Services';
+import { Button, Card } from 'react-native-paper';
+import { useStyle } from '../utils/style';
+import { toVND } from '../utils/CurrencyHelper';
 
 function BookingScreen5(props) {
   const { navigation, route } = props;
   const { params } = route;
   const { pkg } = params;
+  const styles = useStyle();
+  const onContinuePress = () => {
+    // navigation.push("Booking5", { pkg });
+  }
   return (
-    <SafeAreaView>
-      <BookingStepIndicator  currentStep={4} />
-      <Text>
-        {pkg.name}
-      </Text>
+    <SafeAreaView style={styles.packageDetailsContainer}>
+      <BookingStepIndicator currentStep={4} />
+      <Card style={styles.customerInformation}>
+        <Text>
+          {pkg.name}
+        </Text>
+      </Card>
+      <Card style={styles.packageDetailsFooter}>
+        <TouchableOpacity onPress={onContinuePress} style={styles.packageDetailsBookingButton}>
+          <Button>Đặt ngay: {toVND(pkg.price)}</Button>
+        </TouchableOpacity>
+      </Card>
     </SafeAreaView>
 
   );

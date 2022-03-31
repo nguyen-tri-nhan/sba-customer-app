@@ -92,6 +92,20 @@ export const useStyle = () => {
     },
     errorMessageText: {
       color: 'red',
+    },
+    submit: {
+      marginTop: 10,
+      paddingTop: 10,
+      paddingBottom: 10,
+      backgroundColor: '#68a0cf',
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: '#fff',
+      width: '60%'
+    },
+    submitText: {
+      color: '#fff',
+      textAlign: 'center',
     }
   });
 }

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, TextInput, Button } from "react-native";
+import { Text, TouchableOpacity, TouchableHighlight, View, TextInput, Button } from "react-native";
 import React, { useState, useContext } from 'react';
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../utils/context";
@@ -67,10 +67,13 @@ const LoginScreen = ({ navigation }) => {
         loginFailed && 
         <Text style={styles.errorMessageText}>Email hoặc mật khẩu không đúng, vui lòng nhập lại</Text>
       }
-      <Button
-        title="Đăng nhập"
+      <TouchableHighlight
+        style={styles.submit}
         onPress={onLoginPress}
-      />
+        underlayColor="#91bfe6"
+      >
+        <Text style={styles.submitText}>Đăng nhập</Text>
+      </TouchableHighlight>
       <TouchableOpacity
         onPress={() => navigation.navigate("Register")}
         style={styles.link}

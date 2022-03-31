@@ -13,4 +13,5 @@ export const ENTITY = {
   SHOWROOM: 'showroom',
   PACKAGE: 'package',
   BOOKING: 'booking',
+  ADDITIONAL_ITEM: 'additionalItem',
 }

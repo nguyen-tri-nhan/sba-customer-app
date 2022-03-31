@@ -11,6 +11,7 @@ const LoginScreen = ({ navigation }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loginFailed, setLoginFailed] = useState(false);
 
   const { login } = useContext(AuthContext);
 
@@ -29,7 +30,11 @@ const LoginScreen = ({ navigation }) => {
 
   const onLoginPress = (e) => {
     e.preventDefault();
-    login(user);
+    login(user, errorHandler);
+  };
+
+  const errorHandler = (message) => {
+    setLoginFailed(true);
   }
 
   return (
@@ -58,6 +63,10 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={onPasswordChange}
         />
       </View>
+      {
+        loginFailed && 
+        <Text style={styles.errorMessageText}>Email hoặc mật khẩu không đúng, vui lòng nhập lại</Text>
+      }
       <Button
         title="Đăng nhập"
         onPress={onLoginPress}

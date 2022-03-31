@@ -28,8 +28,8 @@ export default function Navigation({ colorScheme }) {
       getMe: () => {
         return userDetails;
       },
-      login: (user) => {
-        Services.login(user)
+      login: (user, errorHandler) => {
+        Services.login(user, errorHandler)
           .then(({ data }) => {
             setJwt(`Bearer ${data.accessToken}`);
             return `Bearer ${data.accessToken}`;

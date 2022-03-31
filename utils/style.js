@@ -88,6 +88,9 @@ export const useStyle = () => {
     },
     bookingTopIndicator: {
       paddingTop: 10,
+    },
+    errorMessageText: {
+      color: 'red',
     }
   });
 }

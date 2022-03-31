@@ -7,9 +7,9 @@ const Services = {
     return http.get({ url: URL_PERFIX + Apis.userMe, jwt });
   },
 
-  login(user) {
+  login(user, errorHandler) {
     // return http.post(URL_PERFIX + Apis.login, user, {entity: 'CUSTOMER'});
-    return http.post({ url: URL_PERFIX + Apis.login, data: user, params: { entity: 'CUSTOMER' } });
+    return http.post({ url: URL_PERFIX + Apis.login, data: user, params: { entity: 'CUSTOMER' }, errorHandler: errorHandler });
   },
 
   search(entity, params, jwt) {

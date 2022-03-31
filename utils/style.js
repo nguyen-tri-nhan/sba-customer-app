@@ -24,8 +24,8 @@ export const useStyle = () => {
     },
     inputView: {
       borderRadius: 10,
-      width: "70%",
-      height: 45,
+      width: "90%",
+      height: 40,
       marginBottom: 20,
       alignItems: "center",
       borderWidth: 1,

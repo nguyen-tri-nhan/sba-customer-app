@@ -81,6 +81,9 @@ export const useStyle = () => {
     packageDetailsContainer: {
       flex: 1
     },
+    customerInformation: {
+      flex: 9
+    },
     packageDetailsBookingButton: {
       flex: 1,
       borderRadius: 15,

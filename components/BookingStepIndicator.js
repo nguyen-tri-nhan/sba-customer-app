@@ -1,6 +1,6 @@
 import StepIndicator from 'react-native-step-indicator';
 
-const labels = ["Dịch vụ bổ sung", "Thông tin khách hàng", "Trang điểm thử", "Thanh toán", "Xác nhận", "Thành công"];
+const labels = ["Thông tin khách hàng", "Trang điểm thử", "Thanh toán", "Xác nhận", "Thành công"];
 const customStyles = {
   stepIndicatorSize: 25,
   currentStepIndicatorSize: 30,
@@ -40,7 +40,7 @@ function BookingStepIndicator({ currentStep }) {
         customStyles={customStyles}
         currentPosition={currentStep}
         labels={labels}
-        stepCount={6}
+        stepCount={5}
       />
     </View>
   );

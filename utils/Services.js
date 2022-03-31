@@ -34,6 +34,10 @@ const Services = {
 
   getShowroom(showroomId) {
     return http.get(URL_PERFIX + Apis.showroom + `/${showroomId}`);
+  },
+
+  getShowrooms(jwt) {
+    return http.get({url: URL_PERFIX + Apis.showroom, jwt: jwt, params: { status: 'ENABLE' }});
   }
 };
 

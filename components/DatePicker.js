@@ -4,9 +4,10 @@ import {
 
 import { DatePickerModal } from 'react-native-paper-dates';
 import { useState, useCallback } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Text } from './Themed';
 import { VietNameseDate } from '../utils/DateHelper';
+import { useStyle } from '../utils/style';
 registerTranslation("vi", {
   save: 'Đồng ý',
   selectSingle: 'Chọn ngày',
@@ -38,7 +39,7 @@ registerTranslation("vi", {
  * @returns 
  */
 
-function DatePicker({ validRange, onConfirm }) {
+function DatePicker({ placeHolder = "Chọn ngày", validRange, onConfirm }) {
   const [date, setDate] = useState(undefined);
   const [open, setOpen] = useState(false);
 
@@ -65,7 +66,7 @@ function DatePicker({ validRange, onConfirm }) {
     <>
       <TouchableOpacity onPress={() => setOpen(true)}>
         <Text>
-          {date ? renderDate() : 'Chọn ngày'}
+          {date ? renderDate() : placeHolder}
         </Text>
       </TouchableOpacity>
       <DatePickerModal

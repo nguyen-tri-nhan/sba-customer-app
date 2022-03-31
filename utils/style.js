@@ -29,6 +29,7 @@ export const useStyle = () => {
       marginBottom: 20,
       alignItems: "center",
       borderWidth: 1,
+      justifyContent: 'center',
     },
   
     textInput: {

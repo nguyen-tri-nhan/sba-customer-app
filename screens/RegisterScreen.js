@@ -33,7 +33,7 @@ const RegisterScreen = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputView}>
-        <DatePicker onConfirm={setBirthday}/>
+        <DatePicker placeHolder="Ngày sinh" onConfirm={setBirthday}/>
       </View>
       <TouchableOpacity
         onPress={() => navigation.navigate("Login")}

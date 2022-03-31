@@ -1,6 +1,6 @@
 import StepIndicator from 'react-native-step-indicator';
 
-const labels = ["Dịch vụ bổ sung", "Trang điểm thử", "Thông tin khách hàng", "Thanh toán", "Xác nhận", "Thành công"];
+const labels = ["Dịch vụ bổ sung", "Thông tin khách hàng", "Trang điểm thử", "Thanh toán", "Xác nhận", "Thành công"];
 const customStyles = {
   stepIndicatorSize: 25,
   currentStepIndicatorSize: 30,

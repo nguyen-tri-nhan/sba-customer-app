@@ -3,6 +3,7 @@ import { SafeAreaView, TouchableOpacity } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import { Button, Card, Paragraph, Title } from 'react-native-paper';
 import { Text, View } from '../components/Themed';
+import { toVND } from '../utils/CurrencyHelper';
 import { useStyle } from '../utils/style';
 
 function PackageDetailsScreen(props) {
@@ -34,7 +35,7 @@ function PackageDetailsScreen(props) {
       </Card>
       <Card key={'2'} style={styles.packageDetailsTitleCard}>
         <Title style={styles.packageDetailsTitle}>{pkg.name}</Title>
-        <Title style={styles.packageDetailsPrice}>Giá: {pkg.price} VND</Title>
+        <Title style={styles.packageDetailsPrice}>Giá: {toVND(pkg.price)}</Title>
         <Text>Thời gian thực hiện: {pkg.duration} ngày</Text>
         <Text>Địa điểm: {pkg.location}</Text>
         <Text>Mô tả:</Text>

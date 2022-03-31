@@ -1,6 +1,5 @@
 import React from 'react';
 import { TouchableOpacity, Image } from 'react-native';
-import { Card, Paragraph, Title } from 'react-native-paper';
 import { toVND } from '../utils/CurrencyHelper';
 import { useStyle } from '../utils/style';
 import { Text, View } from './Themed';
@@ -14,15 +13,15 @@ function PackageService({ pkg, navigation }) {
   }
 
   return (
-    <TouchableOpacity onPress={onPkgPress} >
-      <Card style={styles.packagesItem}>
-        <Card.Content>
-          <Title>{pkg.name}</Title>
-          <Paragraph>Địa điểm: {pkg.location}</Paragraph>
-          <Card.Cover source={{ uri: pkg.images[0].imageUrl }} />
+    <TouchableOpacity style={styles.packageContainer} onPress={onPkgPress} >
+      <View style={styles.packagesItem}>
+        <Image style={styles.packageImage} source={{ uri: pkg.images[0].imageUrl }} />
+        <View style={styles.packageInfomation}>
+          <Text style={styles.packageTitle}>{pkg.name}</Text>
+          <Text style={styles.packageTextSecondary}>Địa điểm: {pkg.location}</Text>
           <Text style={styles.packagesPrice}>Giá: {toVND(pkg.price)}</Text>
-        </Card.Content>
-      </Card>
+        </View>
+      </View>
     </TouchableOpacity>
   );
 }

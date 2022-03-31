@@ -27,11 +27,11 @@ export const useStyle = () => {
       width: "90%",
       height: 40,
       marginBottom: 20,
-      alignItems: "center",
-      borderWidth: 1,
+      alignItems: "flex-start",
+      borderBottomWidth: 0.5,
+      paddingLeft: 20,
       justifyContent: 'center',
     },
-  
     textInput: {
       height: 50,
       flex: 1,
@@ -46,15 +46,37 @@ export const useStyle = () => {
       // backgroundColor: "#fff",
       alignItems: "center",
     },
-    packagesItem: {
+    packageContainer: {
       flex: 1,
-      display: 'flex',
-      flexDirection: 'row',
+    },
+    packagesItem: {
+      minWidth: 360,
+      width: '100%',
+      flex: 1,
       padding: 10,
-      margin: 5
+      margin: 5,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+    },
+    packageImage: {
+      width: 75,
+      height: 75,
+      flex: 2,
+      marginRight: 10
+    },
+    packageInfomation: {
+      flex: 8,
+    },
+    packageTitle: {
+      fontWeight: 'bold'
+    },
+    packageTextSecondary: {
+      fontSize: 12,
+      color: 'gray'
     },
     packagesPrice: {
-      textAlign: 'right'
+      paddingTop: 20,
+      textAlign: 'right',
     },
     packageDetailsTitle: {
       textAlign: 'center',

@@ -25,7 +25,7 @@ function BookingScreen(props) {
 
   console.log(showrooms)
   const onContinuePress = () => {
-
+    
   }
 
   return (

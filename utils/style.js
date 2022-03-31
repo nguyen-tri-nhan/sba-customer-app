@@ -23,12 +23,12 @@ export const useStyle = () => {
       color: "#2e78b7",
     },
     inputView: {
-      backgroundColor: "#FFC0CB",
-      borderRadius: 30,
+      borderRadius: 10,
       width: "70%",
       height: 45,
       marginBottom: 20,
       alignItems: "center",
+      borderWidth: 1,
     },
   
     textInput: {

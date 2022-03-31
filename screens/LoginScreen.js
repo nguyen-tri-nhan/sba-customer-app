@@ -40,7 +40,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Ionicons name="camera-outline" size={100} />
-      <Text style={styles.titleText}>Ứng dụng hỗ trợ đặt lịch chụp ảnh tại studio</Text>
+      <Text style={styles.titleText}>Studio Booking Application</Text>
       <View style={styles.inputView}>
         <TextInput
           style={styles.textInput}

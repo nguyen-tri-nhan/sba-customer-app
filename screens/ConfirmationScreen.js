@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
+import { SafeAreaView, TouchableOpacity, ScrollView, View } from 'react-native';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
 import { Button, Card } from 'react-native-paper';
@@ -38,9 +38,10 @@ function ConfirmationScreen(props) {
             Dịch vụ thêm:
           </Text>
           {
-            forwardedItems.map((item) => (<>
+            forwardedItems.map((item) =>
+            (<View key={item.id}>
               <Text>{item.itemName} {item.amount}</Text>
-            </>))
+            </View>))
           }
         </ScrollView>
       </Card>

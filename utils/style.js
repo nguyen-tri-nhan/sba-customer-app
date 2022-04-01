@@ -131,6 +131,19 @@ export const useStyle = () => {
     submitText: {
       color: '#fff',
       textAlign: 'center',
+    },
+
+    additionalItemContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      margin: 4,
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+
+    additionalItemAmount: {
+      flexDirection: 'row',
+      alignItems: 'center'
     }
   });
 }

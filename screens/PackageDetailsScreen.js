@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import { Button, Card, Paragraph, Title } from 'react-native-paper';
+import AdditionalItem from '../components/AdditionalItem';
 import { Text } from '../components/Themed';
+import DataLoader from '../model/Dataloader';
+import { ENTITY, STATUS } from '../utils/Constants';
 import { toVND } from '../utils/CurrencyHelper';
 import { useStyle } from '../utils/style';
 
@@ -12,7 +15,7 @@ function PackageDetailsScreen(props) {
 
   const { navigation, route } = props;
   const { params } = route;
-  const { pkg } = params;
+  const { pkg, jwt } = params;
 
   const getImagesList = (imgs) => {
     if (imgs) {
@@ -25,6 +28,10 @@ function PackageDetailsScreen(props) {
 
   const onBookingPress = () => {
     navigation.push("Booking", { pkg: pkg });
+  }
+
+  const renderAdditionalItem = (data) => {
+    return data.map((item) => (<AdditionalItem item={item} />))
   }
 
   return (
@@ -41,7 +48,8 @@ function PackageDetailsScreen(props) {
           <Text>Địa điểm: {pkg.location}</Text>
           <Text>Mô tả:</Text>
           <Paragraph>{pkg.description}</Paragraph>
-          <Text>//TODO: Add addtitional item</Text>
+          <Text>Dịch vụ thêm: </Text>
+          <DataLoader jwt={jwt} entity={ENTITY.ADDITIONAL_ITEM} renderData={renderAdditionalItem} getAll initialStatus={STATUS.ENABLE} />
         </ScrollView>
       </Card>
       <Card style={styles.packageDetailsFooter}>

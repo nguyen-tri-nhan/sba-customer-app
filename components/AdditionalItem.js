@@ -10,12 +10,20 @@ function AdditionalItem({ item, onAmountChange }) {
   const styles = useStyle();
 
   const onAdd = () => {
-    setAmount(amount + 1);
+    const value = amount + 1;
+    setAmount(value);
+    if (onAmountChange) {
+      onAmountChange(item, value);
+    }
   }
 
   const onSubtract = () => {
     if (amount > 0) {
-      setAmount(amount - 1);
+      const value = amount - 1;
+      setAmount(value);
+      if (onAmountChange) {
+        onAmountChange(item, value);
+      }
     }
   }
 

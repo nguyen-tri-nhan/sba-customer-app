@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, unionBy } from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, TouchableOpacity, ScrollView, Text } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
@@ -17,7 +17,7 @@ function PackageDetailsScreen(props) {
   const { params } = route;
   const { pkg, jwt } = params;
 
-  const [ totalPrice, setTotalPrice ] = useState(pkg.price);
+  const [additionalItems, setAdditionalItems] = useState([]);
 
   const getImagesList = (imgs) => {
     if (imgs) {
@@ -32,11 +32,29 @@ function PackageDetailsScreen(props) {
     navigation.push("Booking", { pkg: pkg });
   }
 
+  const onAmountChange = (item, amount) => {
+    item.amount = amount;
+    const res = unionBy([item], additionalItems, 'id');
+    setAdditionalItems(res);
+  }
+
   const renderAdditionalItem = (data) => {
     if (isEmpty(data)) {
       return;
     }
-    return data.map((item) => (<AdditionalItem key={item.id} item={item} />))
+    setAdditionalItems(data);
+    return data.map((item) => (<AdditionalItem onAmountChange={onAmountChange} key={item.id} item={item} />))
+  }
+
+  const countTotalPrice = () => {
+    let total = 0;
+    total += pkg.price;
+    additionalItems.forEach((item) => {
+      if (item.amount) {
+        total += item.amount * item.price;
+      }
+    })
+    return total;
   }
 
   return (
@@ -54,12 +72,12 @@ function PackageDetailsScreen(props) {
           <Text>Mô tả:</Text>
           <Paragraph>{pkg.description}</Paragraph>
           <Text style={styles.mt_40}>Dịch vụ thêm: </Text>
-          <DataLoader jwt={jwt} entity={ENTITY.ADDITIONAL_ITEM} renderData={renderAdditionalItem} getAll initialStatus={STATUS.ENABLE} />
+          <DataLoader key={'1'} jwt={jwt} entity={ENTITY.ADDITIONAL_ITEM} renderData={renderAdditionalItem} getAll initialStatus={STATUS.ENABLE} />
         </ScrollView>
       </Card>
       <Card style={styles.packageDetailsFooter}>
         <TouchableOpacity onPress={onBookingPress} style={styles.packageDetailsBookingButton}>
-          <Button>Đặt ngay: {toVND(totalPrice)}</Button>
+          <Button>Đặt ngay: {toVND(countTotalPrice())}</Button>
         </TouchableOpacity>
       </Card>
     </SafeAreaView>

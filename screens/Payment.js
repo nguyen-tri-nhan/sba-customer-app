@@ -11,7 +11,7 @@ import { toVND } from '../utils/CurrencyHelper';
 function Payment(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { pkg } = params;
+  const { pkg, forwardedItems, totalPrice, showroom } = params;
   const styles = useStyle();
   const onContinuePress = () => {
     navigation.push("PreviewMakeup", { pkg });
@@ -26,7 +26,7 @@ function Payment(props) {
       </Card>
       <Card style={styles.packageDetailsFooter}>
         <TouchableOpacity onPress={onContinuePress} style={styles.packageDetailsBookingButton}>
-          <Button>Đặt ngay: {toVND(pkg.price)}</Button>
+          <Button>Tiếp tục: {toVND(totalPrice)}</Button>
         </TouchableOpacity>
       </Card>
     </SafeAreaView>

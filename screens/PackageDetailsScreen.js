@@ -29,7 +29,7 @@ function PackageDetailsScreen(props) {
   const images = getImagesList(pkg.images);
 
   const onBookingPress = () => {
-    navigation.push("Booking", { pkg: pkg });
+    navigation.push("Booking", { pkg: pkg, additionalItems: additionalItems, totalPrice: countTotalPrice() });
   }
 
   const onAmountChange = (item, amount) => {

@@ -8,7 +8,7 @@ import { Button, Card } from 'react-native-paper';
 import { useStyle } from '../utils/style';
 import { toVND } from '../utils/CurrencyHelper';
 
-function BookingScreen5(props) {
+function SuccessScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
   const { pkg } = params;
@@ -34,4 +34,4 @@ function BookingScreen5(props) {
   );
 }
 
-export default BookingScreen5;
+export default SuccessScreen;

@@ -1,9 +1,9 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import ChooseShowroomScreen from "../screens/ChooseShowroomScreen";
 import ConfirmationScreen from "../screens/ConfirmationScreen";
-import BookingScreen3 from "../screens/BookingScreen3";
-import BookingScreen4 from "../screens/BookingScreen4";
-import BookingScreen5 from "../screens/BookingScreen5";
+import Payment from "../screens/Payment";
+import PreviewMakeupScreen from "../screens/PreviewMakeupScreen";
+import SuccessScreen from "../screens/SuccessScreen";
 import PackageDetailsScreen from "../screens/PackageDetailsScreen";
 import PackagesScreen from "../screens/PackagesScreen";
 
@@ -50,29 +50,29 @@ export const PackagesStack = (props) => {
         initialParams={{ user: user, jwt: jwt }}
       />
       <Navigation.Screen
-        name="Booking3"
+        name="Payment"
         options={{
           title: "Đặt lịch",
         }}
-        component={BookingScreen3}
+        component={Payment}
         {...props}
         initialParams={{ user: user, jwt: jwt }}
       />
       <Navigation.Screen
-        name="Booking4"
+        name="PreviewMakeup"
         options={{
           title: "Đặt lịch",
         }}
-        component={BookingScreen4}
+        component={PreviewMakeupScreen}
         {...props}
         initialParams={{ user: user, jwt: jwt }}
       />
       <Navigation.Screen
-        name="Booking5"
+        name="SuccessScreen"
         options={{
           title: "Đặt lịch",
         }}
-        component={BookingScreen5}
+        component={SuccessScreen}
         {...props}
         initialParams={{ user: user, jwt: jwt }}
       />

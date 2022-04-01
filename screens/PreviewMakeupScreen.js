@@ -8,17 +8,17 @@ import { Button, Card } from 'react-native-paper';
 import { useStyle } from '../utils/style';
 import { toVND } from '../utils/CurrencyHelper';
 
-function BookingScreen3(props) {
+function PreviewMakeupScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
   const { pkg } = params;
   const styles = useStyle();
   const onContinuePress = () => {
-    navigation.push("Booking4", { pkg });
+    navigation.push("SuccessScreen", { pkg });
   }
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
-      <BookingStepIndicator currentStep={2} />
+      <BookingStepIndicator currentStep={3} />
       <Card style={styles.customerInformation}>
         <Text>
           {pkg.name}
@@ -30,7 +30,8 @@ function BookingScreen3(props) {
         </TouchableOpacity>
       </Card>
     </SafeAreaView>
+
   );
 }
 
-export default BookingScreen3;
+export default PreviewMakeupScreen;

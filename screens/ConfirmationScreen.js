@@ -13,7 +13,7 @@ function ConfirmationScreen(props) {
 
   const styles = useStyle();
   const onContinuePress = () => {
-    navigation.push("Booking3", { pkg, forwardedItems, totalPrice, showroom });
+    navigation.push("Payment", { pkg, forwardedItems, totalPrice, showroom });
   }
 
   console.log(forwardedItems);

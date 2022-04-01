@@ -11,7 +11,7 @@ import DataLoader from '../model/Dataloader';
 import { ENTITY, STATUS } from '../utils/Constants';
 import Showroom from '../components/Showroom';
 
-function BookingScreen(props) {
+function ChooseShowroomScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
   const { pkg, jwt, user, additionalItems, totalPrice } = params;
@@ -21,7 +21,7 @@ function BookingScreen(props) {
   const styles = useStyle();
 
   const onContinuePress = (showroom) => {
-    navigation.push("Booking2", { pkg, user, forwardedItems, totalPrice, showroom });
+    navigation.push("Confirmation", { pkg, user, forwardedItems, totalPrice, showroom });
   }
 
   const renderShowrooms = (data) => {
@@ -49,4 +49,4 @@ function BookingScreen(props) {
   );
 }
 
-export default BookingScreen;
+export default ChooseShowroomScreen;

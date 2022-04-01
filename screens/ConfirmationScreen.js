@@ -6,7 +6,7 @@ import { Button, Card } from 'react-native-paper';
 import { useStyle } from '../utils/style';
 import { toVND } from '../utils/CurrencyHelper';
 
-function BookingScreen2(props) {
+function ConfirmationScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
   const { pkg, jwt, user, forwardedItems, totalPrice, showroom } = params;
@@ -53,4 +53,4 @@ function BookingScreen2(props) {
   );
 }
 
-export default BookingScreen2;
+export default ConfirmationScreen;

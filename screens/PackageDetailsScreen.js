@@ -1,9 +1,9 @@
+import { isEmpty } from 'lodash';
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
+import { SafeAreaView, TouchableOpacity, ScrollView, Text } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import { Button, Card, Paragraph, Title } from 'react-native-paper';
 import AdditionalItem from '../components/AdditionalItem';
-import { Text } from '../components/Themed';
 import DataLoader from '../model/Dataloader';
 import { ENTITY, STATUS } from '../utils/Constants';
 import { toVND } from '../utils/CurrencyHelper';
@@ -16,6 +16,8 @@ function PackageDetailsScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
   const { pkg, jwt } = params;
+
+  const [ totalPrice, setTotalPrice ] = useState(pkg.price);
 
   const getImagesList = (imgs) => {
     if (imgs) {
@@ -31,7 +33,10 @@ function PackageDetailsScreen(props) {
   }
 
   const renderAdditionalItem = (data) => {
-    return data.map((item) => (<AdditionalItem item={item} />))
+    if (isEmpty(data)) {
+      return;
+    }
+    return data.map((item) => (<AdditionalItem key={item.id} item={item} />))
   }
 
   return (
@@ -48,13 +53,13 @@ function PackageDetailsScreen(props) {
           <Text>Địa điểm: {pkg.location}</Text>
           <Text>Mô tả:</Text>
           <Paragraph>{pkg.description}</Paragraph>
-          <Text>Dịch vụ thêm: </Text>
+          <Text style={styles.mt_40}>Dịch vụ thêm: </Text>
           <DataLoader jwt={jwt} entity={ENTITY.ADDITIONAL_ITEM} renderData={renderAdditionalItem} getAll initialStatus={STATUS.ENABLE} />
         </ScrollView>
       </Card>
       <Card style={styles.packageDetailsFooter}>
         <TouchableOpacity onPress={onBookingPress} style={styles.packageDetailsBookingButton}>
-          <Button>Đặt ngay: {toVND(pkg.price)}</Button>
+          <Button>Đặt ngay: {toVND(totalPrice)}</Button>
         </TouchableOpacity>
       </Card>
     </SafeAreaView>

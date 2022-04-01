@@ -144,6 +144,9 @@ export const useStyle = () => {
     additionalItemAmount: {
       flexDirection: 'row',
       alignItems: 'center'
+    },
+    mt_40: {
+      marginTop: 40,
     }
   });
 }

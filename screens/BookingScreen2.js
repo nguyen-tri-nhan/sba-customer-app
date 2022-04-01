@@ -11,7 +11,8 @@ import { toVND } from '../utils/CurrencyHelper';
 function BookingScreen2(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { pkg } = params;
+  const { pkg, jwt, user, forwardedItems, totalPrice, showroom } = params;
+
   const styles = useStyle();
   const onContinuePress = () => {
     navigation.push("Booking3", { pkg });
@@ -26,7 +27,7 @@ function BookingScreen2(props) {
       </Card>
       <Card style={styles.packageDetailsFooter}>
         <TouchableOpacity onPress={onContinuePress} style={styles.packageDetailsBookingButton}>
-          <Button>Đặt ngay: {toVND(pkg.price)}</Button>
+          <Button>Đặt ngay: {toVND(totalPrice)}</Button>
         </TouchableOpacity>
       </Card>
     </SafeAreaView>

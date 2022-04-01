@@ -1,7 +1,10 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { useStyle } from '../utils/style';
 
 function Showroom({ showroom, onSelectedShowroom }) {
+
+  const styles = useStyle();
 
   const handlePress = () => {
     if (onSelectedShowroom) {
@@ -11,8 +14,8 @@ function Showroom({ showroom, onSelectedShowroom }) {
 
   console.log(showroom);
   return (
-    <TouchableOpacity onPress={handlePress}>
-      <View>
+    <TouchableOpacity style={styles.packageContainer} onPress={handlePress}>
+      <View style={[styles.packageInfomation, styles.mt_40]}>
         <Text>{showroom.name}</Text>
         <Text>{showroom.address}</Text>
         <Text>{showroom.description}</Text>

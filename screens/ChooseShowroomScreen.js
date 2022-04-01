@@ -33,17 +33,9 @@ function ChooseShowroomScreen(props) {
       <BookingStepIndicator currentStep={0} />
       <Card style={styles.customerInformation}>
         <ScrollView>
-          <Text>
-            {pkg.name}
-          </Text>
           <DataLoader key={'1'} jwt={jwt} entity={ENTITY.SHOWROOM} renderData={renderShowrooms} getAll initialStatus={STATUS.ENABLE} /> 
         </ScrollView>
       </Card>
-      {/* <Card style={styles.packageDetailsFooter}>
-        <TouchableOpacity onPress={onContinuePress} style={styles.packageDetailsBookingButton}>
-          <Button>Đặt ngay: {toVND(totalPrice)}</Button>
-        </TouchableOpacity>
-      </Card> */}
     </SafeAreaView>
 
   );

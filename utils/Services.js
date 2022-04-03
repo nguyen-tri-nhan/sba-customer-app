@@ -43,6 +43,10 @@ const Services = {
   previewMakeup(image) {
     return http.post({url: ai_domain, data: {img: image}});
   },
+
+  booking(data, jwt) {
+    return http.post({url: URL_PERFIX + Apis.booking, jwt: jwt, data: data})
+  }
 };
 
 export default Services;

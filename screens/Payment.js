@@ -20,7 +20,7 @@ import Feather from 'react-native-vector-icons/Feather';
 function Payment(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { pkg, forwardedItems, totalPrice, showroom } = params;
+  const { pkg, jwt, forwardedItems, user, totalPrice, showroom } = params;
   const styles = useStyle();
   const onContinuePress = () => {
     navigation.navigate("SuccessScreen", { pkg });
@@ -36,7 +36,15 @@ function Payment(props) {
     console.log(data);
     let payment = JSON.parse(data);
     if (payment.status === 'COMPLETED') {
-      onContinuePress();
+      Services.booking({
+        showroomId: showroom.id,
+        packageId: pkg.id,
+        customerId: user.id,
+        items: forwardedItems,
+      }, jwt).then((response) => {
+        console.log(response);
+        onContinuePress();
+      })
     } else {
       alert('PAYMENT FAILED. PLEASE TRY AGAIN.');
     }

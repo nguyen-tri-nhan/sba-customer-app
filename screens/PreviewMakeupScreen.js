@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, TouchableOpacity,View ,StyleSheet,Text,Image} from 'react-native';
+import { SafeAreaView, TouchableOpacity, View, StyleSheet, Text, Image } from 'react-native';
 import { useEffect, useState } from 'react';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import Services from '../utils/Services';
@@ -8,7 +8,8 @@ import { useStyle } from '../utils/style';
 import { toVND } from '../utils/CurrencyHelper';
 import { ScrollView } from 'react-native-gesture-handler';
 import StyleItem from '../components/StyleItem'
-import {launchCamera, launchImageLibrary} from "react-native-image-picker"
+import * as ImagePicker from 'expo-image-picker';
+
 
 function PreviewMakeupScreen(props) {
   const { navigation, route } = props;
@@ -18,51 +19,90 @@ function PreviewMakeupScreen(props) {
   const onContinuePress = () => {
     navigation.push("SuccessScreen", { pkg });
   }
-  const handleChoosePhoto = () => {
-    const options = {
-      
-    }
 
-    launchImageLibrary(options, response => {
-      console.log("res",response)
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    (() => {
+      if (Platform.OS !== 'web') {
+        const picker = ImagePicker.requestMediaLibraryPermissionsAsync();
+        const camera = ImagePicker.requestCameraPermissionsAsync();
+        Promise.all([picker, camera]).then(([pickerResponse, cameraResponse]) => {
+          if (cameraResponse.status !== 'granted' || pickerResponse.status !== 'granted') {
+            alert('Bạn chưa cấp quyền cho camera hoặc thư viện ảnh để sử dụng tính năng này')
+          }
+        })
+
+      }
+    })();
+  }, []);
+
+
+  const handleOpenCamera = () => {
+    const result = ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    result.then((response) => {
+      if (!response.cancelled) {
+        setImage(response.uri)
+      }
     })
-  }
+  };
+
+  const handleOpenLibrary = () => {
+    let result = ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    result.then((response) => {
+      if (!response.cancelled) {
+        setImage(response.uri)
+      }
+    })
+  };
+
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
       <BookingStepIndicator currentStep={3} />
       <Card style={styles.customerInformation}>
-      <Image source = {require("../assets/style_14.jpg")}
-                style={{flex: 1, width: 200, height: 50, alignSelf:'center',marginTop:10,resizeMethod:'resize',resizeMode:'contain'}}>
-                </Image>
-      
-        <View style={{height: 130,marginTop: 20,flex: 1,
-                    justifyContent: 'flex-end',
-                    marginBottom: 36}}>
-        <View style={{flexDirection: "row", justifyContent:"space-between"}}> 
-      <View style={stylesA.btnCon}>
-          <TouchableOpacity
-            style={stylesA.btn}
-            onPress={handleChoosePhoto}>
-            <Text style={stylesA.btnTxt}>Chọn ảnh</Text>
-          </TouchableOpacity>
-        </View>
+        <Image source={image ? { uri: image } : require("../assets/style_14.jpg")}
+          style={{ flex: 1, width: 200, height: 50, alignSelf: 'center', marginTop: 10, resizeMethod: 'resize', resizeMode: 'contain' }}>
+        </Image>
 
-        <View style={stylesA.btnCon}>
-          <TouchableOpacity
-            style={stylesA.btn}
-            onPress={() => setShowGateway(true)}>
-            <Text style={stylesA.btnTxt}>Chụp ảnh</Text>
-          </TouchableOpacity>
-        </View>
-        </View>              
-      
-        <ScrollView style={{position: 'absolute',bottom:0}} horizontal={true}
+        <View style={{
+          height: 130, marginTop: 20, flex: 1,
+          justifyContent: 'flex-end',
+          marginBottom: 36
+        }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <View style={stylesA.btnCon}>
+              <TouchableOpacity
+                style={stylesA.btn}
+                onPress={handleOpenLibrary}>
+                <Text style={stylesA.btnTxt}>Chọn ảnh</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={stylesA.btnCon}>
+              <TouchableOpacity
+                style={stylesA.btn}
+                onPress={handleOpenCamera}>
+                <Text style={stylesA.btnTxt}>Chụp ảnh</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <ScrollView style={{ position: 'absolute', bottom: 0 }} horizontal={true}
             showsHorizontalScrollIndicator={false}>
-            <StyleItem/>
-            <StyleItem/>
-            <StyleItem/>
-            <StyleItem/>
-        </ScrollView>
+            <StyleItem />
+            <StyleItem />
+            <StyleItem />
+            <StyleItem />
+          </ScrollView>
         </View>
       </Card>
       <Card style={styles.packageDetailsFooter}>
@@ -81,8 +121,7 @@ const stylesA = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
-    alignSelf:'center',
-    
+    alignSelf: 'center',
     justifyContent: 'flex-end',
   },
   btnCon: {
@@ -91,10 +130,9 @@ const stylesA = StyleSheet.create({
     elevation: 1,
     backgroundColor: '#00457C',
     borderRadius: 3,
-    bottom:150,
-    marginLeft:20,
-    marginRight:20
-
+    bottom: 150,
+    marginLeft: 20,
+    marginRight: 20
   },
   btn: {
     flex: 1,

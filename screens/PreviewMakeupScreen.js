@@ -66,6 +66,10 @@ function PreviewMakeupScreen(props) {
     })
   };
 
+  const onTryPress = () => {
+    navigation.push('ResultScreen', { image: image })
+  }
+
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
       <Card style={styles.customerInformation}>
@@ -105,7 +109,7 @@ function PreviewMakeupScreen(props) {
         </View>
       </Card>
       <Card style={styles.packageDetailsFooter}>
-        <TouchableOpacity style={styles.packageDetailsBookingButton}>
+        <TouchableOpacity onPress={onTryPress} style={styles.packageDetailsBookingButton}>
           <Button>Thử ngay</Button>
         </TouchableOpacity>
       </Card>

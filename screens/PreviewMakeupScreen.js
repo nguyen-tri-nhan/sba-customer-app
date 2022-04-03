@@ -61,13 +61,15 @@ function PreviewMakeupScreen(props) {
     });
     result.then((response) => {
       if (!response.cancelled) {
-        setImage(response.uri)
+        setImage(response.uri);
       }
     })
   };
 
   const onTryPress = () => {
-    navigation.push('ResultScreen', { image: image })
+    Services.previewMakeup(fs.createReadStream(image)).then(({links}) => {
+      navigation.push('ResultScreen', { links: links })
+    })
   }
 
   return (

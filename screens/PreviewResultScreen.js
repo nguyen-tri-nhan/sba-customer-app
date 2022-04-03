@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View } from 'react-native';
+import { Image, ScrollView, View } from 'react-native';
 
 function PreviewResultScreen(props) {
   const { navigation, route } = props;
@@ -14,9 +14,11 @@ function PreviewResultScreen(props) {
 
   return (
     <View>
-      {links ?
-        renderLinks() :
-        (<Image source={require("../assets/style_14.jpg")} />)}
+      <ScrollView>
+        {links ?
+          renderLinks() :
+          (<Image source={require("../assets/style_14.jpg")} />)}
+      </ScrollView>
     </View>
   );
 }

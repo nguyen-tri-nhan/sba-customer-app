@@ -16,9 +16,9 @@ function PreviewMakeupScreen(props) {
   const { params } = route;
   const { pkg } = params;
   const styles = useStyle();
-  const onContinuePress = () => {
-    navigation.push("SuccessScreen", { pkg });
-  }
+  // const onContinuePress = () => {
+  //   navigation.push("SuccessScreen", { pkg });
+  // }
 
   const [image, setImage] = useState(null);
 
@@ -68,7 +68,6 @@ function PreviewMakeupScreen(props) {
 
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
-      <BookingStepIndicator currentStep={3} />
       <Card style={styles.customerInformation}>
         <Image source={image ? { uri: image } : require("../assets/style_14.jpg")}
           style={{ flex: 1, width: 200, height: 50, alignSelf: 'center', marginTop: 10, resizeMethod: 'resize', resizeMode: 'contain' }}>
@@ -106,7 +105,7 @@ function PreviewMakeupScreen(props) {
         </View>
       </Card>
       <Card style={styles.packageDetailsFooter}>
-        <TouchableOpacity onPress={onContinuePress} style={styles.packageDetailsBookingButton}>
+        <TouchableOpacity style={styles.packageDetailsBookingButton}>
           <Button>Thử ngay</Button>
         </TouchableOpacity>
       </Card>

@@ -29,7 +29,7 @@ function PackageDetailsScreen(props) {
   const images = getImagesList(pkg.images);
 
   const onBookingPress = () => {
-    navigation.push("PreviewMakeup", { pkg: pkg, additionalItems: additionalItems, totalPrice: countTotalPrice() });
+    navigation.push("ChooseShowroom", { pkg: pkg, additionalItems: additionalItems, totalPrice: countTotalPrice() });
   }
 
   const onAmountChange = (item, amount) => {

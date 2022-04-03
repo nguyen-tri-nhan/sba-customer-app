@@ -23,13 +23,13 @@ function Payment(props) {
   const { pkg, forwardedItems, totalPrice, showroom } = params;
   const styles = useStyle();
   const onContinuePress = () => {
-    navigation.push("PreviewMakeup", { pkg });
+    navigation.navigate("SuccessScreen", { pkg });
   }
 
   const [showGateway, setShowGateway] = useState(false);
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
-  const url = 'http://192.168.3.100:3000/price='+toUSD(totalPrice);
+  const url = 'http://192.168.1.173:3000/price='+toUSD(totalPrice);
   function onMessage(e) {
     let data = e.nativeEvent.data;
     setShowGateway(false);

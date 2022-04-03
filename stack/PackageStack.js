@@ -71,6 +71,7 @@ export const PackagesStack = (props) => {
         name="SuccessScreen"
         options={{
           title: "Đặt lịch",
+          headerLeft: null,
         }}
         component={SuccessScreen}
         {...props}

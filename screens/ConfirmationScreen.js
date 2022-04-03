@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, TouchableOpacity, ScrollView, View } from 'react-native';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
 import { Button, Card } from 'react-native-paper';
 import { useStyle } from '../utils/style';
 import { toVND } from '../utils/CurrencyHelper';
+import DatePicker from '../components/DatePicker';
+import TimePicker from '../components/TimePicker';
 
 function ConfirmationScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
   const { pkg, jwt, user, forwardedItems, totalPrice, showroom } = params;
+  const [dressDate, setDressDate] = useState();
+  const [dressTime, setDressTime] = useState();
 
   const styles = useStyle();
   const onContinuePress = () => {
@@ -17,6 +21,7 @@ function ConfirmationScreen(props) {
   }
 
   console.log(forwardedItems);
+  console.log(dressDate);
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
       <BookingStepIndicator currentStep={1} />
@@ -43,6 +48,11 @@ function ConfirmationScreen(props) {
               <Text>{item.itemName} {item.amount}</Text>
             </View>))
           }
+          <Text>
+            Ngày thử đồ:
+          </Text>
+          <DatePicker onConfirm={setDressDate} />
+          <TimePicker onConfirm={setDressTime} />
         </ScrollView>
       </Card>
       <Card style={styles.packageDetailsFooter}>

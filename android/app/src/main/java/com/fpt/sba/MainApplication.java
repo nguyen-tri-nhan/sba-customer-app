@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.imagepicker.ImagePickerPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.imagepicker.ImagePickerPackage;
 // import com.zoontek.rnlocalize.RNLocalizePackage;
 import com.reactcommunity.rnlocalize.RNLocalizePackage;
 import com.facebook.react.ReactInstanceManager;

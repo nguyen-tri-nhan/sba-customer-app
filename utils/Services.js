@@ -40,8 +40,8 @@ const Services = {
     return http.get({url: URL_PERFIX + Apis.showroom, jwt: jwt, params: { status: 'ENABLE' }});
   },
 
-  previewMakeup(image) {
-    return http.post({url: ai_domain, data: {img: image}});
+  previewMakeup(data) {
+    return http.post({url: ai_domain, data: data,headers:{"Content-Type": "multipart/form-data"}});
   },
 
   booking(data, jwt) {

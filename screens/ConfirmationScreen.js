@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, TouchableOpacity, ScrollView, View } from 'react-native';
+import { SafeAreaView, TouchableOpacity, ScrollView, View,StyleSheet } from 'react-native';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
 import { Button, Card } from 'react-native-paper';
@@ -27,32 +27,37 @@ function ConfirmationScreen(props) {
       <BookingStepIndicator currentStep={1} />
       <Card style={styles.customerInformation}>
         <ScrollView>
-          <Text>
-            Gói dịch vụ: {pkg.name}
-          </Text>
-          <Text>
-            Địa điểm: {pkg.location}
-          </Text>
-          <Text>
-            Chi nhánh thực hiện: {showroom.name}
-          </Text>
-          <Text>
-            Địa chỉ: {showroom.address}
-          </Text>
-          <Text>
-            Dịch vụ thêm:
-          </Text>
-          {
-            forwardedItems.map((item) =>
-            (<View key={item.id}>
-              <Text>{item.itemName} {item.amount}</Text>
-            </View>))
-          }
-          <Text>
-            Ngày thử đồ:
-          </Text>
-          <DatePicker onConfirm={setDressDate} />
-          <TimePicker onConfirm={setDressTime} />
+          <View style={styleA.container}>
+            <Text style={styleA.h1}>
+                XÁC NHẬN
+            </Text >
+            <Text style={styleA.h2}>
+              Gói dịch vụ: {pkg.name}
+            </Text>
+            <Text style={styleA.h3}>
+              Địa điểm: {pkg.location}
+            </Text>
+            <Text style={styleA.h3}>
+              Chi nhánh thực hiện: {showroom.name}
+            </Text>
+            <Text style={styleA.h3}>
+              Địa chỉ: {showroom.address}
+            </Text>
+            <Text style={styleA.h3}>
+              Dịch vụ thêm:
+            </Text>
+            {
+              forwardedItems.map((item) =>
+              (<View key={item.id}>
+                <Text style={styleA.h3}>{item.itemName} {item.amount}</Text>
+              </View>))
+            }
+            <Text>
+              Ngày thử đồ:
+            </Text>
+            <DatePicker onConfirm={setDressDate} />
+            <TimePicker onConfirm={setDressTime} />
+          </View>
         </ScrollView>
       </Card>
       <Card style={styles.packageDetailsFooter}>
@@ -64,4 +69,28 @@ function ConfirmationScreen(props) {
   );
 }
 
+const styleA = StyleSheet.create({
+  container:{
+    marginLeft:10,
+    marginRight:10,
+    marginTop:30
+  },
+  h1:{
+    fontWeight:'bold',
+    fontSize:20,
+    marginBottom:30,
+    alignSelf:'center',
+    color:'#FB6F6F'
+  },
+  h2:{
+    fontWeight:'bold',
+    fontSize:17,
+    marginBottom:15,
+  },
+  h3:{
+    
+    fontSize:15,
+    marginBottom:15,
+  }
+})
 export default ConfirmationScreen;

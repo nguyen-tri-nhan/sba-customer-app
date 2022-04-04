@@ -9,7 +9,9 @@ import { toVND } from '../utils/CurrencyHelper';
 import { ScrollView } from 'react-native-gesture-handler';
 import StyleItem from '../components/StyleItem'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-
+import * as ImagePicker from 'expo-image-picker';
+import { result } from 'lodash';
+import axios from 'axios';
 
 function PreviewMakeupScreen(props) {
   const { navigation, route } = props;
@@ -44,6 +46,7 @@ function PreviewMakeupScreen(props) {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      base64:true
     });
     result.then((response) => {
       if (!response.cancelled) {
@@ -57,7 +60,7 @@ function PreviewMakeupScreen(props) {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 1
     });
     result.then((response) => {
       if (!response.cancelled) {
@@ -66,18 +69,72 @@ function PreviewMakeupScreen(props) {
     })
   };
 
+
+  function dataURLtoFile(dataurl, filename) {
+ 
+    var arr = dataurl.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), 
+        n = bstr.length, 
+        u8arr = new Uint8Array(n);
+        
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    
+    return new File([u8arr], filename, {type:mime});
+}
+
+
+
   const onTryPress = () => {
-    Services.previewMakeup(fs.createReadStream(image)).then(({links}) => {
-      navigation.push('ResultScreen', { links: links })
-    })
+    
+      // console.log(image)
+      // const file = dataURLtoFile(image,"img.jpg")
+        // Services.uploadFile("@aa89e800-f7e6-46a6-ab42-2f06fbd6e689.jpg").then((res) => {
+        //   // console.log(res)
+        // })
+        // let img = new FormData();
+        // img.append('file', { uri: image });
+        // img.append("random","a");
+        // img.append('userId', 'b');
+   
+
+    
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "multipart/form-data");
+
+    var formdata = new FormData();
+    formdata.append('img',{ uri: image, name: 'image.jpg', type: 'image/jpeg' });
+    formdata.append("random", "true");
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow'
+    };
+    var requestOptions = {
+      method: 'POST',
+      body: formdata,
+      redirect: 'follow'
+    };
+
+    fetch("http://192.168.3.100:8000/makeup", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+
   }
 
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
       <Card style={styles.customerInformation}>
-        <Image source={image ? { uri: image } : require("../assets/style_14.jpg")}
-          style={{ flex: 1, width: 200, height: 50, alignSelf: 'center', marginTop: 10, resizeMethod: 'resize', resizeMode: 'contain' }}>
-        </Image>
+        <View style={{width:200,height:200,alignSelf:'center',marginTop:40}}>
+          <Image source={image ? { uri: image } : require("../assets/images/aaa.png")}
+            style={{ flex: 1, width: 200, height: 50, alignSelf: 'center', marginTop: 10, resizeMethod: 'resize', resizeMode: 'contain' }}>
+          </Image>
+        </View>
 
         <View style={{
           height: 130, marginTop: 20, flex: 1,
@@ -114,6 +171,7 @@ function PreviewMakeupScreen(props) {
         <TouchableOpacity onPress={onTryPress} style={styles.packageDetailsBookingButton}>
           <Button>Thử ngay</Button>
         </TouchableOpacity>
+        
       </Card>
     </SafeAreaView>
 

@@ -8,7 +8,7 @@ import { useStyle } from '../utils/style';
 import { toVND } from '../utils/CurrencyHelper';
 import { ScrollView } from 'react-native-gesture-handler';
 import StyleItem from '../components/StyleItem'
-import * as ImagePicker from 'expo-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 
 function PreviewMakeupScreen(props) {

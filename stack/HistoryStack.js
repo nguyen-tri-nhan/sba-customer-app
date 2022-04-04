@@ -14,7 +14,7 @@ export const HistoryStack = (props) => {
       <Navigation.Screen
         name="History"
         options={{
-          title: "Lịch sử",
+          title: "Lịch sử giao dịch",
         }}
         component={BookingHistoryScreen}
         {...props}

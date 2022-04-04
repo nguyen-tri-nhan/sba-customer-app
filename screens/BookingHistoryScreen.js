@@ -15,7 +15,6 @@ export const BookingHistoryScreen = (props) => {
   return (
     <View>
       <DataLoader entity={ENTITY.BOOKING} jwt={jwt} renderData={renderBookingHistory} additionalParams={{ customerId: user.id }} getAll />
-      <Text>ABC</Text>
     </View>
   )
 }

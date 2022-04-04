@@ -75,7 +75,7 @@ export const useStyle = () => {
       color: 'gray'
     },
     packagesPrice: {
-      paddingTop: 20,
+      paddingTop: 10,
       textAlign: 'right',
     },
     packageDetailsTitle: {

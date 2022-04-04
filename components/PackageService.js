@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Image,StyleSheet } from 'react-native';
+import { TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { toVND } from '../utils/CurrencyHelper';
 import { useStyle } from '../utils/style';
 import { Text, View } from './Themed';
@@ -16,74 +16,74 @@ function PackageService({ pkg, navigation }) {
 
   return (
     <Card style={styleA.card}>
-    <TouchableOpacity style={styles.packageContainer} onPress={onPkgPress} >
-      <View style={styleA.packagesItem}>
-        <View style={styleA.containerImg}>
-          <Image style={styleA.packageImage} source={{ uri: pkg.images[0].imageUrl }} />
-        </View>
-        <View style={styles.packageInfomation}>
-          <Text style={styles.packageTitle}>{pkg.name}</Text>
-          <Text style={styles.packageTextSecondary}>Địa điểm: {pkg.location}</Text>
-          <View 
-            style={styleA.star}>
-          <StarReview
-            ratings={3.5}
-            stars={5}
-            starColor="#FFDF6F"
-            reviews={100}
-            reviewsText="đánh giá"
-          />
+      <TouchableOpacity style={styles.packageContainer} onPress={onPkgPress} >
+        <View style={styleA.packagesItem}>
+          <View style={styleA.containerImg}>
+            <Image style={styleA.packageImage} source={{ uri: pkg.images[0].imageUrl }} />
           </View>
-          <View style={styleA.conPrice}>    
-          <Text style={styles.packagesPrice}>Thời gian: {pkg.duration} ngày</Text>
-          <View  style={styleA.divineLine}/>
-          <Text style={styles.packagesPrice}>Giá: {toVND(pkg.price)}</Text>
+          <View style={styles.packageInfomation}>
+            <Text style={styles.packageTitle}>{pkg.name}</Text>
+            <Text style={styles.packageTextSecondary}>Địa điểm: {pkg.location}</Text>
+            <View
+              style={styleA.star}>
+              <StarReview
+                ratings={3.5}
+                stars={5}
+                starColor="#FFDF6F"
+                reviews={100}
+                reviewsText="đánh giá"
+              />
+            </View>
+            <View style={styleA.conPrice}>
+              <Text style={styles.packagesPrice}>Thời gian: {pkg.duration} ngày</Text>
+              <View style={styleA.divineLine} />
+              <Text style={styles.packagesPrice}>Giá: {toVND(pkg.price)}</Text>
+            </View>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
     </Card>
   );
 }
 
 const styleA = StyleSheet.create({
-  card:{
+  card: {
     flex: 9,
-      backgroundColor:"#FFF",
-      marginTop:40,
-      marginLeft:40,
-      marginRight:20
+    backgroundColor: "#FFF",
+    marginTop: 40,
+    marginLeft: 40,
+    marginRight: 20
   },
-  text:{
-    marginLeft:10,
-    marginTop:5,
-    marginBottom:5,
-    marginRight:10,
+  text: {
+    marginLeft: 10,
+    marginTop: 5,
+    marginBottom: 5,
+    marginRight: 10,
   },
-  box:{
-    marginLeft:25,
-    borderWidth:1,
-    borderRadius:20,
-    marginRight:25,
-    marginTop:10
+  box: {
+    marginLeft: 25,
+    borderWidth: 1,
+    borderRadius: 20,
+    marginRight: 25,
+    marginTop: 10
   },
-  boxh1:{
+  boxh1: {
 
   },
-  h1:{
-    fontWeight:'bold',
-    fontSize:20,
-    alignSelf:'center',
-    color:'#FB6F6F'
+  h1: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    alignSelf: 'center',
+    color: '#FB6F6F'
   },
-  h2:{
-    fontWeight:'bold',
-    fontSize:15,
+  h2: {
+    fontWeight: 'bold',
+    fontSize: 15,
   },
-  h3:{
-    fontSize:16,
+  h3: {
+    fontSize: 16,
   },
-  
+
   packagesItem: {
     minWidth: 360,
     width: '90%',
@@ -94,30 +94,30 @@ const styleA = StyleSheet.create({
     flexWrap: 'wrap',
   },
   packageImage: {
-    top:-35,
-    left:-40,
+    top: -35,
+    left: -40,
     position: "absolute",
     width: 110,
     height: 125,
     flex: 3,
-    borderRadius:20,
+    borderRadius: 20,
   },
-  containerImg:{
+  containerImg: {
     width: 100,
     height: 100,
     flex: 3,
-    borderRadius:30
+    borderRadius: 30
 
   },
-  conPrice:{
-    flexDirection:"row",
+  conPrice: {
+    flexDirection: "row",
     justifyContent: 'space-between'
   },
-  star:{
+  star: {
     paddingTop: 10,
-    alignItems:'flex-start'
+    alignItems: 'flex-start'
   },
-  divineLine:{
+  divineLine: {
     width: 1,
     height: 35,
     opacity: 0.5,

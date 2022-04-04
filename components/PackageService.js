@@ -24,14 +24,16 @@ function PackageService({ pkg, navigation }) {
         <View style={styles.packageInfomation}>
           <Text style={styles.packageTitle}>{pkg.name}</Text>
           <Text style={styles.packageTextSecondary}>Địa điểm: {pkg.location}</Text>
+          <View 
+            style={styleA.star}>
           <StarReview
             ratings={3.5}
             stars={5}
             starColor="#FFDF6F"
             reviews={100}
             reviewsText="đánh giá"
-            style={styleA.star}
           />
+          </View>
           <View style={styleA.conPrice}>    
           <Text style={styles.packagesPrice}>Thời gian: {pkg.duration} ngày</Text>
           <View  style={styleA.divineLine}/>
@@ -113,7 +115,7 @@ const styleA = StyleSheet.create({
   },
   star:{
     paddingTop: 10,
-    textAlign: 'left',
+    alignItems:'flex-start'
   },
   divineLine:{
     width: 1,

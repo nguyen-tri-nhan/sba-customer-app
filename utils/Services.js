@@ -1,7 +1,7 @@
 import http from './http';
 import Apis from './Apis';
-import { endPoint } from './Constants';
-const URL_PERFIX = endPoint
+import { ai_domain, endPoint } from './Constants';
+const URL_PERFIX = endPoint;
 const Services = {
   getMe(jwt) {
     return http.get({ url: URL_PERFIX + Apis.userMe, jwt });
@@ -38,6 +38,14 @@ const Services = {
 
   getShowrooms(jwt) {
     return http.get({url: URL_PERFIX + Apis.showroom, jwt: jwt, params: { status: 'ENABLE' }});
+  },
+
+  previewMakeup(image) {
+    return http.post({url: ai_domain, data: {img: image}});
+  },
+
+  booking(data, jwt) {
+    return http.post({url: URL_PERFIX + Apis.booking, jwt: jwt, data: data})
   }
 };
 

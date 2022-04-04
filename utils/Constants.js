@@ -3,6 +3,8 @@
 const domain = 'http://192.168.1.173:5000';
 const subService = '/pbs-service';
 
+export const ai_domain = 'http://localhost:8000/makeup';
+
 export const endPoint = `${domain}${subService}`;
 
 export const STATUS = {

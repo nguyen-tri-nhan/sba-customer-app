@@ -6,6 +6,7 @@ import PreviewMakeupScreen from "../screens/PreviewMakeupScreen";
 import SuccessScreen from "../screens/SuccessScreen";
 import PackageDetailsScreen from "../screens/PackageDetailsScreen";
 import PackagesScreen from "../screens/PackagesScreen";
+import PreviewResultScreen from "../screens/PreviewResultScreen";
 
 const Navigation = createStackNavigator();
 
@@ -71,8 +72,19 @@ export const PackagesStack = (props) => {
         name="SuccessScreen"
         options={{
           title: "Đặt lịch",
+          headerLeft: null,
         }}
         component={SuccessScreen}
+        {...props}
+        initialParams={{ user: user, jwt: jwt }}
+      />
+      <Navigation.Screen
+        name="ResultScreen"
+        options={{
+          title: "Đặt lịch",
+          headerLeft: null,
+        }}
+        component={PreviewResultScreen}
         {...props}
         initialParams={{ user: user, jwt: jwt }}
       />

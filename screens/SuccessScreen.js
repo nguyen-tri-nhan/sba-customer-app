@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
 import Services from '../utils/Services';
-import { Button, Card } from 'react-native-paper';
+import { Button, Card, Divider } from 'react-native-paper';
 import { useStyle } from '../utils/style';
 import { toVND } from '../utils/CurrencyHelper';
 
@@ -14,19 +14,25 @@ function SuccessScreen(props) {
   const { pkg } = params;
   const styles = useStyle();
   const onContinuePress = () => {
-    // navigation.push("Booking5", { pkg });
+    navigation.navigate('Packages');
+  }
+  const onPreviewMakeupPress = () => {
+    navigation.push('PreviewMakeup');
   }
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
       <BookingStepIndicator currentStep={4} />
       <Card style={styles.customerInformation}>
         <Text>
-          {pkg.name}
+          Giao dịch thành công
         </Text>
+        <TouchableOpacity onPress={onPreviewMakeupPress} style={styles.packageDetailsBookingButton}>
+          <Button>Thử kiểu trang điểm</Button>
+        </TouchableOpacity>
       </Card>
       <Card style={styles.packageDetailsFooter}>
         <TouchableOpacity onPress={onContinuePress} style={styles.packageDetailsBookingButton}>
-          <Button>Đặt ngay: {toVND(pkg.price)}</Button>
+          <Button>Về trang chủ</Button>
         </TouchableOpacity>
       </Card>
     </SafeAreaView>

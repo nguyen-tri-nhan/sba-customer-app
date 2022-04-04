@@ -5,3 +5,7 @@ export const toVND = (number) => {
   })
   return formatter.format(number);
 }
+
+export const toUSD = (number) => {
+  return (number/23000).toFixed(2)
+}

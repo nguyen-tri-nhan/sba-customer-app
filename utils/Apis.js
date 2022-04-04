@@ -6,6 +6,7 @@ const Apis = {
   showroom: '/showroom',
   packAge: '/package',
   uploadFile: '/files-upload',
+  booking: '/booking',
 }
 
 export default Apis;

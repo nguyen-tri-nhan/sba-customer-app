@@ -33,7 +33,7 @@
     "react-native": "0.64.3",
     "react-native-androw": "0.0.34",
     "react-native-config": "^1.4.5",
-    "react-native-dynamic-vector-icons": "^1.1.6",
+    "react-native-dynamic-vector-icons": "WrathChaos/react-native-dynamic-vector-icons#expo",
     "react-native-gesture-handler": "~2.1.0",
     "react-native-image-picker": "^0.28.0",
     "react-native-image-slider-box": "^1.1.20",

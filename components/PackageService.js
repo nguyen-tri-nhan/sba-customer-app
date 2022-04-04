@@ -4,6 +4,7 @@ import { toVND } from '../utils/CurrencyHelper';
 import { useStyle } from '../utils/style';
 import { Text, View } from './Themed';
 import { Card } from 'react-native-paper';
+import StarReview from 'react-native-star-review'
 
 function PackageService({ pkg, navigation }) {
 
@@ -23,7 +24,14 @@ function PackageService({ pkg, navigation }) {
         <View style={styles.packageInfomation}>
           <Text style={styles.packageTitle}>{pkg.name}</Text>
           <Text style={styles.packageTextSecondary}>Địa điểm: {pkg.location}</Text>
-          <Text style={styleA.star}>Đánh giá: </Text>
+          <StarReview
+            ratings={3.5}
+            stars={5}
+            starColor="#FFDF6F"
+            reviews={100}
+            reviewsText="đánh giá"
+            style={styleA.star}
+          />
           <View style={styleA.conPrice}>    
           <Text style={styles.packagesPrice}>Thời gian: {pkg.duration} ngày</Text>
           <View  style={styleA.divineLine}/>

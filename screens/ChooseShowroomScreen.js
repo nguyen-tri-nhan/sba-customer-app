@@ -31,11 +31,9 @@ function ChooseShowroomScreen(props) {
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
       <BookingStepIndicator currentStep={0} />
-      <Card style={styles.customerInformation}>
         <ScrollView>
           <DataLoader key={'1'} jwt={jwt} entity={ENTITY.SHOWROOM} renderData={renderShowrooms} getAll initialStatus={STATUS.ENABLE} /> 
         </ScrollView>
-      </Card>
     </SafeAreaView>
 
   );

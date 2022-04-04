@@ -75,7 +75,7 @@ export const useStyle = () => {
       color: 'gray'
     },
     packagesPrice: {
-      paddingTop: 20,
+      paddingTop: 10,
       textAlign: 'right',
     },
     packageDetailsTitle: {
@@ -104,7 +104,7 @@ export const useStyle = () => {
       flex: 1
     },
     customerInformation: {
-      flex: 9
+      flex: 9,
     },
     packageDetailsBookingButton: {
       flex: 1,

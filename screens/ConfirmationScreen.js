@@ -31,6 +31,8 @@ function ConfirmationScreen(props) {
     // }
   }
 
+  console.log('startDate', startDate);
+
   useEffect(() => {
     Services.search(ENTITY.SLOT, { showroomId: showroom.id }, jwt)
       .then(({ data }) => {
@@ -87,23 +89,23 @@ function ConfirmationScreen(props) {
             }
             <View style={styleA.conDate}>
               <Text style={{ top: 5, fontSize: 15 }}>
-                Ngày đi chụp :
-              </Text>
-              <DatePicker onConfirm={setStartDate} validRange={{startDate: ago(3), disabledDates: unavailableSlots }} />
-            </View>
-            <View style={styleA.conDate}>
-              <Text style={{ top: 5, fontSize: 15 }}>
-                Ngày nhận ảnh :
-              </Text>
-              <DatePicker onConfirm={setGetDate} />
-            </View>
-            <View style={styleA.conDate}>
-              <Text style={{ top: 5, fontSize: 15 }}>
                 Ngày thử đồ:
               </Text>
               <View style={styleA.conText}>
                 <DatePicker onConfirm={setDressDate} />
               </View>
+            </View>
+            <View style={styleA.conDate}>
+              <Text style={{ top: 5, fontSize: 15 }}>
+                Ngày đi chụp :
+              </Text>
+              <DatePicker onConfirm={setStartDate} validRange={{ startDate: ago(3), disabledDates: unavailableSlots }} />
+            </View>
+            <View style={styleA.conDate}>
+              <Text style={{ top: 5, fontSize: 15 }}>
+                Ngày nhận ảnh :
+              </Text>
+              <DatePicker onConfirm={setGetDate} disabled={!startDate} validRange={{ startDate: ago(3, startDate) }} />
             </View>
           </View>
         </ScrollView>

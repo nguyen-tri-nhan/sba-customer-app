@@ -12,11 +12,13 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import * as ImagePicker from 'expo-image-picker';
 import { result } from 'lodash';
 import axios from 'axios';
+import DataLoader from '../model/Dataloader';
+import { ENTITY } from '../utils/Constants';
 
 function PreviewMakeupScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { pkg } = params;
+  const { pkg, jwt } = params;
   const styles = useStyle();
   // const onContinuePress = () => {
   //   navigation.push("SuccessScreen", { pkg });
@@ -127,6 +129,10 @@ function PreviewMakeupScreen(props) {
 
   }
 
+  const renderStyle = (data) => {
+    console.log(data);
+  }
+
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
       <Card style={styles.customerInformation}>
@@ -160,6 +166,7 @@ function PreviewMakeupScreen(props) {
           </View>
           <ScrollView style={{ position: 'absolute', bottom: 0 }} horizontal={true}
             showsHorizontalScrollIndicator={false}>
+              <DataLoader entity={ENTITY.STYLE} jwt={jwt} renderData={renderStyle} getAll />
             <StyleItem />
             <StyleItem />
             <StyleItem />

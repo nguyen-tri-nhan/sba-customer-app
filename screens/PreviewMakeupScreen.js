@@ -12,11 +12,13 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import * as ImagePicker from 'expo-image-picker';
 import { result } from 'lodash';
 import axios from 'axios';
+import DataLoader from '../model/Dataloader';
+import { ENTITY } from '../utils/Constants';
 
 function PreviewMakeupScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { pkg } = params;
+  const { pkg, jwt } = params;
   const styles = useStyle();
   // const onContinuePress = () => {
   //   navigation.push("SuccessScreen", { pkg });
@@ -44,7 +46,7 @@ function PreviewMakeupScreen(props) {
     const result = ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3, 4],
       quality: 1,
       base64:true
     });
@@ -59,7 +61,7 @@ function PreviewMakeupScreen(props) {
     let result = ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3, 4],
       quality: 1
     });
     result.then((response) => {
@@ -68,22 +70,6 @@ function PreviewMakeupScreen(props) {
       }
     })
   };
-
-
-  function dataURLtoFile(dataurl, filename) {
- 
-    var arr = dataurl.split(','),
-        mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), 
-        n = bstr.length, 
-        u8arr = new Uint8Array(n);
-        
-    while(n--){
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    
-    return new File([u8arr], filename, {type:mime});
-}
 
 
 
@@ -127,6 +113,10 @@ function PreviewMakeupScreen(props) {
 
   }
 
+  const renderStyle = (data) => {
+    console.log(data);
+  }
+
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
       <Card style={styles.customerInformation}>
@@ -160,6 +150,7 @@ function PreviewMakeupScreen(props) {
           </View>
           <ScrollView style={{ position: 'absolute', bottom: 0 }} horizontal={true}
             showsHorizontalScrollIndicator={false}>
+              <DataLoader entity={ENTITY.STYLE} jwt={jwt} renderData={renderStyle} getAll />
             <StyleItem />
             <StyleItem />
             <StyleItem />

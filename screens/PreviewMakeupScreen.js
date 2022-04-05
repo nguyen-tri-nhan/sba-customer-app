@@ -44,7 +44,7 @@ function PreviewMakeupScreen(props) {
     const result = ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3, 4],
       quality: 1,
       base64:true
     });
@@ -59,7 +59,7 @@ function PreviewMakeupScreen(props) {
     let result = ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3, 4],
       quality: 1
     });
     result.then((response) => {
@@ -68,22 +68,6 @@ function PreviewMakeupScreen(props) {
       }
     })
   };
-
-
-  function dataURLtoFile(dataurl, filename) {
- 
-    var arr = dataurl.split(','),
-        mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), 
-        n = bstr.length, 
-        u8arr = new Uint8Array(n);
-        
-    while(n--){
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    
-    return new File([u8arr], filename, {type:mime});
-}
 
 
 

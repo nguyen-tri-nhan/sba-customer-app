@@ -66,13 +66,16 @@ function Payment(props) {
               <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(pkg.price)}</Text>
           </View>
           <View style={stylesA.divineLine} />
-        <View style={stylesA.conText}>
-              <Text style={[stylesA.text,{marginBottom:10}]}>Showroom thực hiện :</Text>
-              <Text style={[stylesA.text,{marginBottom:10}]}>{showroom.name}</Text>
-          </View>
-          
-          
-          <View style={stylesA.divineLine} />
+          {
+              forwardedItems.map((item) =>
+              (<View key={item.id} style={stylesA.conText}>
+                  <Text style={[stylesA.text,{marginBottom:10}]}>{item.itemName} :</Text>
+                  <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
+              </View>
+              ))
+            }
+        
+        <View style={stylesA.divineLine} />
         <View style={stylesA.conText}>
           <Text style={stylesA.text}>Thanh toán phần cọc :</Text>
           <Text style={stylesA.text}>{toVND(totalPrice)}</Text>
@@ -143,12 +146,6 @@ function Payment(props) {
 
         
       </Card>
-
-      {/* <Card style={styles.packageDetailsFooter}>
-        <TouchableOpacity onPress={onContinuePress} style={styles.packageDetailsBookingButton}>
-          <Button>Tiếp tục: {toVND(totalPrice)}</Button>
-        </TouchableOpacity>
-      </Card> */}
     </SafeAreaView>
   );
 }

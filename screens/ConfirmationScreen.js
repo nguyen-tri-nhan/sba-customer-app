@@ -9,6 +9,7 @@ import DatePicker from '../components/DatePicker';
 import TimePicker from '../components/TimePicker';
 import Services from '../utils/Services';
 import { ENTITY } from '../utils/Constants';
+import { ago } from '../utils/DateHelper';
 
 function ConfirmationScreen(props) {
   const { navigation, route } = props;
@@ -31,13 +32,13 @@ function ConfirmationScreen(props) {
   }
 
   useEffect(() => {
-    Services.search(ENTITY.SLOT, null, jwt)
+    Services.search(ENTITY.SLOT, { showroomId: showroom.id }, jwt)
       .then(({ data }) => {
         const { content } = data;
         if (content) {
           const unavailableObj = content.filter((slot) => slot.availableSlot < 1);
           if (unavailableObj.length > 0) {
-            const unavailableDates = unavailableObj.map((slot) => slot.date);
+            const unavailableDates = unavailableObj.map((slot) => new Date(slot.date));
             setUnavailableSlots(unavailableDates);
           }
         }
@@ -88,7 +89,7 @@ function ConfirmationScreen(props) {
               <Text style={{ top: 5, fontSize: 15 }}>
                 Ngày đi chụp :
               </Text>
-              <DatePicker onConfirm={setStartDate} />
+              <DatePicker onConfirm={setStartDate} validRange={{startDate: ago(3), disabledDates: unavailableSlots }} />
             </View>
             <View style={styleA.conDate}>
               <Text style={{ top: 5, fontSize: 15 }}>

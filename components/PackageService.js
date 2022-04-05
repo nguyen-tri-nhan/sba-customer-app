@@ -52,7 +52,8 @@ const styleA = StyleSheet.create({
     backgroundColor: "#FFF",
     marginTop: 40,
     marginLeft: 40,
-    marginRight: 20
+    marginRight: 10,
+    width:"87%"
   },
   text: {
     marginLeft: 10,
@@ -86,7 +87,7 @@ const styleA = StyleSheet.create({
 
   packagesItem: {
     minWidth: 360,
-    width: '90%',
+    width: '80%',
     flex: 1,
     padding: 10,
     margin: 5,

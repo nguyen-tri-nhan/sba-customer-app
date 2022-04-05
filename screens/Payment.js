@@ -29,7 +29,7 @@ function Payment(props) {
   const [showGateway, setShowGateway] = useState(false);
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
-  const url = 'http://192.168.3.100:3000/price='+toUSD(totalPrice);
+  const url = 'http://192.168.88.171:3000/price='+toUSD(totalPrice);
   function onMessage(e) {
     let data = e.nativeEvent.data;
     setShowGateway(false);
@@ -46,7 +46,7 @@ function Payment(props) {
         onContinuePress();
       })
     } else {
-      alert('PAYMENT FAILED. PLEASE TRY AGAIN.');
+      alert('THANH TOÁN LỖI. VUI LÒNG THANH TOÁN LẠI.');
     }
   }
   
@@ -55,9 +55,30 @@ function Payment(props) {
       <BookingStepIndicator currentStep={2} />
       <Card style={styles.customerInformation}>
       <View style={stylesA.container}>
-          <Text style={stylesA.h1}>Tổng tiền : {toVND(totalPrice)}</Text>
-          <Text style={stylesA.text}>Tên gói : {pkg.name}</Text>
-          <Text style={stylesA.text}>Tổng tiền : {toVND(totalPrice)}</Text>
+        <View style={stylesA.conText}>
+          <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
+          <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(totalPrice)}</Text>
+        </View>
+          
+        <View style={stylesA.divineLine} />
+        <View style={stylesA.conText}>
+              <Text style={[stylesA.text,{marginBottom:10}]}>{pkg.name} :</Text>
+              <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(pkg.price)}</Text>
+          </View>
+          <View style={stylesA.divineLine} />
+        <View style={stylesA.conText}>
+              <Text style={[stylesA.text,{marginBottom:10}]}>Showroom thực hiện :</Text>
+              <Text style={[stylesA.text,{marginBottom:10}]}>{showroom.name}</Text>
+          </View>
+          
+          
+          <View style={stylesA.divineLine} />
+        <View style={stylesA.conText}>
+          <Text style={stylesA.text}>Thanh toán phần cọc :</Text>
+          <Text style={stylesA.text}>{toVND(totalPrice)}</Text>
+         </View>
+         
+         <View style={[stylesA.divineLine,{marginTop:40}]} />
       </View>
       <View style={stylesA.container}>
         
@@ -156,13 +177,12 @@ const stylesA = StyleSheet.create({
   },
   h1: {
     color: '#000',
-    fontSize: 25,
-    alignItems: 'flex-start',
+    fontSize: 20,
     justifyContent: 'center'
   },
   text: {
     color: '#000',
-    fontSize: 18,
+    fontSize: 15,
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -180,6 +200,20 @@ const stylesA = StyleSheet.create({
     zIndex: 25,
     elevation: 2,
   },
+  conText:{
+    flexDirection:"row",
+    justifyContent:"space-between",
+    // backgroundColor:"#000",
+    width:"90%"
+  },
+  
+  divineLine: {
+    width: "90%",
+    height: 1,
+    opacity: 0.5,
+    marginBottom: 5,
+    backgroundColor: "#4A4A4A"
+  }
 });
 
 export default Payment;

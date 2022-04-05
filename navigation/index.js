@@ -18,6 +18,7 @@ import { AuthContext } from "../utils/context";
 import { isEmpty } from "lodash";
 import Services from "../utils/Services";
 import { PackagesStack } from "../stack/PackageStack";
+import { HistoryStack } from "../stack/HistoryStack";
 
 export default function Navigation({ colorScheme }) {
   const [jwt, setJwt] = useState('');
@@ -82,7 +83,8 @@ export default function Navigation({ colorScheme }) {
               />
               <AuthTabs.Screen
                 name="TabTwo"
-                component={TabTwoScreen}
+                component={HistoryStack}
+                initialParams={{ user: userDetails, jwt: jwt }}
                 options={{
                   title: "Lịch sử",
                   tabBarIcon: () => (

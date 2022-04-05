@@ -17,4 +17,5 @@ export const ENTITY = {
   PACKAGE: 'package',
   BOOKING: 'booking',
   ADDITIONAL_ITEM: 'addition-item',
+  STYLE: 'style',
 }

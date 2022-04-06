@@ -6,7 +6,7 @@ import { DatePickerModal } from 'react-native-paper-dates';
 import { useState, useCallback } from 'react';
 import { TouchableOpacity, View,StyleSheet } from 'react-native';
 import { Text } from './Themed';
-import { VietNameseDate } from '../utils/DateHelper';
+import { formatDate, VietNameseDate } from '../utils/DateHelper';
 import { useStyle } from '../utils/style';
 registerTranslation("vi", {
   save: 'Đồng ý',
@@ -51,7 +51,7 @@ function DatePicker({ placeHolder = "Chọn ngày", validRange, onConfirm, disab
     (params) => {
       setOpen(false);
       setDate(params.date);
-      onConfirm && onConfirm(params.date);
+      onConfirm && onConfirm(formatDate(params.date));
     },
     [setOpen, setDate]
   );
@@ -62,7 +62,7 @@ function DatePicker({ placeHolder = "Chọn ngày", validRange, onConfirm, disab
 }
 
 
-  console.log('date', date);
+  console.log('date', formatDate(date));
 
   const renderDate = () => {
     return `${VietNameseDate[date.getDay()]}, ${date.getDate()} tháng ${date.getMonth()} năm ${date.getFullYear()}`;

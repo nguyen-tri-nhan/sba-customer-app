@@ -11,6 +11,7 @@ import Services from '../utils/Services';
 import { ENTITY } from '../utils/Constants';
 import { ago } from '../utils/DateHelper';
 import Icon from "react-native-dynamic-vector-icons";
+import { before } from 'lodash';
 
 function ConfirmationScreen(props) {
   const { navigation, route } = props;
@@ -154,7 +155,7 @@ function ConfirmationScreen(props) {
             </Text>
             </View>
                <View style={styleA.conText}>
-                <DatePicker onConfirm={setDressDate} validRange={{ startDate: ago(1)}}/>
+                <DatePicker onConfirm={setDressDate} disabled={!startDate} validRange={{ startDate: ago(1), endDate: ago(-1, startDate)}}/>
               </View>
             </View>
           </View>

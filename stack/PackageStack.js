@@ -62,7 +62,7 @@ export const PackagesStack = (props) => {
       <Navigation.Screen
         name="PreviewMakeup"
         options={{
-          title: "Đặt lịch",
+          title: "Trang điểm thử",
         }}
         component={PreviewMakeupScreen}
         {...props}
@@ -81,7 +81,7 @@ export const PackagesStack = (props) => {
       <Navigation.Screen
         name="ResultScreen"
         options={{
-          title: "Đặt lịch",
+          title: "Kết quả trang điểm thử",
           headerLeft: null,
         }}
         component={PreviewResultScreen}

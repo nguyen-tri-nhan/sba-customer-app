@@ -39,7 +39,7 @@ registerTranslation("vi", {
  * @returns 
  */
 
-function DatePicker({ placeHolder = "Chọn ngày", validRange, onConfirm }) {
+function DatePicker({ placeHolder = "Chọn ngày", validRange, onConfirm, disabled }) {
   const [date, setDate] = useState(undefined);
   const [open, setOpen] = useState(false);
 
@@ -70,7 +70,7 @@ function DatePicker({ placeHolder = "Chọn ngày", validRange, onConfirm }) {
 
   return (
     <>
-      <TouchableOpacity onPress={() => setOpen(true)}>
+      <TouchableOpacity disabled={disabled} onPress={() => setOpen(true)}>
         <View style={styleA.conText}>
         <Text style={styleA.date}>
           {date ? renderDate() : placeHolder}

@@ -25,7 +25,7 @@ function ChooseShowroomScreen(props) {
   }
 
   const renderShowrooms = (data) => {
-    return data.map((showroom) => <Showroom showroom={showroom} onSelectedShowroom={onContinuePress}/>)
+    return data.map((showroom) => <Showroom key={showroom.id} showroom={showroom} onSelectedShowroom={onContinuePress}/>)
   }
 
   return (

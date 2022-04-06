@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet,SafeAreaView, TouchableOpacity,Modal,
   View, 
-  ActivityIndicator} from 'react-native';
+  ActivityIndicator,Platform} from 'react-native';
 import { useEffect, useState } from 'react';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
@@ -17,10 +17,12 @@ import {WebView} from 'react-native-webview';
 import Feather from 'react-native-vector-icons/Feather';
 
 
+
 function Payment(props) {
   const { navigation, route } = props;
   const { params } = route;
   const { pkg, jwt, forwardedItems, user, totalPrice, showroom, dressDate, startDate, getDate } = params;
+  const isAndroid = Platform.OS === 'android';
   const styles = useStyle();
   const onContinuePress = () => {
     navigation.navigate("SuccessScreen", { pkg });
@@ -30,6 +32,7 @@ function Payment(props) {
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
   const url = 'http://192.168.88.171:3000/price='+toUSD(totalPrice);
+
   function onMessage(e) {
     let data = e.nativeEvent.data;
     setShowGateway(false);
@@ -101,13 +104,15 @@ function Payment(props) {
           onDismiss={() => setShowGateway(false)}
           onRequestClose={() => setShowGateway(false)}
           animationType={'fade'}
-          transparent>
+          // transparent={true}
+          // style={{top:300}}
+          >
           <View style={stylesA.webViewCon}>
             <View style={stylesA.wbHead}>
               <TouchableOpacity
-                style={{padding: 13}}
+                style={{padding: 13,top:isAndroid?0:30}}
                 onPress={() => setShowGateway(false)}>
-                <Feather name={'x'} size={24} />
+                <Feather name={'x'} size={30} />
               </TouchableOpacity>
               <Text
                 style={{

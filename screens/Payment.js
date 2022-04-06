@@ -20,7 +20,7 @@ import Feather from 'react-native-vector-icons/Feather';
 function Payment(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { pkg, jwt, forwardedItems, user, totalPrice, showroom } = params;
+  const { pkg, jwt, forwardedItems, user, totalPrice, showroom, dressDate, startDate, getDate } = params;
   const styles = useStyle();
   const onContinuePress = () => {
     navigation.navigate("SuccessScreen", { pkg });
@@ -41,6 +41,8 @@ function Payment(props) {
         packageId: pkg.id,
         customerId: user.id,
         items: forwardedItems,
+        departureDate: startDate,
+        returnDate: getDate,
       }, jwt).then((response) => {
         console.log(response);
         onContinuePress();

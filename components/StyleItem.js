@@ -3,7 +3,7 @@ import { StyleSheet,View,Text,Image ,TouchableOpacity} from "react-native";
 import Icon from "react-native-dynamic-vector-icons";
 
 
-function StyleItem({ item, onSelectedStyle,onRemoveStyle}) {
+function StyleItem({ item, onSelectedStyle,onRemoveStyle,disabled}) {
 
     const [choose,setChoose] = useState(false);
 
@@ -17,7 +17,7 @@ function StyleItem({ item, onSelectedStyle,onRemoveStyle}) {
     }
     
     return (
-        <TouchableOpacity onPress={handleChoose}>
+        <TouchableOpacity onPress={handleChoose} disabled={disabled}>
             <View>
         <View style={[styles.container,{opacity: choose ? 0.3 : 1}]}>
         <View style={{flex:2}}>

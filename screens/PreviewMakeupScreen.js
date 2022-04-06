@@ -76,27 +76,18 @@ function PreviewMakeupScreen(props) {
   };
 
   
-  let stylesData = [];
-  let stylesUrl = []
+  let stylesData = {};
 
   const onSelectedStyle = (id,url) => {
-    if(id && stylesData.indexOf(id) === -1){
-      stylesData.push(id)
+    if(id && url && stylesData && !stylesData[id]){
+      stylesData[id]=url;
     }
-    if(url && stylesUrl.indexOf(url) === -1){
-      stylesUrl.push(url)
-    }
-    console.log(stylesUrl)
   }
 
   const onRemoveStyle = (id,url) => {
-    if(id && stylesData.indexOf(id) !== -1){
-            stylesData.splice(stylesData.indexOf(id), 1); 
+    if(id && url && stylesData[id]){
+      stylesData[id]="";
     }
-    if(url && stylesUrl.indexOf(url) !== -1){
-      stylesUrl.splice(stylesUrl.indexOf(url), 1); 
-}
-    console.log(stylesUrl)
   }
 
   const onTryPress = () => {
@@ -118,7 +109,12 @@ function PreviewMakeupScreen(props) {
 
       var formdata = new FormData();
       formdata.append('img',{ uri: image, name: 'image.jpg', type: 'image/jpeg' });
-      formdata.append("styles", "https://i.pinimg.com/564x/db/cf/e3/dbcfe345c0836740c7811e9beadbfd32.jpg");
+      for(id in stylesData){
+        if(stylesData[id].length > 0){
+          formdata.append("styles", id+"_"+stylesData[id]);
+        }
+      }
+      
 
       var requestOptions = {
         method: 'POST',
@@ -138,18 +134,19 @@ function PreviewMakeupScreen(props) {
           result = JSON.parse(result)
           const msg = result.msg;
           const links = result.links;
-          // const links = [
-          //   {
-          //       "refer": "https://i.pinimg.com/564x/db/cf/e3/dbcfe345c0836740c7811e9beadbfd32.jpg",
-          //       "result": "https://fpt-sba-images.s3.ap-southeast-2.amazonaws.com/5a4b586cbbdf4e7cbb0e21c97f0189e2"
-          //   }
+        //   const links = [
+        //     {
+        //         "refer": "https://i.pinimg.com/564x/db/cf/e3/dbcfe345c0836740c7811e9beadbfd32.jpg",
+        //         "result": "https://fpt-sba-images.s3.ap-southeast-2.amazonaws.com/5a4b586cbbdf4e7cbb0e21c97f0189e2"
+        //     }
         // ]
           if(msg == "success"){
+            console.log('success');
+            setLoading(false);
             navigation.push("ResultScreen", { sourceImg:image, links:links});
           }else{
             setErrorModal(true);
             setLoading(false);
-            navigation.push("ResultScreen", { sourceImg:image, links:links});
           }
           
         })
@@ -162,7 +159,7 @@ function PreviewMakeupScreen(props) {
 
 
   const renderStyle = (data) => {
-      return data.map((item) => (<StyleItem item={item} onSelectedStyle={onSelectedStyle} onRemoveStyle={onRemoveStyle} />))
+      return data.map((item) => (<StyleItem item={item} onSelectedStyle={onSelectedStyle} onRemoveStyle={onRemoveStyle} disabled={image?false:true} />))
   }
 
   return (

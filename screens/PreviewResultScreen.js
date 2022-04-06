@@ -25,14 +25,16 @@ function PreviewResultScreen(props) {
   return (
     
     <SafeAreaView style={styles.packageDetailsContainer}>
-      <ScrollView>
+      <View style={{flex:9}}>
+      <ScrollView >
         {links ?
           renderLinks() :
           (<View/>)}
-        
+        <ResultItem item={links[0]} sourceImg={sourceImg} />
       </ScrollView>
-      <Card style={styles.packageDetailsFooter}>
-        <TouchableOpacity onPress={onContinuePress} style={styles.packageDetailsBookingButton}>
+      </View>
+      <Card style={[styles.packageDetailsFooter,{marginTop:10}]}>
+        <TouchableOpacity onPress={onContinuePress} style={[styles.packageDetailsBookingButton]}>
           <Text style={{color:"#FFF",fontWeight:"bold",fontSize:20}}>Trang chủ</Text>
         </TouchableOpacity>
       </Card>
@@ -49,14 +51,9 @@ const stylesA = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10
   },
-  container:{
-    flexDirection:"column",
-    justifyContent:"space-around"
-  },
-  conLink:{
-    flexDirection:"row",
-    justifyContent:"space-around"
-  },
+  cardFooter:{
+    height:20
+  }
 })
 
 export default PreviewResultScreen;

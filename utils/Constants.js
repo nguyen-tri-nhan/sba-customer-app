@@ -3,6 +3,7 @@
 // const domain = 'http://192.168.3.100:5000';
 // const domain = 'http://192.168.88.152:5001';
 const domain = 'http://192.168.1.173:5000';
+// const domain = 'http://192.168.88.171:5000';
 const subService = '/pbs-service';
 
 export const ai_domain = 'http://192.168.88.171:8000/makeup';

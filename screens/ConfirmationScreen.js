@@ -10,6 +10,7 @@ import TimePicker from '../components/TimePicker';
 import Services from '../utils/Services';
 import { ENTITY } from '../utils/Constants';
 import { ago } from '../utils/DateHelper';
+import Icon from "react-native-dynamic-vector-icons";
 
 function ConfirmationScreen(props) {
   const { navigation, route } = props;
@@ -69,18 +70,46 @@ function ConfirmationScreen(props) {
             <Text style={styleA.h2}>
               Gói dịch vụ: {pkg.name}
             </Text>
-            <Text style={styleA.h3}>
+            <View style={styleA.conRow}>
+            <Icon
+              name="location"
+              type="Entypo"
+              size={30}
+            />
+            <Text style={[styleA.h3,styleA.textIcon]}>
               Địa điểm: {pkg.location}
             </Text>
-            <Text style={styleA.h3}>
+            </View>
+            <View style={styleA.conRow}>
+            <Icon
+              name="add-a-photo"
+              type="MaterialIcons"
+              size={30}
+            />
+            <Text style={[styleA.h3,styleA.textIcon]}>
               Chi nhánh thực hiện: {showroom.name}
             </Text>
-            <Text style={styleA.h3}>
+            </View>
+            <View style={styleA.conRow}>
+            <Icon
+              name="location"
+              type="Entypo"
+              size={30}
+            />
+            <Text style={[styleA.h3,styleA.textIcon]}>
               Địa chỉ: {showroom.address}
             </Text>
-            <Text style={styleA.h3}>
+            </View>
+            <View style={styleA.conRow}>
+            <Icon
+              name="add-to-list"
+              type="Entypo"
+              size={30}
+            />
+            <Text style={[styleA.h3,styleA.textIcon]}>
               Dịch vụ thêm:
             </Text>
+            </View>
             {
               forwardedItems.map((item) =>
               (<View key={item.id}>
@@ -88,24 +117,45 @@ function ConfirmationScreen(props) {
               </View>))
             }
             <View style={styleA.conDate}>
-              <Text style={{ top: 5, fontSize: 15 }}>
-                Ngày thử đồ:
-              </Text>
-              <View style={styleA.conText}>
+            <View style={styleA.conRow}>
+            <Icon
+              name="calendar"
+              type="AntDesign"
+              size={30}
+            />
+            <Text style={{marginLeft:10,top:5,fontSize:15}}>
+              Ngày đi chụp :
+            </Text>
+            </View>
+              <DatePicker onConfirm={setStartDate} validRange={{ startDate: ago(3), disabledDates: unavailableSlots }}/>
+            </View>
+            <View style={styleA.conDate}>
+            <View style={styleA.conRow}>
+            <Icon
+              name="calendar"
+              type="AntDesign"
+              size={30}
+            />
+            <Text style={{marginLeft:10,top:5,fontSize:15}}>
+              Ngày nhận:
+            </Text>
+            </View>
+              <DatePicker onConfirm={setGetDate} disabled={!startDate} validRange={{ startDate: ago(3, startDate) }}/>
+            </View>
+            <View style={styleA.conDate}>
+            <View style={styleA.conRow}>
+            <Icon
+              name="calendar"
+              type="AntDesign"
+              size={30}
+            />
+            <Text style={{marginLeft:10,top:5,fontSize:15}}>
+              Ngày thử đồ:
+            </Text>
+            </View>
+               <View style={styleA.conText}>
                 <DatePicker onConfirm={setDressDate} validRange={{ startDate: ago(1)}}/>
               </View>
-            </View>
-            <View style={styleA.conDate}>
-              <Text style={{ top: 5, fontSize: 15 }}>
-                Ngày đi chụp :
-              </Text>
-              <DatePicker onConfirm={setStartDate} validRange={{ startDate: ago(3), disabledDates: unavailableSlots }} />
-            </View>
-            <View style={styleA.conDate}>
-              <Text style={{ top: 5, fontSize: 15 }}>
-                Ngày nhận ảnh :
-              </Text>
-              <DatePicker onConfirm={setGetDate} disabled={!startDate} validRange={{ startDate: ago(3, startDate) }} />
             </View>
           </View>
         </ScrollView>
@@ -209,6 +259,14 @@ const styleA = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
+  },
+  conRow:{
+    flexDirection:"row",
+    marginBottom:15
+  },
+  textIcon:{
+    top:10,
+    marginLeft:20,
   }
 })
 export default ConfirmationScreen;

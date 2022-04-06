@@ -92,7 +92,7 @@ function ConfirmationScreen(props) {
                 Ngày thử đồ:
               </Text>
               <View style={styleA.conText}>
-                <DatePicker onConfirm={setDressDate} />
+                <DatePicker onConfirm={setDressDate} validRange={{ startDate: ago(1)}}/>
               </View>
             </View>
             <View style={styleA.conDate}>

@@ -9,7 +9,7 @@ import { ENTITY, STATUS } from '../utils/Constants';
 import { toVND } from '../utils/CurrencyHelper';
 import { useStyle } from '../utils/style';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import Icon from 'react-native-vector-icons';
+import Icon from "react-native-dynamic-vector-icons";
 
 function PackageDetailsScreen(props) {
 
@@ -45,7 +45,7 @@ function PackageDetailsScreen(props) {
   const images = getImagesList(pkg.images);
 
   const onBookingPress = () => {
-    navigation.push("PreviewMakeup", { pkg: pkg, additionalItems: additionalItems, totalPrice: countTotalPrice() });
+    navigation.push("ChooseShowroom", { pkg: pkg, additionalItems: additionalItems, totalPrice: countTotalPrice() });
   }
 
   const onAmountChange = (item, amount) => {
@@ -110,12 +110,42 @@ function PackageDetailsScreen(props) {
           <Title style={[styles.packageDetailsTitle,styleA.titlePkg]}>{pkg.name}</Title>
         </Pressable>
           <Title style={styles.packageDetailsPrice}>Giá: {toVND(pkg.price)}</Title>
-          <Text>Thời gian thực hiện: {pkg.duration} ngày</Text>
-          <Text>Địa điểm: {pkg.location}</Text>
-          <Text>Mô tả:</Text>
+          <View style={styleA.conRow}>
+          <Icon
+            name="calendar"
+            type="AntDesign"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Thời gian thực hiện: {pkg.duration} ngày</Text>
+          </View>
+          <View style={styleA.conRow}>
+          <Icon
+            name="location"
+            type="Entypo"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Địa điểm: {pkg.location}</Text>
+          </View>
+          <View style={styleA.conRow}>
+          <Icon
+            name="description"
+            type="MaterialIcons"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Mô tả:</Text>
+          </View>
+          
           <Paragraph>{pkg.description}</Paragraph>
           <View style={styleA.divineLine} />
-          <Text style={styleA.addition}>Dịch vụ thêm: </Text>
+          <View style={styleA.conRow}>
+          <Icon
+            name="add-to-list"
+            type="Entypo"
+            size={30}
+            style={{top:5}}
+          />
+          <Text style={[styleA.addition,styleA.textIcon]}>Dịch vụ thêm: </Text>
+          </View>
           <DataLoader key={'1'} jwt={jwt} entity={ENTITY.ADDITIONAL_ITEM} renderData={renderAdditionalItem} getAll initialStatus={STATUS.ENABLE} />
           </View>
         </ScrollView>
@@ -148,9 +178,17 @@ const styleA = StyleSheet.create({
     color:'#FB6F6F'
   },
   addition:{
-    marginTop:20,
+    // marginTop:20,
     fontWeight:'bold',
     fontSize:15,
+  },
+  conRow:{
+    flexDirection:"row",
+    marginBottom:15
+  },
+  textIcon:{
+    top:10,
+    marginLeft:20,
   }
 })
 

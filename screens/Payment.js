@@ -58,7 +58,7 @@ function Payment(props) {
       <BookingStepIndicator currentStep={2} />
       <Card style={styles.customerInformation}>
       <View style={stylesA.container}>
-        <View style={stylesA.conText}>
+        <View style={[stylesA.conText,{marginTop:20}]}>
           <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
           <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(totalPrice)}</Text>
         </View>
@@ -68,7 +68,6 @@ function Payment(props) {
               <Text style={[stylesA.text,{marginBottom:10}]}>{pkg.name} :</Text>
               <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(pkg.price)}</Text>
           </View>
-          <View style={stylesA.divineLine} />
           {
               forwardedItems.map((item) =>
               (<View key={item.id} style={stylesA.conText}>
@@ -86,7 +85,7 @@ function Payment(props) {
          
          <View style={[stylesA.divineLine,{marginTop:40}]} />
       </View>
-      <View style={stylesA.container}>
+      <View style={stylesA.containerBtn}>
         
         <View style={stylesA.btnCon}>
           <TouchableOpacity
@@ -155,8 +154,14 @@ function Payment(props) {
   );
 }
 const stylesA = StyleSheet.create({
-  container: {
+  containerBtn: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  container: {
+    flex: 4,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',

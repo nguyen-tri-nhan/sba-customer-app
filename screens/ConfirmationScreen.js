@@ -6,7 +6,7 @@ import { Button, Card } from 'react-native-paper';
 import { useStyle } from '../utils/style';
 import { toVND } from '../utils/CurrencyHelper';
 import DatePicker from '../components/DatePicker';
-import TimePicker from '../components/TimePicker';
+import Icon from "react-native-dynamic-vector-icons";
 
 function ConfirmationScreen(props) {
   const { navigation, route } = props;
@@ -50,18 +50,46 @@ function ConfirmationScreen(props) {
             <Text style={styleA.h2}>
               Gói dịch vụ: {pkg.name}
             </Text>
-            <Text style={styleA.h3}>
+            <View style={styleA.conRow}>
+            <Icon
+              name="location"
+              type="Entypo"
+              size={30}
+            />
+            <Text style={[styleA.h3,styleA.textIcon]}>
               Địa điểm: {pkg.location}
             </Text>
-            <Text style={styleA.h3}>
+            </View>
+            <View style={styleA.conRow}>
+            <Icon
+              name="add-a-photo"
+              type="MaterialIcons"
+              size={30}
+            />
+            <Text style={[styleA.h3,styleA.textIcon]}>
               Chi nhánh thực hiện: {showroom.name}
             </Text>
-            <Text style={styleA.h3}>
+            </View>
+            <View style={styleA.conRow}>
+            <Icon
+              name="location"
+              type="Entypo"
+              size={30}
+            />
+            <Text style={[styleA.h3,styleA.textIcon]}>
               Địa chỉ: {showroom.address}
             </Text>
-            <Text style={styleA.h3}>
+            </View>
+            <View style={styleA.conRow}>
+            <Icon
+              name="add-to-list"
+              type="Entypo"
+              size={30}
+            />
+            <Text style={[styleA.h3,styleA.textIcon]}>
               Dịch vụ thêm:
             </Text>
+            </View>
             {
               forwardedItems.map((item) =>
               (<View key={item.id}>
@@ -69,21 +97,42 @@ function ConfirmationScreen(props) {
               </View>))
             }
             <View style={styleA.conDate}>
-            <Text style={{top:5,fontSize:15}}>
+            <View style={styleA.conRow}>
+            <Icon
+              name="calendar"
+              type="AntDesign"
+              size={30}
+            />
+            <Text style={{marginLeft:10,top:5,fontSize:15}}>
               Ngày đi chụp :
             </Text>
+            </View>
               <DatePicker onConfirm={setStartDate} />
             </View>
             <View style={styleA.conDate}>
-            <Text style={{top:5,fontSize:15}}>
-              Ngày nhận ảnh :
+            <View style={styleA.conRow}>
+            <Icon
+              name="calendar"
+              type="AntDesign"
+              size={30}
+            />
+            <Text style={{marginLeft:10,top:5,fontSize:15}}>
+              Ngày nhận:
             </Text>
+            </View>
               <DatePicker onConfirm={setGetDate} />
             </View>
             <View style={styleA.conDate}>
-            <Text style={{top:5,fontSize:15}}>
+            <View style={styleA.conRow}>
+            <Icon
+              name="calendar"
+              type="AntDesign"
+              size={30}
+            />
+            <Text style={{marginLeft:10,top:5,fontSize:15}}>
               Ngày thử đồ:
             </Text>
+            </View>
                <View style={styleA.conText}>
                 <DatePicker onConfirm={setDressDate} />
               </View>
@@ -190,6 +239,14 @@ const styleA = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
+  },
+  conRow:{
+    flexDirection:"row",
+    marginBottom:15
+  },
+  textIcon:{
+    top:10,
+    marginLeft:20,
   }
 })
 export default ConfirmationScreen;

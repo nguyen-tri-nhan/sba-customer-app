@@ -51,8 +51,9 @@ const styleA = StyleSheet.create({
     flex: 9,
     backgroundColor: "#FFF",
     marginTop: 40,
-    marginLeft: 40,
-    marginRight: 20
+    marginLeft: 30,
+    marginRight: 10,
+    width:"87%"
   },
   text: {
     marginLeft: 10,
@@ -86,18 +87,20 @@ const styleA = StyleSheet.create({
 
   packagesItem: {
     minWidth: 360,
-    width: '90%',
+    width: '80%',
     flex: 1,
     padding: 10,
-    margin: 5,
+    // margin: 5,
+    // marginRight:10,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    borderRadius:10,
   },
   packageImage: {
     top: -35,
     left: -40,
     position: "absolute",
-    width: 110,
+    width: 125,
     height: 125,
     flex: 3,
     borderRadius: 20,

@@ -66,9 +66,11 @@ export const useStyle = () => {
     },
     packageInfomation: {
       flex: 8,
+      backgroundColor:"#FFF"
     },
     packageTitle: {
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      color:"#000"
     },
     packageTextSecondary: {
       fontSize: 12,
@@ -77,6 +79,7 @@ export const useStyle = () => {
     packagesPrice: {
       paddingTop: 10,
       textAlign: 'right',
+      color:"#000"
     },
     packageDetailsTitle: {
       textAlign: 'center',
@@ -98,7 +101,8 @@ export const useStyle = () => {
     },
     packageDetailsFooter: {
       justifyContent: 'center',
-      flex: 1
+      flex: 1,
+      backgroundColor:"#E14C4C"
     },
     packageDetailsContainer: {
       flex: 1

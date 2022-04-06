@@ -64,7 +64,7 @@ const DataLoader = ({
   const showData = () => {
     return (
       <>
-        {data.content.length > 0 ? renderData(data.content) : 'Chưa có dữ liệu'}
+        {data.content.length > 0 && renderData(data.content)}
         {/* {
           usePagination && <div className="d-flex justify-content-end">
             <Pagination store={data} onPageChange={onPageChange} />

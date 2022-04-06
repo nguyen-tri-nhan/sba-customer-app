@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet,SafeAreaView, TouchableOpacity,Modal,
   View, 
-  ActivityIndicator} from 'react-native';
+  ActivityIndicator,Platform} from 'react-native';
 import { useEffect, useState } from 'react';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
@@ -17,10 +17,12 @@ import {WebView} from 'react-native-webview';
 import Feather from 'react-native-vector-icons/Feather';
 
 
+
 function Payment(props) {
   const { navigation, route } = props;
   const { params } = route;
   const { pkg, jwt, forwardedItems, user, totalPrice, showroom } = params;
+  const isAndroid = Platform.OS === 'android';
   const styles = useStyle();
   const onContinuePress = () => {
     navigation.navigate("SuccessScreen", { pkg });
@@ -29,7 +31,8 @@ function Payment(props) {
   const [showGateway, setShowGateway] = useState(false);
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
-  const url = 'http://192.168.3.100:3000/price='+toUSD(totalPrice);
+  const url = 'http://192.168.88.171:3000/price='+toUSD(totalPrice);
+
   function onMessage(e) {
     let data = e.nativeEvent.data;
     setShowGateway(false);
@@ -46,7 +49,7 @@ function Payment(props) {
         onContinuePress();
       })
     } else {
-      alert('PAYMENT FAILED. PLEASE TRY AGAIN.');
+      alert('THANH TOÁN LỖI. VUI LÒNG THANH TOÁN LẠI.');
     }
   }
   
@@ -55,11 +58,34 @@ function Payment(props) {
       <BookingStepIndicator currentStep={2} />
       <Card style={styles.customerInformation}>
       <View style={stylesA.container}>
-          <Text style={stylesA.h1}>Tổng tiền : {toVND(totalPrice)}</Text>
-          <Text style={stylesA.text}>Tên gói : {pkg.name}</Text>
-          <Text style={stylesA.text}>Tổng tiền : {toVND(totalPrice)}</Text>
+        <View style={[stylesA.conText,{marginTop:20}]}>
+          <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
+          <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(totalPrice)}</Text>
+        </View>
+          
+        <View style={stylesA.divineLine} />
+        <View style={stylesA.conText}>
+              <Text style={[stylesA.text,{marginBottom:10}]}>{pkg.name} :</Text>
+              <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(pkg.price)}</Text>
+          </View>
+          {
+              forwardedItems.map((item) =>
+              (<View key={item.id} style={stylesA.conText}>
+                  <Text style={[stylesA.text,{marginBottom:10}]}>{item.itemName} :</Text>
+                  <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
+              </View>
+              ))
+            }
+        
+        <View style={stylesA.divineLine} />
+        <View style={stylesA.conText}>
+          <Text style={stylesA.text}>Thanh toán phần cọc :</Text>
+          <Text style={stylesA.text}>{toVND(totalPrice)}</Text>
+         </View>
+         
+         <View style={[stylesA.divineLine,{marginTop:40}]} />
       </View>
-      <View style={stylesA.container}>
+      <View style={stylesA.containerBtn}>
         
         <View style={stylesA.btnCon}>
           <TouchableOpacity
@@ -75,13 +101,15 @@ function Payment(props) {
           onDismiss={() => setShowGateway(false)}
           onRequestClose={() => setShowGateway(false)}
           animationType={'fade'}
-          transparent>
+          // transparent={true}
+          // style={{top:300}}
+          >
           <View style={stylesA.webViewCon}>
             <View style={stylesA.wbHead}>
               <TouchableOpacity
-                style={{padding: 13}}
+                style={{padding: 13,top:isAndroid?0:30}}
                 onPress={() => setShowGateway(false)}>
-                <Feather name={'x'} size={24} />
+                <Feather name={'x'} size={30} />
               </TouchableOpacity>
               <Text
                 style={{
@@ -122,18 +150,18 @@ function Payment(props) {
 
         
       </Card>
-
-      {/* <Card style={styles.packageDetailsFooter}>
-        <TouchableOpacity onPress={onContinuePress} style={styles.packageDetailsBookingButton}>
-          <Button>Tiếp tục: {toVND(totalPrice)}</Button>
-        </TouchableOpacity>
-      </Card> */}
     </SafeAreaView>
   );
 }
 const stylesA = StyleSheet.create({
-  container: {
+  containerBtn: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  container: {
+    flex: 4,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
@@ -156,13 +184,12 @@ const stylesA = StyleSheet.create({
   },
   h1: {
     color: '#000',
-    fontSize: 25,
-    alignItems: 'flex-start',
+    fontSize: 20,
     justifyContent: 'center'
   },
   text: {
     color: '#000',
-    fontSize: 18,
+    fontSize: 15,
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -180,6 +207,20 @@ const stylesA = StyleSheet.create({
     zIndex: 25,
     elevation: 2,
   },
+  conText:{
+    flexDirection:"row",
+    justifyContent:"space-between",
+    // backgroundColor:"#000",
+    width:"90%"
+  },
+  
+  divineLine: {
+    width: "90%",
+    height: 1,
+    opacity: 0.5,
+    marginBottom: 5,
+    backgroundColor: "#4A4A4A"
+  }
 });
 
 export default Payment;

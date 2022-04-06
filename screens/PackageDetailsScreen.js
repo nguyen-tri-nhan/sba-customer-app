@@ -1,6 +1,6 @@
 import { isEmpty, unionBy } from 'lodash';
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, TouchableOpacity, ScrollView, Text } from 'react-native';
+import { SafeAreaView, TouchableOpacity, ScrollView, Text,Modal,StyleSheet ,View,Pressable} from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import { Button, Card, Paragraph, Title } from 'react-native-paper';
 import AdditionalItem from '../components/AdditionalItem';
@@ -8,6 +8,8 @@ import DataLoader from '../model/Dataloader';
 import { ENTITY, STATUS } from '../utils/Constants';
 import { toVND } from '../utils/CurrencyHelper';
 import { useStyle } from '../utils/style';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import Icon from "react-native-dynamic-vector-icons";
 
 function PackageDetailsScreen(props) {
 
@@ -22,6 +24,20 @@ function PackageDetailsScreen(props) {
   const getImagesList = (imgs) => {
     if (imgs) {
       return imgs.map((item) => item.imageUrl);
+    }
+    return;
+  }
+
+  const getImagesViewList = (imgs) => {
+    if (imgs) {
+      let images = []
+      imgs.forEach(item => {
+        let oj = {}
+        oj["url"]=item.imageUrl;
+        oj["props"]={};
+        images.push(oj)
+      });
+      return images
     }
     return;
   }
@@ -57,31 +73,123 @@ function PackageDetailsScreen(props) {
     return total;
   }
 
+  
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const imagesA = getImagesViewList(pkg.images);
+
   return (
 
     <SafeAreaView style={styles.packageDetailsContainer}>
+      
       <Card key={'1'} style={styles.imageSliderCard}>
-        <SliderBox key={pkg.id} images={images} />
+      <SliderBox key={pkg.id} images={images} />
+      
       </Card>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <ImageViewer imageUrls={imagesA} enableSwipeDown="true" 
+        
+        onCancel={() => setModalVisible(!modalVisible)}
+        />
+      </Modal>
+      
       <Card key={'2'} style={styles.packageDetailsTitleCard}>
         <ScrollView>
-          <Title style={styles.packageDetailsTitle}>{pkg.name}</Title>
+          <View style={styleA.conText}>
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => {setModalVisible(true)}}
+          >
+          <Title style={[styles.packageDetailsTitle,styleA.titlePkg]}>{pkg.name}</Title>
+        </Pressable>
           <Title style={styles.packageDetailsPrice}>Giá: {toVND(pkg.price)}</Title>
-          <Text>Thời gian thực hiện: {pkg.duration} ngày</Text>
-          <Text>Địa điểm: {pkg.location}</Text>
-          <Text>Mô tả:</Text>
+          <View style={styleA.conRow}>
+          <Icon
+            name="calendar"
+            type="AntDesign"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Thời gian thực hiện: {pkg.duration} ngày</Text>
+          </View>
+          <View style={styleA.conRow}>
+          <Icon
+            name="location"
+            type="Entypo"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Địa điểm: {pkg.location}</Text>
+          </View>
+          <View style={styleA.conRow}>
+          <Icon
+            name="description"
+            type="MaterialIcons"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Mô tả:</Text>
+          </View>
+          
           <Paragraph>{pkg.description}</Paragraph>
-          <Text style={styles.mt_40}>Dịch vụ thêm: </Text>
+          <View style={styleA.divineLine} />
+          <View style={styleA.conRow}>
+          <Icon
+            name="add-to-list"
+            type="Entypo"
+            size={30}
+            style={{top:5}}
+          />
+          <Text style={[styleA.addition,styleA.textIcon]}>Dịch vụ thêm: </Text>
+          </View>
           <DataLoader key={'1'} jwt={jwt} entity={ENTITY.ADDITIONAL_ITEM} renderData={renderAdditionalItem} getAll initialStatus={STATUS.ENABLE} />
+          </View>
         </ScrollView>
       </Card>
       <Card style={styles.packageDetailsFooter}>
         <TouchableOpacity onPress={onBookingPress} style={styles.packageDetailsBookingButton}>
-          <Button>Đặt ngay: {toVND(countTotalPrice())}</Button>
+          
+        <Text style={{color:"#FFF",fontWeight:"bold",fontSize:20}}>Đặt ngay: {toVND(countTotalPrice())}</Text>
         </TouchableOpacity>
       </Card>
     </SafeAreaView>
   );
 }
+
+const styleA = StyleSheet.create({
+  conText:{
+    marginLeft:20
+  },
+  divineLine: {
+    width: "90%",
+    height: 1,
+    opacity: 0.5,
+    backgroundColor: "#4A4A4A",
+    alignSelf:"center",
+    marginTop:30,
+    marginLeft:-15
+  },
+  titlePkg:{
+    marginTop:20,
+    color:'#FB6F6F'
+  },
+  addition:{
+    // marginTop:20,
+    fontWeight:'bold',
+    fontSize:15,
+  },
+  conRow:{
+    flexDirection:"row",
+    marginBottom:15
+  },
+  textIcon:{
+    top:10,
+    marginLeft:20,
+  }
+})
 
 export default PackageDetailsScreen;

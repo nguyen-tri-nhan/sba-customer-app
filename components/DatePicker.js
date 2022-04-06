@@ -4,7 +4,7 @@ import {
 
 import { DatePickerModal } from 'react-native-paper-dates';
 import { useState, useCallback } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View,StyleSheet } from 'react-native';
 import { Text } from './Themed';
 import { VietNameseDate } from '../utils/DateHelper';
 import { useStyle } from '../utils/style';
@@ -55,6 +55,12 @@ function DatePicker({ placeHolder = "Chọn ngày", validRange, onConfirm }) {
     },
     [setOpen, setDate]
   );
+  Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+
 
   console.log('date', date);
 
@@ -65,9 +71,11 @@ function DatePicker({ placeHolder = "Chọn ngày", validRange, onConfirm }) {
   return (
     <>
       <TouchableOpacity onPress={() => setOpen(true)}>
-        <Text>
+        <View style={styleA.conText}>
+        <Text style={styleA.date}>
           {date ? renderDate() : placeHolder}
         </Text>
+        </View>
       </TouchableOpacity>
       <DatePickerModal
         locale="vi"
@@ -81,5 +89,24 @@ function DatePicker({ placeHolder = "Chọn ngày", validRange, onConfirm }) {
     </>
   );
 }
+
+const styleA = StyleSheet.create({
+  date:{
+    alignSelf: "center",
+    top:5
+  },
+  conText:{
+    backgroundColor: "rgba(0, 0, 0, 0.12)",
+    //   flexDirection: "row",
+    //   alignSelf:"center",
+      marginTop: 0,
+      width: "100%",
+    height:30,
+    alignItems:'center',
+    width:250,
+    borderRadius:10,
+    borderColor:"#7E7C7C"
+  }
+})
 
 export default DatePicker;

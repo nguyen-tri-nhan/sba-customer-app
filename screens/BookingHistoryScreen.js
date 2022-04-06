@@ -1,4 +1,5 @@
 import { View, Text } from "react-native";
+import BookingHistory from "../components/BookingHistory";
 import DataLoader from "../model/Dataloader";
 import { ENTITY } from "../utils/Constants";
 
@@ -9,7 +10,7 @@ export const BookingHistoryScreen = (props) => {
   const { jwt, user } = params;
 
   const renderBookingHistory = (data) => {
-    console.log(data)
+    return data.map((booking) => <BookingHistory key={booking.id} booking={booking}/>)
   }
 
   return (

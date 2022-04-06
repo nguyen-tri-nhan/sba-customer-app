@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
-import { SafeAreaView, TouchableOpacity, ScrollView, View,StyleSheet,Modal,Pressable } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, TouchableOpacity, ScrollView, View, StyleSheet, Modal, Pressable } from 'react-native';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
 import { Button, Card } from 'react-native-paper';
 import { useStyle } from '../utils/style';
 import { toVND } from '../utils/CurrencyHelper';
 import DatePicker from '../components/DatePicker';
+import TimePicker from '../components/TimePicker';
+import Services from '../utils/Services';
+import { ENTITY } from '../utils/Constants';
+import { ago } from '../utils/DateHelper';
 import Icon from "react-native-dynamic-vector-icons";
 
 function ConfirmationScreen(props) {
@@ -15,38 +19,54 @@ function ConfirmationScreen(props) {
   const [dressDate, setDressDate] = useState();
   const [startDate, setStartDate] = useState();
   const [getDate, setGetDate] = useState();
+  const [unavailableSlots, setUnavailableSlots] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
 
   const styles = useStyle();
   const onContinuePress = () => {
     // if (startDate && getDate){
-      navigation.push("Payment", { pkg, forwardedItems, totalPrice, showroom });
+    navigation.push("Payment", { pkg, forwardedItems, totalPrice, showroom, dressDate, startDate, getDate });
     // }else{
     //   setModalVisible(true)
     // }
   }
 
+  console.log('startDate', startDate);
+
+  useEffect(() => {
+    Services.search(ENTITY.SLOT, { showroomId: showroom.id }, jwt)
+      .then(({ data }) => {
+        const { content } = data;
+        if (content) {
+          const unavailableObj = content.filter((slot) => slot.availableSlot < 1);
+          if (unavailableObj.length > 0) {
+            const unavailableDates = unavailableObj.map((slot) => new Date(slot.date));
+            setUnavailableSlots(unavailableDates);
+          }
+        }
+      });
+  }, [])
 
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
       <BookingStepIndicator currentStep={1} />
-      <Card style={[styles.customerInformation,{marginBottom:7,paddingBottom:10}]}>
+      <Card style={[styles.customerInformation, { marginBottom: 7, paddingBottom: 10 }]}>
         <ScrollView>
           <View style={styleA.container}>
             <Text style={styleA.h1}>
-                XÁC NHẬN
+              XÁC NHẬN
             </Text >
-            
-          <View
-            style={{
-              borderBottomColor: '#000',
-              borderBottomWidth: 1,
-              width:"80%",
-              alignSelf:"center",
-              marginBottom:20,
-            }}
-          />
+
+            <View
+              style={{
+                borderBottomColor: '#000',
+                borderBottomWidth: 1,
+                width: "80%",
+                alignSelf: "center",
+                marginBottom: 20,
+              }}
+            />
             <Text style={styleA.h2}>
               Gói dịch vụ: {pkg.name}
             </Text>
@@ -107,7 +127,7 @@ function ConfirmationScreen(props) {
               Ngày đi chụp :
             </Text>
             </View>
-              <DatePicker onConfirm={setStartDate} />
+              <DatePicker onConfirm={setStartDate} validRange={{ startDate: ago(3), disabledDates: unavailableSlots }}/>
             </View>
             <View style={styleA.conDate}>
             <View style={styleA.conRow}>
@@ -120,7 +140,7 @@ function ConfirmationScreen(props) {
               Ngày nhận:
             </Text>
             </View>
-              <DatePicker onConfirm={setGetDate} />
+              <DatePicker onConfirm={setGetDate} disabled={!startDate} validRange={{ startDate: ago(3, startDate) }}/>
             </View>
             <View style={styleA.conDate}>
             <View style={styleA.conRow}>
@@ -134,7 +154,7 @@ function ConfirmationScreen(props) {
             </Text>
             </View>
                <View style={styleA.conText}>
-                <DatePicker onConfirm={setDressDate} />
+                <DatePicker onConfirm={setDressDate} validRange={{ startDate: ago(1)}}/>
               </View>
             </View>
           </View>
@@ -142,7 +162,7 @@ function ConfirmationScreen(props) {
       </Card>
       <Card style={styles.packageDetailsFooter}>
         <TouchableOpacity onPress={onContinuePress} style={styles.packageDetailsBookingButton}>
-          <Text style={{color:"#FFF",fontWeight:"bold",fontSize:20}}>Thanh toán: {toVND(totalPrice)}</Text>
+          <Text style={{ color: "#FFF", fontWeight: "bold", fontSize: 20 }}>Thanh toán: {toVND(totalPrice)}</Text>
         </TouchableOpacity>
       </Card>
       <Modal
@@ -150,7 +170,7 @@ function ConfirmationScreen(props) {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
-        presentationStyle ="pageSheet"
+        presentationStyle="pageSheet"
         transparent={true}
       >
         <View style={styleA.centeredView}>
@@ -171,32 +191,32 @@ function ConfirmationScreen(props) {
 }
 
 const styleA = StyleSheet.create({
-  container:{
-    marginLeft:10,
-    marginRight:10,
-    marginTop:30
+  container: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 30
   },
-  h1:{
-    fontWeight:'bold',
-    fontSize:20,
-    marginBottom:30,
-    alignSelf:'center',
-    color:'#FB6F6F'
+  h1: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginBottom: 30,
+    alignSelf: 'center',
+    color: '#FB6F6F'
   },
-  h2:{
-    fontWeight:'bold',
-    fontSize:17,
-    marginBottom:15,
+  h2: {
+    fontWeight: 'bold',
+    fontSize: 17,
+    marginBottom: 15,
   },
-  h3:{
-    
-    fontSize:15,
-    marginBottom:15,
+  h3: {
+
+    fontSize: 15,
+    marginBottom: 15,
   },
-  conDate:{
+  conDate: {
     flexDirection: "row",
     justifyContent: 'space-between',
-    marginTop:20
+    marginTop: 20
   },
   centeredView: {
     flex: 1,
@@ -223,7 +243,7 @@ const styleA = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     elevation: 2,
-    width:80
+    width: 80
   },
   buttonOpen: {
     backgroundColor: "#F194FF",

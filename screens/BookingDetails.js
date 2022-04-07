@@ -49,13 +49,13 @@ export const BookingDetails = (props) => {
       bookingId: booking.id,
       stars: star,
       description: value
-    }, jwt)
+    }, jwt);
   }
 
   const isShowFeedback = () => {
     Services.search(ENTITY.FEEDBACK, { bookingId: booking.id }, jwt)
-      .then(({ content }) => {
-        setShowFeedback(booking.status == STATUS.FINISH && !content);
+      .then(({ data }) => {
+        setShowFeedback(booking.status == STATUS.FINISH && !data.content);
       })
   }
 
@@ -67,7 +67,7 @@ export const BookingDetails = (props) => {
     isShowFeedback();
     navigation.addListener('focus', () => {
       isShowFeedback();
-  });
+    });
   }, [])
 
 

@@ -15,6 +15,7 @@ import { toVND, toUSD } from '../utils/CurrencyHelper';
 
 import {WebView} from 'react-native-webview';
 import Feather from 'react-native-vector-icons/Feather';
+import { addDate } from '../utils/DateHelper';
 
 
 
@@ -36,7 +37,13 @@ function Payment(props) {
   function onMessage(e) {
     let data = e.nativeEvent.data;
     setShowGateway(false);
-    console.log(data);
+    
+
+    Date.prototype.addDays = function (days) {
+      const date = new Date(this.valueOf());
+      date.setDate(date.getDate() + days);
+      return date;
+    };
     let payment = JSON.parse(data);
     if (payment.status === 'COMPLETED') {
       Services.booking({
@@ -45,7 +52,9 @@ function Payment(props) {
         customerId: user.id,
         items: forwardedItems,
         departureDate: startDate,
-        returnDate: getDate,
+        returnDate: addDate(startDate,pkg.duration - 1),
+        photoReceiptDate:getDate,
+        adviceDate:dressDate
       }, jwt).then((response) => {
         console.log(response);
         onContinuePress();

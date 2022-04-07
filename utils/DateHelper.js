@@ -21,3 +21,9 @@ export const formatDate = (date) => {
 
   return [year, month, day].join('-');
 }
+
+export const addDate = (date,num) => {
+  const data = new Date(date);
+  data.setDate(data.getDate() + num)
+  return formatDate(data);
+}

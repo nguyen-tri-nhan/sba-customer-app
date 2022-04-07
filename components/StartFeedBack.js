@@ -2,13 +2,14 @@ import React,{useState} from 'react';
 import { TouchableOpacity, Image, StyleSheet,View,Text } from 'react-native';
 import Icon from "react-native-dynamic-vector-icons";
 
-function StarFeedBack({ onSelectedStar}){
+function StarFeedBack({ onSelectedStar,star}){
     
     const [color1,setColor1] = useState(false);
     const [color2,setColor2] = useState(false);
     const [color3,setColor3] = useState(false);
     const [color4,setColor4] = useState(false);
     const [color5,setColor5] = useState(false);
+
     const handlePress1 = () => {
         setColor1(true);
         setColor2(false);

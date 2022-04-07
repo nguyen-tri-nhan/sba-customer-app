@@ -145,8 +145,8 @@ export const BookingDetails = (props) => {
           </View>):<></>}
           {
               forwardedItems.map((item) =>
-              (<View key={item.id} style={styleA.conText}>
-                  <Text style={[styleA.text,{marginBottom:10}]}>{item.itemName} :</Text>
+              (<View key={item.id} style={[styleA.conText,{flexDirection:"row",justifyContent:'space-between',marginRight:30}]}>
+                  <Text style={[styleA.text,{marginBottom:10}]}>{item.itemName} : x{item.amount} cái  </Text>
                   <Text style={[styleA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
               </View>
               ))

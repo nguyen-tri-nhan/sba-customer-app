@@ -12,7 +12,7 @@ import { ENTITY } from '../utils/Constants';
 import { ago } from '../utils/DateHelper';
 import Icon from "react-native-dynamic-vector-icons";
 import { before } from 'lodash';
-import CheckBox from '@react-native-community/checkbox';
+import Checkbox from 'expo-checkbox';
 
 function ConfirmationScreen(props) {
   const { navigation, route } = props;
@@ -24,7 +24,11 @@ function ConfirmationScreen(props) {
   const [unavailableSlots, setUnavailableSlots] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [isSelected, setSelection] = useState(false);
+  const [isChecked, setChecked] = useState(false);
+
+  const onSlected = () => {
+    setSelection(!isSelected);
+  }
 
   const styles = useStyle();
   const onContinuePress = () => {
@@ -146,15 +150,17 @@ function ConfirmationScreen(props) {
             </View>
               <DatePicker onConfirm={setGetDate} disabled={!startDate} validRange={{ startDate: ago(3, startDate) }}/>
             </View>
-            <View style={styleA.conRow}>
-              <CheckBox
-                value={isSelected}
-                onValueChange={setSelection}
+            <View style={[styleA.conRow,{marginTop:10}]}>
+              <Checkbox
                 style={styleA.checkbox}
+                value={isChecked}
+                onValueChange={setChecked}
+                color={isChecked ? '#4630EB' : undefined}
               />
-              <Text>Bạn muốn lên thử áo quần trước khi chụp ?</Text>
+
+              <Text style={{bottom:-5}}>Bạn muốn lên thử áo quần trước khi chụp ?</Text>
             </View>
-            <View style={styleA.conDate}>
+            <View style={styleA.conDate} disabled={isChecked}>
             <View style={styleA.conRow}>
             <Icon
               name="calendar"
@@ -166,7 +172,7 @@ function ConfirmationScreen(props) {
             </Text>
             </View>
                <View style={styleA.conText}>
-                <DatePicker onConfirm={setDressDate} disabled={!startDate} validRange={{ startDate: ago(1), endDate: ago(-1, startDate)}}/>
+                <DatePicker onConfirm={setDressDate} disabled={!startDate || !isChecked} validRange={{ startDate: ago(1), endDate: ago(-1, startDate)}}/>
               </View>
             </View>
           </View>
@@ -281,6 +287,9 @@ const styleA = StyleSheet.create({
   },
   checkbox: {
     alignSelf: "center",
+    marginHorizontal:30,
+    width:30,
+    height:30
   }
 })
 export default ConfirmationScreen;

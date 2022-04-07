@@ -26,7 +26,7 @@ function Payment(props) {
   const isAndroid = Platform.OS === 'android';
   const styles = useStyle();
   const onContinuePress = () => {
-    navigation.navigate("SuccessScreen", { pkg });
+    navigation.navigate("SuccessScreen", { showroom });
   }
 
   const [showGateway, setShowGateway] = useState(false);
@@ -113,12 +113,11 @@ function Payment(props) {
           onRequestClose={() => setShowGateway(false)}
           animationType={'fade'}
           // transparent={true}
-          // style={{top:300}}
           >
-          <View style={stylesA.webViewCon}>
+          <View style={[stylesA.webViewCon,{top:isAndroid?0:50}]}>
             <View style={stylesA.wbHead}>
               <TouchableOpacity
-                style={{padding: 13,top:isAndroid?0:30}}
+                style={{padding: 13}}
                 onPress={() => setShowGateway(false)}>
                 <Feather name={'x'} size={30} />
               </TouchableOpacity>
@@ -206,7 +205,7 @@ const stylesA = StyleSheet.create({
   },
   webViewCon: {
     position: 'absolute',
-    top: 0,
+    top: 50,
     left: 0,
     right: 0,
     bottom: 0,

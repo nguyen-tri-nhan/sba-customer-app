@@ -30,7 +30,6 @@ function PreviewResultScreen(props) {
         {links ?
           renderLinks() :
           (<View/>)}
-        <ResultItem item={links[0]} sourceImg={sourceImg} />
       </ScrollView>
       </View>
       <Card style={[styles.packageDetailsFooter,{marginTop:10}]}>

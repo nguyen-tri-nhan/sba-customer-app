@@ -52,7 +52,7 @@ const styleA = StyleSheet.create({
   },
   status:{
     borderRadius:20,
-    width:"42%",
+    width:"35%",
     alignItems:'center',
     right:-10,
     bottom:15,
@@ -63,8 +63,8 @@ const styleA = StyleSheet.create({
   statusText:{
     fontWeight:'bold',
     color:'#fff',
-    fontSize:15,
-    top:4
+    fontSize:13,
+    top:8
   },
   text: {
     marginLeft: 10,

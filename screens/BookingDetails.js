@@ -64,7 +64,7 @@ export const BookingDetails = (props) => {
 
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
-      <Card key={'2'} style={styles.packageDetailsTitleCard}>
+      <Card key={'2'} style={[styles.packageDetailsTitleCard,{marginBottom:0}]}>
         <ScrollView>
           <View style={styleA.conText}>
           <Title style={[styles.packageDetailsTitle,styleA.titlePkg]}>{pkg.name}</Title>
@@ -119,7 +119,10 @@ export const BookingDetails = (props) => {
           </View>
           
           <Paragraph>{pkg.description}</Paragraph>
-
+            
+          <View style={styleA.conRow}>
+          <Text style={[styleA.textIcon,{}]}>Xem ảnh thử trang điểm:</Text>
+          </View>
           
           
           {forwardedItems.length>0?(
@@ -185,13 +188,11 @@ export const BookingDetails = (props) => {
             </View>
             ):<></>}
             {showFeedback && !feedback?(
-              <View style={{marginBottom:40}}>
                 <TouchableOpacity onPress={onFeedBackClick}>
                   <View style={[styleA.conBtn,{height:40}]}>
-                    <Text style={styleA.conTextBtn}>Đánh giá</Text>
+                    <Text style={[styleA.conTextBtn,{top:8}]}>Đánh giá</Text>
                   </View>
                 </TouchableOpacity>
-              </View>
             ):<></>}
           </View>
         </ScrollView>
@@ -336,8 +337,8 @@ const styleA = StyleSheet.create({
 
   },
   conBtn:{
-    borderRadius:5,
-    backgroundColor:"#1CC286",
+    borderRadius:10,
+    backgroundColor:"#2D71D7",
     width:150,
     height:"80%",
     alignSelf:'center',
@@ -347,7 +348,7 @@ const styleA = StyleSheet.create({
     fontWeight:'bold',
     fontSize:20,
     color:"#fff",
-    top:5
+    top:15
   }
   ,centeredView: {
     flex: 1,

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import { StyleSheet,View,Text,Image ,TouchableOpacity} from "react-native";
 import Icon from "react-native-dynamic-vector-icons";
 
@@ -15,6 +15,10 @@ function StyleItem({ item, onSelectedStyle,onRemoveStyle,disabled}) {
         }
         setChoose(!choose)
     }
+
+    useEffect(() => {
+        setChoose(false);
+    },[])
     
     return (
         <TouchableOpacity onPress={handleChoose} disabled={disabled}>

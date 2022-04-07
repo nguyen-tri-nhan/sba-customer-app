@@ -107,9 +107,11 @@ function ConfirmationScreen(props) {
               type="Entypo"
               size={30}
             />
-            <Text style={[styleA.h3,styleA.textIcon]}>
-              Dịch vụ thêm:
-            </Text>
+            {
+              forwardedItems.length>0?(<Text style={[styleA.h3,styleA.textIcon]}>
+                Dịch vụ thêm:
+              </Text>):<></>
+            }
             </View>
             {
               forwardedItems.map((item) =>

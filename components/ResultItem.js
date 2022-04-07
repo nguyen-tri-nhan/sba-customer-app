@@ -1,16 +1,28 @@
-import React from 'react';
-import { TouchableOpacity, Image, StyleSheet,View,Text } from 'react-native';
+import React,{useState} from 'react';
+import { TouchableOpacity, Image, StyleSheet,View,Text,Modal,Pressable } from 'react-native';
 import { useStyle } from '../utils/style';
 import { Card } from 'react-native-paper';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 function ResultItem({ sourceImg, item }) {
 
   const styles = useStyle();
 
- 
+  const getImgObj = (url) => {
+    let images = [];
+    let obj={};
+    obj["url"]=url;
+    obj["props"]={};
+    images.push(obj)
+    return images
+  }
+  
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <Card style={stylesA.card}>
+
+      
           <View style={stylesA.container}>
           <View style={stylesA.conLink}>
           <View style={stylesA.conImage1}>
@@ -29,12 +41,30 @@ function ResultItem({ sourceImg, item }) {
           </View>
       </View>
               <View style={stylesA.divineLineRow} />
-      <View style={stylesA.conImage2}>
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => {setModalVisible(true)}}
+          >
+            <View style={stylesA.conImage2}>
               <Image source={{uri:item.result}}
                 style={{ flex: 1, width: 200, height: 50, alignSelf: 'center', marginTop: 10, resizeMethod: 'resize', resizeMode: 'contain' }}>
               </Image>
               <Text style={[stylesA.text,{bottom:20}]}>Kết quả</Text>
-          </View>
+            </View>
+          </Pressable>
+          <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <ImageViewer imageUrls={getImgObj(item.result)} enableSwipeDown="true" 
+        
+        onCancel={() => setModalVisible(!modalVisible)}
+        />
+      </Modal>
     </Card>
   );
 }

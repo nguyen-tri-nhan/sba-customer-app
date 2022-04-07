@@ -32,10 +32,10 @@ function PackageDetailsScreen(props) {
     if (imgs) {
       let images = []
       imgs.forEach(item => {
-        let oj = {}
-        oj["url"]=item.imageUrl;
-        oj["props"]={};
-        images.push(oj)
+        let obj = {}
+        obj["url"]=item.imageUrl;
+        obj["props"]={};
+        images.push(obj)
       });
       return images
     }

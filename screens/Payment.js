@@ -25,8 +25,8 @@ function Payment(props) {
   const { pkg, jwt, forwardedItems, user, totalPrice, showroom, dressDate, startDate, getDate } = params;
   const isAndroid = Platform.OS === 'android';
   const styles = useStyle();
-  const onContinuePress = () => {
-    navigation.navigate("SuccessScreen", { showroom });
+  const onContinuePress = (id) => {
+    navigation.navigate("SuccessScreen", { id });
   }
 
   const [showGateway, setShowGateway] = useState(false);
@@ -45,6 +45,7 @@ function Payment(props) {
       return date;
     };
     let payment = JSON.parse(data);
+    console.log(payment)
     if (payment.status === 'COMPLETED') {
       Services.booking({
         showroomId: showroom.id,
@@ -54,10 +55,13 @@ function Payment(props) {
         departureDate: startDate,
         returnDate: addDate(startDate,pkg.duration - 1),
         photoReceiptDate:getDate,
-        adviceDate:dressDate
+        adviceDate:dressDate,
+        transactionId:payment.id,
+        paid:totalPrice
       }, jwt).then((response) => {
-        console.log(response);
-        onContinuePress();
+        console.log(response.data.id);
+
+        onContinuePress(response.data.id);
       })
     } else {
       alert('THANH TOÁN LỖI. VUI LÒNG THANH TOÁN LẠI.');

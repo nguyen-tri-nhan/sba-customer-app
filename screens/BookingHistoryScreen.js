@@ -15,6 +15,7 @@ export const BookingHistoryScreen = (props) => {
   const styles = useStyle();
   const [loading,setLoading] = useState(0);
 
+
   const renderBookingHistory = (data) => {
     // console.log(data);
     return data.map((booking) => <BookingHistory key={booking.id} booking={booking} navigation={navigation}/>)
@@ -23,7 +24,7 @@ export const BookingHistoryScreen = (props) => {
   return (
     <SafeAreaView style={styles.listItem}>
       <ScrollView>
-      <DataLoader key={next()} entity={ENTITY.BOOKING} jwt={jwt} renderData={renderBookingHistory} additionalParams={{ customerId: user.id }} getAll />
+      <DataLoader key={next()} entity={ENTITY.BOOKING} jwt={jwt} renderData={renderBookingHistory} additionalParams={{ customerId: user.id }} getAll navigation={navigation} />
       </ScrollView>
     </SafeAreaView>
   )

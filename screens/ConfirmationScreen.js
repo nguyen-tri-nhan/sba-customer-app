@@ -12,6 +12,7 @@ import { ENTITY } from '../utils/Constants';
 import { ago } from '../utils/DateHelper';
 import Icon from "react-native-dynamic-vector-icons";
 import { before } from 'lodash';
+import CheckBox from '@react-native-community/checkbox';
 
 function ConfirmationScreen(props) {
   const { navigation, route } = props;
@@ -23,6 +24,7 @@ function ConfirmationScreen(props) {
   const [unavailableSlots, setUnavailableSlots] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [isSelected, setSelection] = useState(false);
 
   const styles = useStyle();
   const onContinuePress = () => {
@@ -58,7 +60,6 @@ function ConfirmationScreen(props) {
             <Text style={styleA.h1}>
               XÁC NHẬN
             </Text >
-
             <View
               style={{
                 borderBottomColor: '#000',
@@ -127,7 +128,7 @@ function ConfirmationScreen(props) {
               size={30}
             />
             <Text style={{marginLeft:10,top:5,fontSize:15}}>
-              Ngày đi chụp :
+              Ngày chụp :
             </Text>
             </View>
               <DatePicker onConfirm={setStartDate} validRange={{ startDate: ago(3), disabledDates: unavailableSlots }}/>
@@ -145,6 +146,14 @@ function ConfirmationScreen(props) {
             </View>
               <DatePicker onConfirm={setGetDate} disabled={!startDate} validRange={{ startDate: ago(3, startDate) }}/>
             </View>
+            <View style={styleA.conRow}>
+              <CheckBox
+                value={isSelected}
+                onValueChange={setSelection}
+                style={styleA.checkbox}
+              />
+              <Text>Bạn muốn lên thử áo quần trước khi chụp ?</Text>
+            </View>
             <View style={styleA.conDate}>
             <View style={styleA.conRow}>
             <Icon
@@ -153,7 +162,7 @@ function ConfirmationScreen(props) {
               size={30}
             />
             <Text style={{marginLeft:10,top:5,fontSize:15}}>
-              Ngày thử đồ:
+              Ngày thử :
             </Text>
             </View>
                <View style={styleA.conText}>
@@ -269,6 +278,9 @@ const styleA = StyleSheet.create({
   textIcon:{
     top:10,
     marginLeft:20,
+  },
+  checkbox: {
+    alignSelf: "center",
   }
 })
 export default ConfirmationScreen;

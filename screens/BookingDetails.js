@@ -7,7 +7,8 @@ import { toVND } from '../utils/CurrencyHelper';
 import Icon from "react-native-dynamic-vector-icons";
 import {Pressable,TextInput }  from "react-native";
 import StarFeedBack from "../components/StartFeedBack";
-import StarReview from 'react-native-star-review'
+import StarReview from 'react-native-star-review';
+import SvgQRCode from 'react-native-qrcode-svg';
 
 
 export const BookingDetails = (props) => {
@@ -39,7 +40,7 @@ export const BookingDetails = (props) => {
   }
 
   const onSendFeedback = () => {
-    //add api them fb
+    //add api them fb 
     console.log("feedback")
     console.log(star);
     console.log(value);
@@ -61,6 +62,8 @@ export const BookingDetails = (props) => {
   const [showFeedback,setShowFeedback] = useState(false)
   const [cancel,setCancel] = useState(true);
   const [edit,setEdit] = useState(true);
+
+  const booking_id = booking.id+"";
 
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
@@ -149,6 +152,11 @@ export const BookingDetails = (props) => {
               ))
             }
           
+          <View style={styleA.divineLine} />
+          {/* qr code */}
+          <View style={styleA.conQR}>
+            <SvgQRCode value={booking_id} size={200}/>
+          </View>
           <View style={styleA.divineLine} />
           <View style={[styleA.conRow,{marginTop:20}]}>
             <Icon
@@ -400,6 +408,11 @@ const styleA = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
+  conQR:{
+    marginTop:20,
+    alignSelf:'center',
+    alignItems:'center',
+  }
 
 })
 

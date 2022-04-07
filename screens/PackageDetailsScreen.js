@@ -146,7 +146,7 @@ function PackageDetailsScreen(props) {
           />
           <Text style={[styleA.addition,styleA.textIcon]}>Dịch vụ thêm: </Text>
           </View>
-          <DataLoader key={'1'} jwt={jwt} entity={ENTITY.ADDITIONAL_ITEM} renderData={renderAdditionalItem} getAll initialStatus={STATUS.ENABLE} />
+          <DataLoader key={'1'} jwt={jwt} entity={ENTITY.ADDITIONAL_ITEM} renderData={renderAdditionalItem} getAll initialStatus={STATUS.ENABLE} navigation={navigation}/>
           </View>
         </ScrollView>
       </Card>

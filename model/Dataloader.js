@@ -15,6 +15,7 @@ const DataLoader = ({
   noCard = false,
   jwt,
   initialStatus,
+  navigation,
   ...props
 }) => {
 
@@ -42,7 +43,13 @@ const DataLoader = ({
 
   useEffect(() => {
     refreshData();
-  }, [page, status]);
+    if(navigation){
+      navigation.addListener('focus', () => {
+        refreshData();
+      })
+    }
+    
+  },[page, status]);
 
 
   const handleChange = (e) => {

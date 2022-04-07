@@ -19,6 +19,7 @@ import { isEmpty } from "lodash";
 import Services from "../utils/Services";
 import { PackagesStack } from "../stack/PackageStack";
 import { HistoryStack } from "../stack/HistoryStack";
+import AsyncStorageLib from "@react-native-async-storage/async-storage";
 
 export default function Navigation({ colorScheme }) {
   const [jwt, setJwt] = useState('');
@@ -32,8 +33,10 @@ export default function Navigation({ colorScheme }) {
       login: (user, errorHandler) => {
         Services.login(user, errorHandler)
           .then(({ data }) => {
-            setJwt(`Bearer ${data.accessToken}`);
-            return `Bearer ${data.accessToken}`;
+            const jwtToken = `Bearer ${data.accessToken}`;
+            setJwt(jwtToken);
+            AsyncStorageLib.setItem("JWT", jwtToken)
+            return jwtToken;
           })
           .then((jwt) => {
             Services.getMe(jwt)
@@ -43,14 +46,32 @@ export default function Navigation({ colorScheme }) {
           })
       },
       logout: () => {
-        setJwt('');
-        setUserDetails();
+        AsyncStorageLib.clear(() => {
+          setJwt('');
+          setUserDetails();
+        })
       },
       getJwt: () => {
         return jwt;
       }
     };
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    AsyncStorageLib.getItem("JWT")
+      .then((data) => {
+        setJwt(data);
+        return data;
+      })
+      .then((token) => {
+        if (token) {
+          Services.getMe(token)
+          .then(({ data }) => {
+            setUserDetails(data);
+          })
+        }
+      })
+  }, []);
 
   const tabIconProps = {
     size: 30,

@@ -17,7 +17,7 @@ import Feather from 'react-native-vector-icons/Feather';
 function PreviewMakeupScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { pkg, jwt } = params;
+  const { showroom,jwt } = params;
   const styles = useStyle();
   // const onContinuePress = () => {
   //   navigation.push("SuccessScreen", { pkg });
@@ -78,21 +78,25 @@ function PreviewMakeupScreen(props) {
   
   let stylesData = {};
 
+  const [styleList,setStyleList] = useState(new Map())
+
   const onSelectedStyle = (id,url) => {
-    if(id && url && stylesData && !stylesData[id]){
-      stylesData[id]=url;
-    }
+    // if(id && url && stylesData && !stylesData[id]){
+    //   stylesData[id]=url;
+    // }
+    setStyleList(styleList.set(id,url))
   }
 
   const onRemoveStyle = (id,url) => {
-    if(id && url && stylesData[id]){
-      stylesData[id]="";
-    }
+    // if(id && url && stylesData[id]){
+    //   stylesData[id]="";
+    // }
+    setStyleList(styleList.set(id,""))
   }
 
   const onTryPress = () => {
     
-      // console.log(image)
+      console.log(image)
       // const file = dataURLtoFile(image,"img.jpg")
         // Services.uploadFile("@aa89e800-f7e6-46a6-ab42-2f06fbd6e689.jpg").then((res) => {
         //   // console.log(res)
@@ -102,6 +106,7 @@ function PreviewMakeupScreen(props) {
         // img.append("random","a");
         // img.append('userId', 'b');
     
+    
     if(image){
       setLoading(true)
       var myHeaders = new Headers();
@@ -109,9 +114,11 @@ function PreviewMakeupScreen(props) {
 
       var formdata = new FormData();
       formdata.append('img',{ uri: image, name: 'image.jpg', type: 'image/jpeg' });
-      for(id in stylesData){
-        if(stylesData[id].length > 0){
-          formdata.append("styles", id+"_"+stylesData[id]);
+      formdata.append("bookingId", 1);
+      
+      for(const [id, url] of styleList.entries()){
+        if(url.length > 0){
+          formdata.append("styles", id+"_"+url);
         }
       }
       
@@ -150,7 +157,10 @@ function PreviewMakeupScreen(props) {
           }
           
         })
-        .catch(error => console.log('error', error));
+        .catch(error => {console.log('error', error);
+            setErrorModal(true);
+            setLoading(false);
+      });
     }else{
       setModalValidVisible(true)
     }

@@ -15,6 +15,7 @@ import { toVND, toUSD } from '../utils/CurrencyHelper';
 
 import {WebView} from 'react-native-webview';
 import Feather from 'react-native-vector-icons/Feather';
+import { addDate } from '../utils/DateHelper';
 
 
 
@@ -25,7 +26,7 @@ function Payment(props) {
   const isAndroid = Platform.OS === 'android';
   const styles = useStyle();
   const onContinuePress = () => {
-    navigation.navigate("SuccessScreen", { pkg });
+    navigation.navigate("SuccessScreen", { showroom });
   }
 
   const [showGateway, setShowGateway] = useState(false);
@@ -36,7 +37,13 @@ function Payment(props) {
   function onMessage(e) {
     let data = e.nativeEvent.data;
     setShowGateway(false);
-    console.log(data);
+    
+
+    Date.prototype.addDays = function (days) {
+      const date = new Date(this.valueOf());
+      date.setDate(date.getDate() + days);
+      return date;
+    };
     let payment = JSON.parse(data);
     if (payment.status === 'COMPLETED') {
       Services.booking({
@@ -45,7 +52,9 @@ function Payment(props) {
         customerId: user.id,
         items: forwardedItems,
         departureDate: startDate,
-        returnDate: getDate,
+        returnDate: addDate(startDate,pkg.duration - 1),
+        photoReceiptDate:getDate,
+        adviceDate:dressDate
       }, jwt).then((response) => {
         console.log(response);
         onContinuePress();
@@ -104,12 +113,11 @@ function Payment(props) {
           onRequestClose={() => setShowGateway(false)}
           animationType={'fade'}
           // transparent={true}
-          // style={{top:300}}
           >
-          <View style={stylesA.webViewCon}>
+          <View style={[stylesA.webViewCon,{top:isAndroid?0:50}]}>
             <View style={stylesA.wbHead}>
               <TouchableOpacity
-                style={{padding: 13,top:isAndroid?0:30}}
+                style={{padding: 13}}
                 onPress={() => setShowGateway(false)}>
                 <Feather name={'x'} size={30} />
               </TouchableOpacity>
@@ -197,7 +205,7 @@ const stylesA = StyleSheet.create({
   },
   webViewCon: {
     position: 'absolute',
-    top: 0,
+    top: 50,
     left: 0,
     right: 0,
     bottom: 0,

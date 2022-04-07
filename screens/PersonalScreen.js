@@ -1,7 +1,11 @@
-import { useContext } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useContext,useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import { AuthContext } from "../utils/context";
 import Icon from "react-native-dynamic-vector-icons";
+
+
+import {Modal,Pressable,TextInput }  from "react-native";
+import StarFeedBack from "../components/StartFeedBack";
 
 
 export default function PersonalScreen({ navigation, route }) {
@@ -10,9 +14,20 @@ export default function PersonalScreen({ navigation, route }) {
 
   const onLogoutClick = (e) => {
     logout();
+    // setModalVisible(true);
+
   }
 
+  const showModal = ()=>{
+    setModalVisible(true);
+  }
+
+
   const { user } = route.params;
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+
 
   return (
     <View style={styles.container}>
@@ -37,11 +52,43 @@ export default function PersonalScreen({ navigation, route }) {
       <Text style={styles.title}>{user.phoneNumber}</Text>
       </View>
       <TouchableOpacity
-        onPress={onLogoutClick}
+        onPress={showModal}
         style={styles.link}
       >
         <Text style={styles.linkText}>Đăng xuất</Text>
       </TouchableOpacity>
+
+      <Modal
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+        transparent={true}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalTitle}>Đăng xuất khỏi tài khoản ?</Text>
+            
+            <View style={{flexDirection:"row",justifyContent:"space-around"}} >
+            <Pressable
+              style={[styles.button, styles.buttonClose,{backgroundColor:"#E14C4C"}]}
+              onPress={() => {onLogoutClick()}}
+            >
+              <Text style={styles.textStyle}>Đồng ý</Text>
+            </Pressable>
+            
+            <Pressable
+              style={[styles.button, styles.buttonClose,{backgroundColor:"#fff"}]}
+              onPress={() => {setModalVisible(!modalVisible)}}
+            >
+              <Text style={[styles.textStyle,{color:"#000"}]}>Đóng</Text>
+            </Pressable>
+            </View>
+            
+          </View>
+        </View>
+
+      </Modal>
     </View>
   );
 }
@@ -86,5 +133,54 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     backgroundColor: "#4A4A4A",
     marginTop:10
-  }
+  },centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    
+    width:"80%"
+  },
+  button: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    width:80
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  modalTitle:{
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
 });

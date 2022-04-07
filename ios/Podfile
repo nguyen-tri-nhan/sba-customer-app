@@ -26,7 +26,6 @@ target 'sbacustomerapp' do
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
-  pod 'BEMCheckBox'
 
   post_install do |installer|
     react_native_post_install(installer)

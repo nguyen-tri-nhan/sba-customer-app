@@ -11,6 +11,11 @@ export const endPoint = `${domain}${subService}`;
 
 export const STATUS = {
   ENABLE: 'ENABLE',
+  FINISH: 'FINISH',
+  CANCELED: 'CANCELED',
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  ONBOARD: 'ONBOARD',
 }
 
 export const ENTITY = {
@@ -20,4 +25,12 @@ export const ENTITY = {
   ADDITIONAL_ITEM: 'addition-item',
   STYLE: 'style',
   SLOT: 'slot',
+  FEEDBACK: 'feedback',
+}
+
+export const STATUS_TRANS = {
+  FINISH: 'Hoàn thành',
+  CANCELED: 'Hủy',
+  PENDING: 'Đang chờ',
+  PROCESSING: 'Đang thực hiện',
 }

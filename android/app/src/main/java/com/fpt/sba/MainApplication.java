@@ -10,8 +10,8 @@ import com.facebook.react.ReactApplication;
 import com.imagepicker.ImagePickerPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.imagepicker.ImagePickerPackage;
-// import com.zoontek.rnlocalize.RNLocalizePackage;
-import com.reactcommunity.rnlocalize.RNLocalizePackage;
+
+
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -24,6 +24,12 @@ import com.facebook.react.bridge.JSIModulePackage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
+
+import com.fpt.sba.zpmodule.PayZaloBridge;
+import vn.zalopay.sdk.Environment;
+import vn.zalopay.sdk.ZaloPaySDK;
+
 
 public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(
@@ -40,6 +46,7 @@ public class MainApplication extends Application implements ReactApplication {
       List<ReactPackage> packages = new PackageList(this).getPackages();
       // Packages that cannot be autolinked yet can be added manually here, for example:
       // packages.add(new MyReactNativePackage());
+      packages.add(new PayZaloBridge());
       return packages;
     }
 
@@ -60,6 +67,8 @@ public class MainApplication extends Application implements ReactApplication {
     SoLoader.init(this, /* native exopackage */ false);
 
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+
+    ZaloPaySDK.init(554,Environment.SANDBOX);
     ApplicationLifecycleDispatcher.onApplicationCreate(this);
   }
 

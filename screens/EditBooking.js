@@ -11,38 +11,24 @@ import { useStyle } from '../utils/style';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Icon from "react-native-dynamic-vector-icons";
 
-function PackageDetailsScreen(props) {
+function EditBooking(props) {
 
   const styles = useStyle();
 
   const { navigation, route } = props;
   const { params } = route;
-  const { pkg, jwt } = params;
+  const { booking, jwt } = params;
+  const pkg = booking.package;
 
   const [additionalItems, setAdditionalItems] = useState([]);
 
-  const getImagesList = (imgs) => {
-    if (imgs) {
-      return imgs.map((item) => item.imageUrl);
-    }
-    return;
-  }
 
-  const getImagesViewList = (imgs) => {
-    if (imgs) {
-      let images = []
-      imgs.forEach(item => {
-        let obj = {}
-        obj["url"]=item.imageUrl;
-        obj["props"]={};
-        images.push(obj)
-      });
-      return images
-    }
-    return;
-  }
+    useEffect(() => {
 
-  const images = getImagesList(pkg.images);
+    },[])
+  
+
+
 
   const onBookingPress = () => {
     navigation.push("ChooseShowroom", { pkg: pkg, additionalItems: additionalItems, totalPrice: countTotalPrice() });
@@ -59,12 +45,20 @@ function PackageDetailsScreen(props) {
       return;
     }
     setAdditionalItems(data);
-    return data.map((item) => (<AdditionalItem onAmountChange={onAmountChange} key={item.id} item={item} oldAmount={0} />))
+    data.forEach((item) => {
+        booking.items.forEach((ele) => {
+            if (item.id === ele.id && !item.amount && item.amount !== ele.amount){
+                console.log("a")
+                item.amount = ele.amount;
+            }
+        })
+    });
+    return data.map((item) => (<AdditionalItem onAmountChange={onAmountChange} key={item.id} item={item} oldAmount={item.amount} />))
   }
 
   const countTotalPrice = () => {
     let total = 0;
-    total += pkg.price;
+    // total += pkg.price;
     additionalItems.forEach((item) => {
       if (item.amount) {
         total += item.amount * item.price;
@@ -76,66 +70,19 @@ function PackageDetailsScreen(props) {
   
   const [modalVisible, setModalVisible] = useState(false);
 
-  const imagesA = getImagesViewList(pkg.images);
+
 
   return (
 
     <SafeAreaView style={styles.packageDetailsContainer}>
       
-      <Card key={'1'} style={styles.imageSliderCard}>
-      <SliderBox key={pkg.id} images={images} />
-      
-      </Card>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <ImageViewer imageUrls={imagesA} enableSwipeDown="true" 
-        
-        onCancel={() => setModalVisible(!modalVisible)}
-        />
-      </Modal>
+
       
       <Card key={'2'} style={styles.packageDetailsTitleCard}>
         <ScrollView>
           <View style={styleA.conText}>
-          <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={() => {setModalVisible(true)}}
-          >
           <Title style={[styles.packageDetailsTitle,styleA.titlePkg]}>{pkg.name}</Title>
-        </Pressable>
-          <Title style={styles.packageDetailsPrice}>Giá: {toVND(pkg.price)}</Title>
-          <View style={styleA.conRow}>
-          <Icon
-            name="calendar"
-            type="AntDesign"
-            size={30}
-          />
-          <Text style={styleA.textIcon}>Thời gian thực hiện: {pkg.duration} ngày</Text>
-          </View>
-          <View style={styleA.conRow}>
-          <Icon
-            name="location"
-            type="Entypo"
-            size={30}
-          />
-          <Text style={styleA.textIcon}>Địa điểm: {pkg.location}</Text>
-          </View>
-          <View style={styleA.conRow}>
-          <Icon
-            name="description"
-            type="MaterialIcons"
-            size={30}
-          />
-          <Text style={styleA.textIcon}>Mô tả:</Text>
-          </View>
-          
-          <Paragraph>{pkg.description}</Paragraph>
+
           <View style={styleA.divineLine} />
           <View style={styleA.conRow}>
           <Icon
@@ -192,4 +139,4 @@ const styleA = StyleSheet.create({
   }
 })
 
-export default PackageDetailsScreen;
+export default EditBooking;

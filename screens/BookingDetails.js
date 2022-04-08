@@ -14,7 +14,7 @@ import SvgQRCode from 'react-native-qrcode-svg';
 export const BookingDetails = (props) => {
   const { navigation, route } = props;
   const { params } = route; 
-  const {booking} = params
+  const {booking,jwt} = params
   const styles = useStyle();
 
   const pkg = booking.package;
@@ -51,7 +51,9 @@ export const BookingDetails = (props) => {
     setShowFeedback(booking.status=="FINISH")
   },[])
 
-  
+  const onEditPress = () => {
+    navigation.push("EditBooking",{booking,jwt})
+  }
 
 
   const [modalCancel,setModalCancel] = useState(false);
@@ -106,8 +108,8 @@ export const BookingDetails = (props) => {
           </View>
           {booking.adviceDate ? (<View style={styleA.conRow}>
           <Icon
-            name="calendar"
-            type="AntDesign"
+              name="back-in-time"
+              type="Entypo"
             size={30}
           />
           <Text style={styleA.textIcon}>Ngày thử đồ: {booking.adviceDate}</Text>
@@ -122,7 +124,14 @@ export const BookingDetails = (props) => {
           </View>
           
           <Paragraph>{pkg.description}</Paragraph>
-            
+          <View style={[styleA.conRow,{marginTop:10}]}>
+          <Icon
+            name="payment"
+            type="MaterialIcons"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Đã cọc: {toVND(booking.price)} </Text>
+          </View>
           <View style={styleA.conRow}>
           <Text style={[styleA.textIcon,{}]}>Xem ảnh thử trang điểm:</Text>
           </View>
@@ -213,7 +222,7 @@ export const BookingDetails = (props) => {
                </View>
             </TouchableOpacity>):<></>}
 
-            {edit?(<TouchableOpacity>
+            {edit?(<TouchableOpacity onPress={onEditPress}>
               <View style={[styleA.conBtn,{backgroundColor:"#2D71D7"}]}>
                 <Text style={styleA.conTextBtn}>Chỉnh sửa</Text>
                </View>

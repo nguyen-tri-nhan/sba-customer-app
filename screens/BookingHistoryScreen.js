@@ -18,7 +18,7 @@ export const BookingHistoryScreen = (props) => {
 
   const renderBookingHistory = (data) => {
     // console.log(data);
-    return data.map((booking) => <BookingHistory key={booking.id} booking={booking} navigation={navigation}/>)
+    return data.map((booking) => <BookingHistory key={booking.id} booking={booking} jwt={jwt} navigation={navigation}/>)
   }
 
   return (

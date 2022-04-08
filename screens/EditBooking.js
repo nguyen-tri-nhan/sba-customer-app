@@ -30,8 +30,10 @@ function EditBooking(props) {
 
 
 
-  const onBookingPress = () => {
-    navigation.push("ChooseShowroom", { pkg: pkg, additionalItems: additionalItems, totalPrice: countTotalPrice() });
+  const onEditBookingPress = () => {
+    // navigation.push("ChooseShowroom", { pkg: pkg, additionalItems: additionalItems, totalPrice: countTotalPrice() });
+    //edit booking
+    console.log('editbooking')
   }
 
   const onAmountChange = (item, amount) => {
@@ -48,7 +50,6 @@ function EditBooking(props) {
     data.forEach((item) => {
         booking.items.forEach((ele) => {
             if (item.id === ele.id && !item.amount && item.amount !== ele.amount){
-                console.log("a")
                 item.amount = ele.amount;
             }
         })
@@ -78,7 +79,7 @@ function EditBooking(props) {
       
 
       
-      <Card key={'2'} style={styles.packageDetailsTitleCard}>
+      <Card style={[styles.customerInformation,{marginBottom:10}]}>
         <ScrollView>
           <View style={styleA.conText}>
           <Title style={[styles.packageDetailsTitle,styleA.titlePkg]}>{pkg.name}</Title>
@@ -97,8 +98,8 @@ function EditBooking(props) {
           </View>
         </ScrollView>
       </Card>
-      <Card style={styles.packageDetailsFooter}>
-        <TouchableOpacity onPress={onBookingPress} style={styles.packageDetailsBookingButton}>
+      <Card style={[styles.packageDetailsFooter]}>
+        <TouchableOpacity onPress={onEditBookingPress} style={styles.packageDetailsBookingButton}>
           
         <Text style={{color:"#FFF",fontWeight:"bold",fontSize:20}}>Đặt ngay: {toVND(countTotalPrice())}</Text>
         </TouchableOpacity>

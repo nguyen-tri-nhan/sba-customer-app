@@ -29,7 +29,6 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const onLoginPress = (e) => {
-    console.log("login");
     e.preventDefault();
     login(user, errorHandler);
   };

@@ -153,7 +153,7 @@ function Payment(props) {
   function payOrder() {
     var payZP = NativeModules.PayZaloBridge;
     payZP.payOrder(token);
-    console.log("aaa")
+    console.log("thanh toan")
   }
 
 

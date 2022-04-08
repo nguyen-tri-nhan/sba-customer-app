@@ -54,7 +54,8 @@
     "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
     "react-native-webview": "^11.18.1",
-    "react-number-format": "^4.9.1"
+    "react-number-format": "^4.9.1",
+    "react-native-vnpay-merchant": "file:react-native-vnpay-merchant"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

@@ -19,8 +19,6 @@ export const BookingDetails = (props) => {
   const { booking, jwt } = params
   const styles = useStyle();
 
-  console.log("booking", booking);
-
   const pkg = booking.package;
   const forwardedItems = booking.items;
 
@@ -81,6 +79,10 @@ export const BookingDetails = (props) => {
 
       </View>
     )
+  }
+
+  const onEditBookingPress = () => {
+
   }
 
   const [modalCancel, setModalCancel] = useState(false);
@@ -246,11 +248,11 @@ export const BookingDetails = (props) => {
             </View>
           </TouchableOpacity>) : <></>}
 
-          {edit ? (<TouchableOpacity>
+          {edit && (<TouchableOpacity onPress={onEditBookingPress}>
             <View style={[styleA.conBtn, { backgroundColor: "#2D71D7" }]}>
               <Text style={styleA.conTextBtn}>Chỉnh sửa</Text>
             </View>
-          </TouchableOpacity>) : <></>}
+          </TouchableOpacity>)}
 
         </View>
       </Card>

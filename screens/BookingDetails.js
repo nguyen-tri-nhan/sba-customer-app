@@ -10,6 +10,7 @@ import StarFeedBack from "../components/StartFeedBack";
 import StarReview from 'react-native-star-review'
 import Services from "../utils/Services";
 import { ENTITY, STATUS, STATUS_TRANS } from "../utils/Constants";
+import DataLoader from "../model/Dataloader";
 
 
 export const BookingDetails = (props) => {
@@ -73,6 +74,14 @@ export const BookingDetails = (props) => {
   }, [])
 
 
+  const renderStyleTracking = (data) => {
+    console.log('style', data);
+    return (
+      <View>
+
+      </View>
+    )
+  }
 
   const [modalCancel, setModalCancel] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -184,6 +193,17 @@ export const BookingDetails = (props) => {
                   <Text style={styleA.statusText}>{STATUS_TRANS[booking.status]}</Text>
                 </View>
               </View>
+            </View>
+
+            <View>
+              <DataLoader
+                entity={ENTITY.STYLE_TRACKING}
+                additionalParams={{ bookingId: booking.id }}
+                jwt={jwt}
+                getAll
+                navigation={navigation}
+                renderData={renderStyleTracking}
+              />
             </View>
 
 

@@ -48,7 +48,7 @@ function Payment(props) {
   const [showGateway, setShowGateway] = useState(false);
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
-  const url = 'http://192.168.88.171:3000/price='+toUSD(totalPrice);
+  // const url = 'http://192.168.88.171:3000/price='+toUSD(totalPrice);
 
   
   const [modalVisible, setModalVisible] = useState(false);
@@ -56,40 +56,14 @@ function Payment(props) {
   function onMessage(e) {
     let data = e.nativeEvent.data;
     setShowGateway(false);
+    console.log(data);
     
-
-    Date.prototype.addDays = function (days) {
-      const date = new Date(this.valueOf());
-      date.setDate(date.getDate() + days);
-      return date;
-    };
-    let payment = JSON.parse(data);
-    console.log(payment)
-    if (payment.status === 'COMPLETED') {
-      Services.booking({
-        showroomId: showroom.id,
-        packageId: pkg.id,
-        customerId: user.id,
-        items: forwardedItems,
-        departureDate: startDate,
-        returnDate: addDate(startDate,pkg.duration - 1),
-        photoReceiptDate:getDate,
-        adviceDate:dressDate,
-        transactionId:payment.id,
-        paid:totalPrice
-      }, jwt).then((response) => {
-        console.log(response.data.id);
-
-        onContinuePress(response.data.id);
-      })
-    } else {
-      alert('THANH TOÁN LỖI. VUI LÒNG THANH TOÁN LẠI.');
-    }
   }
 
   //zalopay
   const [token, setToken] = React.useState('')
   const [returncode, setReturnCode] = React.useState('')
+  const [url,setURL] = useState('')
   
 
   function getCurrentDateYYMMDD() {
@@ -143,6 +117,7 @@ function Payment(props) {
       .then(resJson => {
         setToken(resJson.zp_trans_token)
         setReturnCode(resJson.return_code)
+        setURL(resJson.order_url)
         console.log(resJson);
       })
       .catch((error) => {
@@ -162,147 +137,7 @@ function Payment(props) {
       <BookingStepIndicator currentStep={2} />
       <Card style={[styles.customerInformation,{justifyContent:'space-between'}]}>
       <ScrollView>
-        <View style={stylesA.container}>
-          <View style={[stylesA.conText,{marginTop:20}]}>
-            <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
-            <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(totalPrice)}</Text>
-          </View>
-          
-            
-          <View style={stylesA.divineLine} />
-          <View style={stylesA.conText}>
-              <Text style={[stylesA.text,{marginBottom:10}]}>{pkg.name} :</Text>
-              <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(pkg.price)}</Text>
-          </View>
-          <View style={stylesA.conText}>
-            <View style={stylesA.conRow}>
-              <Icon
-                name="location"
-                type="Entypo"
-                size={30}
-              />
-              <Text style={[stylesA.text,stylesA.textIcon]}>Địa điểm chụp : </Text>
-            </View>
-            <Text style={[stylesA.text,stylesA.textIcon]}>{pkg.location}</Text>
-          </View>
-          <View style={stylesA.conText}>
-            <View style={stylesA.conRow}>
-            <Icon
-              name="add-a-photo"
-              type="MaterialIcons"
-              size={30}
-            />
-            <Text style={[stylesA.text,stylesA.textIcon]}>
-              Chi nhánh thực hiện : 
-            </Text>
-            </View>
-            <Text style={[stylesA.text,stylesA.textIcon]}>
-              {showroom.name}
-            </Text>
-          </View>
-          <View style={stylesA.conText}>
-            <View style={stylesA.conRow}>
-              <Icon
-                name="location"
-                type="Entypo"
-                size={30}
-              />
-              <Text style={[stylesA.text,stylesA.textIcon]}>Địa chỉ : </Text>
-            </View>
-            <Text style={[stylesA.text,stylesA.textIcon]}>{showroom.address}</Text>
-          </View>
-          <View style={stylesA.conText}>
-            <View style={stylesA.conRow}>
-              <Icon
-                name="ios-today-outline"
-                type="Ionicons"
-                size={30}
-              />
-              <Text style={[stylesA.text,stylesA.textIcon]}>Ngày chụp ảnh : </Text>
-            </View>
-            <Text style={[stylesA.text,stylesA.textIcon]}>{startDate}</Text>
-          </View>
-          <View style={stylesA.conText}>
-            <View style={stylesA.conRow}>
-              <Icon
-                name="ios-today-outline"
-                type="Ionicons"
-                size={30}
-              />
-              <Text style={[stylesA.text,stylesA.textIcon]}>Ngày nhận ảnh : </Text>
-            </View>
-            <Text style={[stylesA.text,stylesA.textIcon]}>{getDate}</Text>
-          </View>
-            {
-              dressDate?(
-                <View style={stylesA.conText}>
-                  <View style={stylesA.conRow}>
-                    <Icon
-                      name="back-in-time"
-                      type="Entypo"
-                      size={30}
-                    />
-                    <Text style={[stylesA.text,stylesA.textIcon]}>Ngày thử đồ : </Text>
-                  </View>
-                  <Text style={[stylesA.text,stylesA.textIcon]}>{dressDate}</Text>
-                </View>
-              ):<></>
-            }
-            {
-              dressDate?(
-                <View style={[stylesA.conText,{marginBottom:20}]}>
-                  <View style={stylesA.conRow}>
-                    <Icon
-                      name="time-slot"
-                      type="Entypo"
-                      size={30}
-                    />
-                    <Text style={[stylesA.text,stylesA.textIcon]}>Thời gian : </Text>
-                  </View>
-                  <Text style={[stylesA.text,stylesA.textIcon]}>{slot=='Morning'?'Sáng':'Chiều'}</Text>
-                </View>
-              ):<></>
-            }
-            {
-              forwardedItems.length>0?<View style={stylesA.divineLine} />:<></>
-            }
-            {
-              forwardedItems.length>0?(
-              <View style={stylesA.conRow}>
-              <Icon
-                name="add-to-list"
-                type="Entypo"
-                size={30}
-              />
-                <Text style={[stylesA.text,stylesA.textIcon]}>
-                  Dịch vụ thêm :
-                </Text>
-              </View>):<></>
-            }
-            {
-                forwardedItems.map((item) =>
-                (<View key={item.id} style={stylesA.conText}>
-                    <Text style={[stylesA.text,{marginBottom:10}]}>{item.itemName} :</Text>
-                    <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
-                </View>
-                ))
-              }
-          
-          <View style={stylesA.divineLine} />
-          <View style={stylesA.conText}>
-            <Text style={stylesA.text}>Thanh toán phần cọc :</Text>
-            <Text style={stylesA.text}>{toVND(totalPrice)}</Text>
-          </View>
-          <View style={[stylesA.conText,{marginTop:20}]}>
-            <Text style={stylesA.text}>Số tiền còn lại :</Text>
-            <Text style={stylesA.text}>{toVND(totalPrice-totalPrice)}</Text>
-          </View>
-          
-          <View style={[stylesA.divineLine,{marginTop:10}]} />
-        </View>
-
-       
-        <View style={stylesA.containerBtn}> 
+       <View style={stylesA.containerBtn}> 
           <View style={stylesA.btnCon}>
             <TouchableOpacity
               style={stylesA.btn}

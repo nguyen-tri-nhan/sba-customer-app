@@ -68,7 +68,7 @@ public class MainApplication extends Application implements ReactApplication {
 
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
 
-    ZaloPaySDK.init(554,Environment.SANDBOX);
+    ZaloPaySDK.init(2553,Environment.SANDBOX);
     ApplicationLifecycleDispatcher.onApplicationCreate(this);
   }
 

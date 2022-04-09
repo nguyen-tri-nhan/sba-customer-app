@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import TabOneScreen from "../screens/TabOneScreen";
@@ -20,10 +20,17 @@ import Services from "../utils/Services";
 import { PackagesStack } from "../stack/PackageStack";
 import { HistoryStack } from "../stack/HistoryStack";
 import AsyncStorageLib from "@react-native-async-storage/async-storage";
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 
 export default function Navigation({ colorScheme }) {
   const [jwt, setJwt] = useState('');
   const [userDetails, setUserDetails] = useState();
+
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   const authContext = useMemo(() => {
     return {
@@ -53,29 +60,100 @@ export default function Navigation({ colorScheme }) {
       },
       getJwt: () => {
         return jwt;
+      },
+      scheduleNotification: (dateTime, title, body, data) => {
+        schedulePushNotification(dateTime, title, body, data);
       }
     };
   }, []);
 
-  useEffect(() => {
+  const getUserContext = () => {
     AsyncStorageLib.getItem("JWT")
-      .then((data) => {
-        setJwt(data);
-        return data;
-      })
-      .then((token) => {
-        if (token) {
-          Services.getMe(token)
-          .then(({ data }) => {
-            setUserDetails(data);
-          })
-        }
-      })
+    .then((data) => {
+      setJwt(data);
+      return data;
+    })
+    .then((token) => {
+      if (token) {
+        Services.getMe(token)
+        .then(({ data }) => {
+          setUserDetails(data);
+        })
+      }
+    })
+  }
+
+  const registerNotification = () => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }
+
+  useEffect(() => {
+    getUserContext();
+    registerNotification();
   }, []);
 
   const tabIconProps = {
     size: 30,
     style: { marginBottom: -3 }
+  }
+
+  const registerForPushNotificationsAsync = async () => {
+    let token;
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+  
+    return token;
+  }
+
+  const schedulePushNotification = async (dateTime, title, body, data) => {
+    const trigger = new Date(dateTime);
+    const now = new Date();
+    trigger.setHours(now.getHours);
+    trigger.setMinutes(now.getMinutes + 1);
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: title,
+        body: body,
+        data: { data: data },
+      },
+      trigger: {seconds: 10}
+    });
   }
 
   const UnAuthStack = createStackNavigator();

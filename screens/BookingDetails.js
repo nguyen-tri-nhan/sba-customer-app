@@ -18,6 +18,8 @@ export const BookingDetails = (props) => {
   const { booking, jwt } = params
   const styles = useStyle();
 
+  console.log("booking", booking);
+
   const pkg = booking.package;
   const forwardedItems = booking.items;
 
@@ -79,7 +81,7 @@ export const BookingDetails = (props) => {
   const [feedback, setFeedback] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false)
   const [cancel, setCancel] = useState(true);
-  const [edit, setEdit] = useState(true);
+  const [edit, setEdit] = useState(booking.editable);
 
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>

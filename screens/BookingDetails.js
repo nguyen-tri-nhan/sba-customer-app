@@ -56,7 +56,7 @@ export const BookingDetails = (props) => {
   const isShowFeedback = () => {
     Services.search(ENTITY.FEEDBACK, { bookingId: booking.id }, jwt)
       .then(({ data }) => {
-        if (data.content && data.content[0]){
+        if (data.content && data.content[0]) {
           setFeedback(true);
           setStar(data.content[0].stars)
         }
@@ -80,7 +80,7 @@ export const BookingDetails = (props) => {
     console.log('style', data);
     return (
       <View>
-
+        
       </View>
     )
   }
@@ -226,6 +226,14 @@ export const BookingDetails = (props) => {
 
                 <View style={styleA.conRow}>
                   <Text style={[styleA.textIcon, {}]}>Xem ảnh thử trang điểm:</Text>
+                  <DataLoader
+                    entity={ENTITY.STYLE_TRACKING}
+                    additionalParams={{ bookingId: booking.id }}
+                    jwt={jwt}
+                    getAll
+                    navigation={navigation}
+                    renderData={renderStyleTracking}
+                  />
                 </View>
 
 
@@ -275,16 +283,7 @@ export const BookingDetails = (props) => {
               </View>
             </View>
 
-            <View>
-              <DataLoader
-                entity={ENTITY.STYLE_TRACKING}
-                additionalParams={{ bookingId: booking.id }}
-                jwt={jwt}
-                getAll
-                navigation={navigation}
-                renderData={renderStyleTracking}
-              />
-            </View>
+
             {(feedback) && (
               <View style={[styleA.conRow, { marginTop: 20 }]}>
                 <Icon
@@ -306,33 +305,33 @@ export const BookingDetails = (props) => {
                 </View>
               </View>
             )}
-            
+
           </View>
         </ScrollView>
       </Card>
-      { (isCancelButtonRendered() || edit || (showFeedback && !feedback)) &&
+      {(isCancelButtonRendered() || edit || (showFeedback && !feedback)) &&
         <Card style={styleA.footerCard}>
-        <View style={styleA.conRowBtn}>
-          {isCancelButtonRendered() && (<TouchableOpacity onPress={onShowCancelModal}>
-            <View style={[styleA.conBtn, { backgroundColor: "#E14C4C" }]}>
-              <Text style={styleA.conTextBtn}>Hủy bỏ</Text>
-            </View>
-          </TouchableOpacity>)}
+          <View style={styleA.conRowBtn}>
+            {isCancelButtonRendered() && (<TouchableOpacity onPress={onShowCancelModal}>
+              <View style={[styleA.conBtn, { backgroundColor: "#E14C4C" }]}>
+                <Text style={styleA.conTextBtn}>Hủy bỏ</Text>
+              </View>
+            </TouchableOpacity>)}
 
-          {edit && (<TouchableOpacity onPress={onEditPress}>
-            <View style={[styleA.conBtn, { backgroundColor: "#2D71D7" }]}>
-              <Text style={styleA.conTextBtn}>Chỉnh sửa</Text>
-            </View>
-          </TouchableOpacity>)}
-          {showFeedback && !feedback && (
+            {edit && (<TouchableOpacity onPress={onEditPress}>
+              <View style={[styleA.conBtn, { backgroundColor: "#2D71D7" }]}>
+                <Text style={styleA.conTextBtn}>Chỉnh sửa</Text>
+              </View>
+            </TouchableOpacity>)}
+            {showFeedback && !feedback && (
               <TouchableOpacity onPress={onFeedBackClick}>
                 <View style={[styleA.conBtn, { height: 40 }]}>
                   <Text style={[styleA.conTextBtn, { top: 8 }]}>Đánh giá</Text>
                 </View>
               </TouchableOpacity>
             )}
-        </View>
-      </Card>
+          </View>
+        </Card>
       }
       <Modal
         visible={modalVisible}

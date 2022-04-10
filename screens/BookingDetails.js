@@ -56,7 +56,7 @@ export const BookingDetails = (props) => {
   const isShowFeedback = () => {
     Services.search(ENTITY.FEEDBACK, { bookingId: booking.id }, jwt)
       .then(({ data }) => {
-        setShowFeedback(booking.status == STATUS.FINISH && !data.content);
+        setShowFeedback(booking.status == STATUS.FINISH && !data.content[0]);
       })
   }
 

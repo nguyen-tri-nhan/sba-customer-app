@@ -58,7 +58,6 @@ function TimePicker({ placeHolder = "Chọn giờ", validRange, onConfirm }) {
     [setOpen, setHour, setMinute]
   );
 
-  console.log('date', hour);
 
   const renderDate = () => {
     return `${hour}:${minute}`;

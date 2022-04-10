@@ -74,7 +74,6 @@ function Payment(props) {
  
   const merchantcode = "MOMOM8AV20220409";
   const merchantNameLabel = "Nhà cung cấp";
-  const amount = 50000;
   const enviroment = "0"; //"0": SANBOX , "1": PRODUCTION
 
 
@@ -91,10 +90,11 @@ function Payment(props) {
     jsonData.merchantcode = merchantcode; //edit your merchantcode here
     jsonData.merchantnamelabel = merchantNameLabel;
     jsonData.description = pkg.name;
-    jsonData.amount = totalPrice;//order total amount
+    // jsonData.amount = totalPrice;//order total amount
+    jsonData.amount = 50000;
     jsonData.orderId = getCurrentDateYYMMDD() + '_' + new Date().getTime();
     jsonData.orderLabel = "Ma don hang";
-    jsonData.appScheme = "com.fpt.sba";// iOS App Only , match with Schemes Indentify from your  Info.plist > key URL types > URL Schemes
+    jsonData.appScheme = "com.fpt.sba.myapp";// iOS App Only , match with Schemes Indentify from your  Info.plist > key URL types > URL Schemes
     console.log("data_request_payment " + JSON.stringify(jsonData));
     if (Platform.OS === 'android'){
       let dataPayment = await RNMomosdk.requestPayment(jsonData);
@@ -107,15 +107,34 @@ function Payment(props) {
     console.log("momoHandleResponse ==== ", response)
     try{
       if (response && response.status == 0) {
+        console.log("momoHandleResponse ==== ", response)
         //SUCCESS continue to submit momoToken,phonenumber to server
         let fromapp = response.fromapp; //ALWAYS:: fromapp == momotransfer
         let momoToken = response.data;
         let phonenumber = response.phonenumber;
         let message = response.message;
+        Services.booking({
+          showroomId: showroom.id,
+          packageId: pkg.id,
+          customerId: user.id,
+          items: forwardedItems,
+          departureDate: startDate,
+          returnDate: addDate(startDate,pkg.duration - 1),
+          photoReceiptDate:getDate,
+          adviceDate:dressDate,
+          transactionId:payment.id,
+          paid:totalPrice
+        }, jwt).then((response) => {
+          console.log(response.data.id);
+  
+          onContinuePress(response.data.id);
+        })
   
       } else {
         //let message = response.message;
         //Has Error: show message here
+        console.log("error ",response)
+        alert('THANH TOÁN LỖI. VUI LÒNG THANH TOÁN LẠI.');
       }
     }catch(ex){}
   }
@@ -264,7 +283,17 @@ function Payment(props) {
           
           <View style={[stylesA.divineLine,{marginTop:10}]} />
         </View>
-        {/* <View style={stylesA.containerBtn}>
+        <View style={[stylesA.containerBtn,{marginBottom:20,marginTop:20}]}>
+          
+          <View style={[stylesA.btnCon,{backgroundColor:"#a50064"}]}>
+            <TouchableOpacity
+              style={stylesA.btn}
+              onPress={() => onPress()}>
+              <Text style={stylesA.btnTxt}>Thanh toán Momo</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={[stylesA.containerBtn,{marginBottom:50}]}>
           
           <View style={stylesA.btnCon}>
             <TouchableOpacity
@@ -273,18 +302,9 @@ function Payment(props) {
               <Text style={stylesA.btnTxt}>Thanh toán PayPal</Text>
             </TouchableOpacity>
           </View>
-        </View> */}
-
-        <View style={stylesA.containerBtn}>
-          
-          <View style={stylesA.btnCon}>
-            <TouchableOpacity
-              style={stylesA.btn}
-              onPress={() => onPress()}>
-              <Text style={stylesA.btnTxt}>Thanh toán Momo</Text>
-            </TouchableOpacity>
-          </View>
         </View>
+
+        
       {showGateway ? (
         <Modal
           visible={showGateway}

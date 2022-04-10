@@ -14,6 +14,9 @@ import Feather from 'react-native-vector-icons/Feather';
 import { addDate } from '../utils/DateHelper';
 
 
+import RNMomosdk from 'react-native-momosdk';
+
+
 
 function Payment(props) {
   const { navigation, route } = props;
@@ -66,6 +69,57 @@ function Payment(props) {
       alert('THANH TOÁN LỖI. VUI LÒNG THANH TOÁN LẠI.');
     }
   }
+
+
+ 
+  const merchantcode = "MOMOM8AV20220409";
+  const merchantNameLabel = "Nhà cung cấp";
+  const amount = 50000;
+  const enviroment = "0"; //"0": SANBOX , "1": PRODUCTION
+
+
+  function getCurrentDateYYMMDD() {
+    var todayDate = new Date().toISOString().slice(2, 10);
+    return todayDate.split('-').join('');
+  }
+
+  const onPress = async () => {
+    let jsonData = {};
+    jsonData.enviroment = enviroment; //SANBOX OR PRODUCTION
+    jsonData.action = "gettoken"; //DO NOT EDIT
+    jsonData.merchantname = pkg.name; //edit your merchantname here
+    jsonData.merchantcode = merchantcode; //edit your merchantcode here
+    jsonData.merchantnamelabel = merchantNameLabel;
+    jsonData.description = pkg.name;
+    jsonData.amount = totalPrice;//order total amount
+    jsonData.orderId = getCurrentDateYYMMDD() + '_' + new Date().getTime();
+    jsonData.orderLabel = "Ma don hang";
+    jsonData.appScheme = "com.fpt.sba";// iOS App Only , match with Schemes Indentify from your  Info.plist > key URL types > URL Schemes
+    console.log("data_request_payment " + JSON.stringify(jsonData));
+    if (Platform.OS === 'android'){
+      let dataPayment = await RNMomosdk.requestPayment(jsonData);
+      momoHandleResponse(dataPayment);
+    }else{
+      RNMomosdk.requestPayment(jsonData);
+    }
+  }
+  const  momoHandleResponse = async (response) => {
+    console.log("momoHandleResponse ==== ", response)
+    try{
+      if (response && response.status == 0) {
+        //SUCCESS continue to submit momoToken,phonenumber to server
+        let fromapp = response.fromapp; //ALWAYS:: fromapp == momotransfer
+        let momoToken = response.data;
+        let phonenumber = response.phonenumber;
+        let message = response.message;
+  
+      } else {
+        //let message = response.message;
+        //Has Error: show message here
+      }
+    }catch(ex){}
+  }
+
   
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
@@ -210,13 +264,24 @@ function Payment(props) {
           
           <View style={[stylesA.divineLine,{marginTop:10}]} />
         </View>
-        <View style={stylesA.containerBtn}>
+        {/* <View style={stylesA.containerBtn}>
           
           <View style={stylesA.btnCon}>
             <TouchableOpacity
               style={stylesA.btn}
               onPress={() => setShowGateway(true)}>
               <Text style={stylesA.btnTxt}>Thanh toán PayPal</Text>
+            </TouchableOpacity>
+          </View>
+        </View> */}
+
+        <View style={stylesA.containerBtn}>
+          
+          <View style={stylesA.btnCon}>
+            <TouchableOpacity
+              style={stylesA.btn}
+              onPress={() => onPress()}>
+              <Text style={stylesA.btnTxt}>Thanh toán Momo</Text>
             </TouchableOpacity>
           </View>
         </View>

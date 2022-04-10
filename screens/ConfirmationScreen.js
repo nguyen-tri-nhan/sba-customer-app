@@ -46,11 +46,11 @@ function ConfirmationScreen(props) {
 
   const styles = useStyle();
   const onContinuePress = () => {
-    if (startDate && getDate){
+    // if (startDate && getDate){
     navigation.push("Payment", { pkg, forwardedItems, totalPrice, showroom, dressDate, startDate, getDate,slot });
-    }else{
-      setModalVisible(true)
-    }
+    // }else{
+    //   setModalVisible(true)
+    // }
   }
 
   console.log('startDate', startDate);

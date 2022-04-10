@@ -302,17 +302,12 @@ export const BookingDetails = (props) => {
                 </View>
               </View>
             )}
-            {showFeedback && !feedback && (
-              <TouchableOpacity onPress={onFeedBackClick}>
-                <View style={[styleA.conBtn, { height: 40 }]}>
-                  <Text style={[styleA.conTextBtn, { top: 8 }]}>Đánh giá</Text>
-                </View>
-              </TouchableOpacity>
-            )}
+            
           </View>
         </ScrollView>
       </Card>
-      <Card style={styleA.footerCard}>
+      { (isCancelButtonRendered() || edit || (showFeedback && !feedback)) &&
+        <Card style={styleA.footerCard}>
         <View style={styleA.conRowBtn}>
           {isCancelButtonRendered() && (<TouchableOpacity onPress={onShowCancelModal}>
             <View style={[styleA.conBtn, { backgroundColor: "#E14C4C" }]}>
@@ -325,10 +320,16 @@ export const BookingDetails = (props) => {
               <Text style={styleA.conTextBtn}>Chỉnh sửa</Text>
             </View>
           </TouchableOpacity>)}
-
+          {showFeedback && !feedback && (
+              <TouchableOpacity onPress={onFeedBackClick}>
+                <View style={[styleA.conBtn, { height: 40 }]}>
+                  <Text style={[styleA.conTextBtn, { top: 8 }]}>Đánh giá</Text>
+                </View>
+              </TouchableOpacity>
+            )}
         </View>
       </Card>
-
+      }
       <Modal
         visible={modalVisible}
         onRequestClose={() => {

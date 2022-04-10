@@ -56,7 +56,7 @@ function ConfirmationScreen(props) {
   console.log('startDate', startDate);
 
   useEffect(() => {
-    Services.search(ENTITY.SLOT, { showroomId: showroom.id }, jwt)
+    Services.search(ENTITY.SLOT_PHOTO, { showroomId: showroom.id }, jwt)
       .then(({ data }) => {
         const { content } = data;
         if (content) {

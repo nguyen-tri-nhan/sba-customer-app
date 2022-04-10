@@ -24,9 +24,10 @@ export const ENTITY = {
   BOOKING: 'booking',
   ADDITIONAL_ITEM: 'addition-item',
   STYLE: 'style',
-  SLOT: 'slot',
+  SLOT_PHOTO: 'slot/photo',
   FEEDBACK: 'feedback',
   STYLE_TRACKING: 'style-tracking',
+  SLOT_DRESS: 'slot/dress',
 }
 
 export const STATUS_TRANS = {

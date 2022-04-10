@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet,SafeAreaView, TouchableOpacity,Modal,
   View, 
   ActivityIndicator,Platform} from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
 import Services from '../utils/Services';
@@ -15,7 +15,10 @@ import { toVND, toUSD } from '../utils/CurrencyHelper';
 
 import {WebView} from 'react-native-webview';
 import Feather from 'react-native-vector-icons/Feather';
-import { addDate } from '../utils/DateHelper';
+import { addDate, ago } from '../utils/DateHelper';
+import { AuthContext } from "../utils/context";
+import { DressDateNotification, paymentUrl, PhotoDateNotification } from '../utils/Constants';
+
 
 
 
@@ -32,7 +35,9 @@ function Payment(props) {
   const [showGateway, setShowGateway] = useState(false);
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
-  const url = 'http://192.168.88.171:3000/price='+toUSD(totalPrice);
+  const url = `${paymentUrl}/price=`+toUSD(totalPrice);
+
+  const { scheduleNotification } = useContext(AuthContext);
 
   function onMessage(e) {
     let data = e.nativeEvent.data;
@@ -54,9 +59,12 @@ function Payment(props) {
         departureDate: startDate,
         returnDate: addDate(startDate,pkg.duration - 1),
         photoReceiptDate:getDate,
-        adviceDate:dressDate
+        adviceDate: dressDate
       }, jwt).then((response) => {
-        console.log(response);
+        const dressNotification = DressDateNotification(showroom);
+        const photoNotification = PhotoDateNotification(showroom);
+        scheduleNotification(ago(-1, dressDate), dressNotification.title, dressNotification.body, dressNotification.data);        
+        scheduleNotification(ago(-1, startDate), photoNotification.title, photoNotification.body, photoNotification.data);        
         onContinuePress();
       })
     } else {

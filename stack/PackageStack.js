@@ -35,7 +35,7 @@ export const PackagesStack = (props) => {
       <Navigation.Screen
         name="ChooseShowroom"
         options={{
-          title: "Đặt lịch",
+          title: "Chọn showroom",
         }}
         component={ChooseShowroomScreen}
         {...props}
@@ -44,7 +44,7 @@ export const PackagesStack = (props) => {
       <Navigation.Screen
         name="Confirmation"
         options={{
-          title: "Đặt lịch",
+          title: "Chọn ngày",
         }}
         component={ConfirmationScreen}
         {...props}
@@ -53,7 +53,7 @@ export const PackagesStack = (props) => {
       <Navigation.Screen
         name="Payment"
         options={{
-          title: "Đặt lịch",
+          title: "Thanh toán",
         }}
         component={Payment}
         {...props}
@@ -72,7 +72,7 @@ export const PackagesStack = (props) => {
       <Navigation.Screen
         name="SuccessScreen"
         options={{
-          title: "Đặt lịch",
+          title: "Thành công",
           headerLeft: null,
         }}
         component={SuccessScreen}

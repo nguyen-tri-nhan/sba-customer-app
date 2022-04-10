@@ -65,7 +65,7 @@ function DatePicker({ placeHolder = "Chọn ngày", validRange, onConfirm, disab
   console.log('date', formatDate(date));
 
   const renderDate = () => {
-    return `${VietNameseDate[date.getDay()]}, ${date.getDate()} tháng ${date.getMonth()} năm ${date.getFullYear()}`;
+    return `${VietNameseDate[date.getDay()]}, ${date.getDate()} tháng ${date.getMonth()+1} năm ${date.getFullYear()}`;
   }
 
   return (

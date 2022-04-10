@@ -11,13 +11,13 @@ import { toVND } from '../utils/CurrencyHelper';
 function SuccessScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { showroom } = params;
+  const { id } = params;
   const styles = useStyle();
   const onContinuePress = () => {
     navigation.navigate('Packages');
   }
   const onPreviewMakeupPress = () => {
-    navigation.push('PreviewMakeup',{showroom});
+    navigation.push('PreviewMakeup',{id});
   }
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>

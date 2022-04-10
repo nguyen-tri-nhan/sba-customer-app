@@ -1,7 +1,5 @@
 import React from 'react';
-import { StyleSheet,SafeAreaView, TouchableOpacity,Modal,
-  View, 
-  ActivityIndicator,Platform} from 'react-native';
+import { StyleSheet,SafeAreaView, TouchableOpacity,Modal,View,ActivityIndicator,Platform,ScrollView,Pressable} from 'react-native';
 import { useEffect, useState } from 'react';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
@@ -9,9 +7,7 @@ import Services from '../utils/Services';
 import { Button, Card } from 'react-native-paper';
 import { useStyle } from '../utils/style';
 import { toVND, toUSD } from '../utils/CurrencyHelper';
-// import Paypal from '../components/Paypal';
-// import { RNPaypal } from 'react-native-paypal'; 
-// import { PayPalButton } from "react-paypal-button-v2";
+import Icon from "react-native-dynamic-vector-icons";
 
 import {WebView} from 'react-native-webview';
 import Feather from 'react-native-vector-icons/Feather';
@@ -22,17 +18,20 @@ import { addDate } from '../utils/DateHelper';
 function Payment(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { pkg, jwt, forwardedItems, user, totalPrice, showroom, dressDate, startDate, getDate } = params;
+  const { pkg, jwt, forwardedItems, user, totalPrice, showroom, dressDate, startDate, getDate,slot } = params;
   const isAndroid = Platform.OS === 'android';
   const styles = useStyle();
-  const onContinuePress = () => {
-    navigation.navigate("SuccessScreen", { showroom });
+  const onContinuePress = (id) => {
+    navigation.navigate("SuccessScreen", { id });
   }
 
   const [showGateway, setShowGateway] = useState(false);
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
   const url = 'http://192.168.88.171:3000/price='+toUSD(totalPrice);
+
+  
+  const [modalVisible, setModalVisible] = useState(false);
 
   function onMessage(e) {
     let data = e.nativeEvent.data;
@@ -45,6 +44,7 @@ function Payment(props) {
       return date;
     };
     let payment = JSON.parse(data);
+    console.log(payment)
     if (payment.status === 'COMPLETED') {
       Services.booking({
         showroomId: showroom.id,
@@ -54,10 +54,13 @@ function Payment(props) {
         departureDate: startDate,
         returnDate: addDate(startDate,pkg.duration - 1),
         photoReceiptDate:getDate,
-        adviceDate:dressDate
+        adviceDate:dressDate,
+        transactionId:payment.id,
+        paid:totalPrice
       }, jwt).then((response) => {
-        console.log(response);
-        onContinuePress();
+        console.log(response.data.id);
+
+        onContinuePress(response.data.id);
       })
     } else {
       alert('THANH TOÁN LỖI. VUI LÒNG THANH TOÁN LẠI.');
@@ -67,45 +70,156 @@ function Payment(props) {
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
       <BookingStepIndicator currentStep={2} />
-      <Card style={styles.customerInformation}>
-      <View style={stylesA.container}>
-        <View style={[stylesA.conText,{marginTop:20}]}>
-          <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
-          <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(totalPrice)}</Text>
-        </View>
+      <Card style={[styles.customerInformation,{justifyContent:'space-between'}]}>
+      <ScrollView>
+        <View style={stylesA.container}>
+          <View style={[stylesA.conText,{marginTop:20}]}>
+            <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
+            <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(totalPrice)}</Text>
+          </View>
           
-        <View style={stylesA.divineLine} />
-        <View style={stylesA.conText}>
+            
+          <View style={stylesA.divineLine} />
+          <View style={stylesA.conText}>
               <Text style={[stylesA.text,{marginBottom:10}]}>{pkg.name} :</Text>
               <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(pkg.price)}</Text>
           </View>
-          {
-              forwardedItems.map((item) =>
-              (<View key={item.id} style={stylesA.conText}>
-                  <Text style={[stylesA.text,{marginBottom:10}]}>{item.itemName} :</Text>
-                  <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
-              </View>
-              ))
+          <View style={stylesA.conText}>
+            <View style={stylesA.conRow}>
+              <Icon
+                name="location"
+                type="Entypo"
+                size={30}
+              />
+              <Text style={[stylesA.text,stylesA.textIcon]}>Địa điểm chụp : </Text>
+            </View>
+            <Text style={[stylesA.text,stylesA.textIcon]}>{pkg.location}</Text>
+          </View>
+          <View style={stylesA.conText}>
+            <View style={stylesA.conRow}>
+            <Icon
+              name="add-a-photo"
+              type="MaterialIcons"
+              size={30}
+            />
+            <Text style={[stylesA.text,stylesA.textIcon]}>
+              Chi nhánh thực hiện : 
+            </Text>
+            </View>
+            <Text style={[stylesA.text,stylesA.textIcon]}>
+              {showroom.name}
+            </Text>
+          </View>
+          <View style={stylesA.conText}>
+            <View style={stylesA.conRow}>
+              <Icon
+                name="location"
+                type="Entypo"
+                size={30}
+              />
+              <Text style={[stylesA.text,stylesA.textIcon]}>Địa chỉ : </Text>
+            </View>
+            <Text style={[stylesA.text,stylesA.textIcon]}>{showroom.address}</Text>
+          </View>
+          <View style={stylesA.conText}>
+            <View style={stylesA.conRow}>
+              <Icon
+                name="ios-today-outline"
+                type="Ionicons"
+                size={30}
+              />
+              <Text style={[stylesA.text,stylesA.textIcon]}>Ngày chụp ảnh : </Text>
+            </View>
+            <Text style={[stylesA.text,stylesA.textIcon]}>{startDate}</Text>
+          </View>
+          <View style={stylesA.conText}>
+            <View style={stylesA.conRow}>
+              <Icon
+                name="ios-today-outline"
+                type="Ionicons"
+                size={30}
+              />
+              <Text style={[stylesA.text,stylesA.textIcon]}>Ngày nhận ảnh : </Text>
+            </View>
+            <Text style={[stylesA.text,stylesA.textIcon]}>{getDate}</Text>
+          </View>
+            {
+              dressDate?(
+                <View style={stylesA.conText}>
+                  <View style={stylesA.conRow}>
+                    <Icon
+                      name="back-in-time"
+                      type="Entypo"
+                      size={30}
+                    />
+                    <Text style={[stylesA.text,stylesA.textIcon]}>Ngày thử đồ : </Text>
+                  </View>
+                  <Text style={[stylesA.text,stylesA.textIcon]}>{dressDate}</Text>
+                </View>
+              ):<></>
             }
-        
-        <View style={stylesA.divineLine} />
-        <View style={stylesA.conText}>
-          <Text style={stylesA.text}>Thanh toán phần cọc :</Text>
-          <Text style={stylesA.text}>{toVND(totalPrice)}</Text>
-         </View>
-         
-         <View style={[stylesA.divineLine,{marginTop:40}]} />
-      </View>
-      <View style={stylesA.containerBtn}>
-        
-        <View style={stylesA.btnCon}>
-          <TouchableOpacity
-            style={stylesA.btn}
-            onPress={() => setShowGateway(true)}>
-            <Text style={stylesA.btnTxt}>Thanh toán PayPal</Text>
-          </TouchableOpacity>
+            {
+              dressDate?(
+                <View style={[stylesA.conText,{marginBottom:20}]}>
+                  <View style={stylesA.conRow}>
+                    <Icon
+                      name="time-slot"
+                      type="Entypo"
+                      size={30}
+                    />
+                    <Text style={[stylesA.text,stylesA.textIcon]}>Thời gian : </Text>
+                  </View>
+                  <Text style={[stylesA.text,stylesA.textIcon]}>{slot=='Morning'?'Sáng':'Chiều'}</Text>
+                </View>
+              ):<></>
+            }
+            {
+              forwardedItems.length>0?<View style={stylesA.divineLine} />:<></>
+            }
+            {
+              forwardedItems.length>0?(
+              <View style={stylesA.conRow}>
+              <Icon
+                name="add-to-list"
+                type="Entypo"
+                size={30}
+              />
+                <Text style={[stylesA.text,stylesA.textIcon]}>
+                  Dịch vụ thêm :
+                </Text>
+              </View>):<></>
+            }
+            {
+                forwardedItems.map((item) =>
+                (<View key={item.id} style={stylesA.conText}>
+                    <Text style={[stylesA.text,{marginBottom:10}]}>{item.itemName} :</Text>
+                    <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
+                </View>
+                ))
+              }
+          
+          <View style={stylesA.divineLine} />
+          <View style={stylesA.conText}>
+            <Text style={stylesA.text}>Thanh toán phần cọc :</Text>
+            <Text style={stylesA.text}>{toVND(totalPrice)}</Text>
+          </View>
+          <View style={[stylesA.conText,{marginTop:20}]}>
+            <Text style={stylesA.text}>Số tiền còn lại :</Text>
+            <Text style={stylesA.text}>{toVND(totalPrice-totalPrice)}</Text>
+          </View>
+          
+          <View style={[stylesA.divineLine,{marginTop:10}]} />
         </View>
-      </View>
+        <View style={stylesA.containerBtn}>
+          
+          <View style={stylesA.btnCon}>
+            <TouchableOpacity
+              style={stylesA.btn}
+              onPress={() => setShowGateway(true)}>
+              <Text style={stylesA.btnTxt}>Thanh toán PayPal</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       {showGateway ? (
         <Modal
           visible={showGateway}
@@ -156,9 +270,10 @@ function Payment(props) {
             />
           </View>
         </Modal>
-      ) : null}
+       ) : null}
 
-        
+
+      </ScrollView>
       </Card>
     </SafeAreaView>
   );
@@ -172,7 +287,6 @@ const stylesA = StyleSheet.create({
   },
   container: {
     flex: 4,
-    alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
   },
@@ -201,7 +315,7 @@ const stylesA = StyleSheet.create({
     color: '#000',
     fontSize: 15,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   webViewCon: {
     position: 'absolute',
@@ -221,7 +335,8 @@ const stylesA = StyleSheet.create({
     flexDirection:"row",
     justifyContent:"space-between",
     // backgroundColor:"#000",
-    width:"90%"
+    width:"90%",
+    marginHorizontal:15,
   },
   
   divineLine: {
@@ -229,8 +344,67 @@ const stylesA = StyleSheet.create({
     height: 1,
     opacity: 0.5,
     marginBottom: 5,
-    backgroundColor: "#4A4A4A"
+    backgroundColor: "#4A4A4A",
+    alignSelf:'center'
+  },
+  conRow:{
+    flexDirection:"row",
+    marginBottom:15
+  },
+  textIcon:{
+    top:10,
+    marginLeft:20,
   }
+  ,centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    
+    width:"80%"
+  },
+  button: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    width:80
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  modalTitle:{
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
 });
 
 export default Payment;

@@ -7,13 +7,14 @@ import { toVND } from '../utils/CurrencyHelper';
 import Icon from "react-native-dynamic-vector-icons";
 import {Pressable,TextInput }  from "react-native";
 import StarFeedBack from "../components/StartFeedBack";
-import StarReview from 'react-native-star-review'
+import StarReview from 'react-native-star-review';
+import SvgQRCode from 'react-native-qrcode-svg';
 
 
 export const BookingDetails = (props) => {
   const { navigation, route } = props;
   const { params } = route; 
-  const {booking} = params
+  const {booking,jwt} = params
   const styles = useStyle();
 
   const pkg = booking.package;
@@ -39,7 +40,7 @@ export const BookingDetails = (props) => {
   }
 
   const onSendFeedback = () => {
-    //add api them fb
+    //add api them fb 
     console.log("feedback")
     console.log(star);
     console.log(value);
@@ -50,7 +51,9 @@ export const BookingDetails = (props) => {
     setShowFeedback(booking.status=="FINISH")
   },[])
 
-  
+  const onEditPress = () => {
+    navigation.push("EditBooking",{booking,jwt})
+  }
 
 
   const [modalCancel,setModalCancel] = useState(false);
@@ -61,6 +64,8 @@ export const BookingDetails = (props) => {
   const [showFeedback,setShowFeedback] = useState(false)
   const [cancel,setCancel] = useState(true);
   const [edit,setEdit] = useState(true);
+
+  const booking_id = booking.id+"";
 
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
@@ -103,8 +108,8 @@ export const BookingDetails = (props) => {
           </View>
           {booking.adviceDate ? (<View style={styleA.conRow}>
           <Icon
-            name="calendar"
-            type="AntDesign"
+              name="back-in-time"
+              type="Entypo"
             size={30}
           />
           <Text style={styleA.textIcon}>Ngày thử đồ: {booking.adviceDate}</Text>
@@ -119,7 +124,14 @@ export const BookingDetails = (props) => {
           </View>
           
           <Paragraph>{pkg.description}</Paragraph>
-            
+          <View style={[styleA.conRow,{marginTop:10}]}>
+          <Icon
+            name="payment"
+            type="MaterialIcons"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Đã cọc: {toVND(booking.price)} </Text>
+          </View>
           <View style={styleA.conRow}>
           <Text style={[styleA.textIcon,{}]}>Xem ảnh thử trang điểm:</Text>
           </View>
@@ -142,13 +154,18 @@ export const BookingDetails = (props) => {
           </View>):<></>}
           {
               forwardedItems.map((item) =>
-              (<View key={item.id} style={styleA.conText}>
-                  <Text style={[styleA.text,{marginBottom:10}]}>{item.itemName} :</Text>
+              (<View key={item.id} style={[styleA.conText,{flexDirection:"row",justifyContent:'space-between',marginRight:30}]}>
+                  <Text style={[styleA.text,{marginBottom:10}]}>{item.itemName} : x{item.amount} cái  </Text>
                   <Text style={[styleA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
               </View>
               ))
             }
           
+          <View style={styleA.divineLine} />
+          {/* qr code */}
+          <View style={styleA.conQR}>
+            <SvgQRCode value={booking_id} size={200}/>
+          </View>
           <View style={styleA.divineLine} />
           <View style={[styleA.conRow,{marginTop:20}]}>
             <Icon
@@ -205,7 +222,7 @@ export const BookingDetails = (props) => {
                </View>
             </TouchableOpacity>):<></>}
 
-            {edit?(<TouchableOpacity>
+            {edit?(<TouchableOpacity onPress={onEditPress}>
               <View style={[styleA.conBtn,{backgroundColor:"#2D71D7"}]}>
                 <Text style={styleA.conTextBtn}>Chỉnh sửa</Text>
                </View>
@@ -400,6 +417,11 @@ const styleA = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
+  conQR:{
+    marginTop:20,
+    alignSelf:'center',
+    alignItems:'center',
+  }
 
 })
 

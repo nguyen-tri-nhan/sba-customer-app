@@ -305,6 +305,8 @@ PODS:
     - React-perflogger (= 0.64.3)
   - RNCAsyncStorage (1.15.17):
     - React-Core
+  - RNCCheckbox (0.5.12):
+    - React-Core
   - RNCMaskedView (0.1.10):
     - React
   - RNDateTimePicker (6.1.0):
@@ -344,6 +346,8 @@ PODS:
   - RNScreens (3.10.2):
     - React-Core
     - React-RCTImage
+  - RNSVG (12.3.0):
+    - React-Core
   - RNVectorIcons (9.1.0):
     - React-Core
   - Yoga (1.14.0)
@@ -395,12 +399,14 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -497,6 +503,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNCCheckbox:
+    :path: "../node_modules/@react-native-community/checkbox"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNDateTimePicker:
@@ -509,6 +517,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -560,15 +570,17 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 493d9abb8b23c3f84e19ae221eeba92cadcb70dc
   ReactCommon: 8fea6422328e2fc093e25c9fac67adbcf0f04fb4
   RNCAsyncStorage: 6bd5a7ba3dde1c3facba418aa273f449bdc5437a
+  RNCCheckbox: ed1b4ca295475b41e7251ebae046360a703b6eb5
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDateTimePicker: 064f3a609fbebc6896f7e5a2f48dcee5d9a6fd51
   RNGestureHandler: e1099204721a17a89c81fcd1cc2e92143dc040fb
   RNLocalize: cbcb55d0e19c78086ea4eea20e03fe8000bbbced
   RNReanimated: 0e5ef4a7e4e79f84efbe5b40771c31044c51e7d0
   RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
+  RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
 
-PODFILE CHECKSUM: 4a1c40dbe22831df4c3fe7ec8ccd9fa519da5475
+PODFILE CHECKSUM: c97fd83feec2b9657d796ef58b3c9ef3158ab69c
 
 COCOAPODS: 1.11.3

@@ -24,7 +24,7 @@ function PackagesScreen({ navigation, route }) {
   return (
     <SafeAreaView style={styles.listItem}>
       <ScrollView>
-        <DataLoader jwt={jwt} entity={ENTITY.PACKAGE} renderData={renderData} getAll initialStatus={STATUS.ENABLE} />
+        <DataLoader jwt={jwt} entity={ENTITY.PACKAGE} renderData={renderData} getAll initialStatus={STATUS.ENABLE} navigation={navigation}/>
       </ScrollView>
     </SafeAreaView>
   );

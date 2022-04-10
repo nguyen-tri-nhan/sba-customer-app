@@ -46,6 +46,10 @@ const Services = {
 
   booking(data, jwt) {
     return http.post({url: URL_PERFIX + Apis.booking, jwt: jwt, data: data})
+  },
+
+  feedBack(data, jwt) {
+    return http.post({url: URL_PERFIX + Apis.feedback, jwt: jwt, data: data})
   }
 };
 

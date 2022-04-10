@@ -7,6 +7,7 @@ const Apis = {
   packAge: '/package',
   uploadFile: '/files-upload',
   booking: '/booking',
+  feedback: '/feedback',
 }
 
 export default Apis;

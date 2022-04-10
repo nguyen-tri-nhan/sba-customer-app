@@ -30,7 +30,7 @@ function PackageService({ pkg, navigation }) {
                 ratings={pkg.review.score}
                 stars={5}
                 starColor="#FFDF6F"
-                reviews={pkg.review.reviewNumzz}
+                reviews={pkg.review.reviewNum}
                 reviewsText="đánh giá"
               />
             </View>

@@ -21,7 +21,8 @@ function ConfirmationScreen(props) {
   const [dressDate, setDressDate] = useState();
   const [startDate, setStartDate] = useState();
   const [getDate, setGetDate] = useState();
-  const [unavailableSlots, setUnavailableSlots] = useState();
+  const [unavailablePhotoSlots, setUnavailablePhotoSlots] = useState();
+  const [unavailableDressSlots, setUnavailableDressSlots] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [isChecked, setChecked] = useState(false);
@@ -53,19 +54,37 @@ function ConfirmationScreen(props) {
     }
   }
 
+  const getUnavailablePhotoSlot = () => {
+    Services.search(ENTITY.SLOT_PHOTO, { showroomId: showroom.id }, jwt)
+    .then(({ data }) => {
+      const { content } = data;
+      if (content) {
+        const unavailableObj = content.filter((slot) => slot.availableSlot < 1);
+        if (unavailableObj.length > 0) {
+          const unavailableDates = unavailableObj.map((slot) => new Date(slot.date));
+          setUnavailablePhotoSlots(unavailableDates);
+        }
+      }
+    });
+  }
+
+  const getUnavailableDressSlot = () => {
+    Services.search(ENTITY.SLOT_DRESS, { showroomId: showroom.id }, jwt)
+    .then(({ data }) => {
+      const { content } = data;
+      if (content) {
+        const unavailableObj = content.filter((slot) => slot.availableSlot < 1);
+        if (unavailableObj.length > 0) {
+          const unavailableDates = unavailableObj.map((slot) => new Date(slot.date));
+          setUnavailableDressSlots(unavailableDates);
+        }
+      }
+    });
+  }
 
   useEffect(() => {
-    Services.search(ENTITY.SLOT, { showroomId: showroom.id }, jwt)
-      .then(({ data }) => {
-        const { content } = data;
-        if (content) {
-          const unavailableObj = content.filter((slot) => slot.availableSlot < 1);
-          if (unavailableObj.length > 0) {
-            const unavailableDates = unavailableObj.map((slot) => new Date(slot.date));
-            setUnavailableSlots(unavailableDates);
-          }
-        }
-      });
+    getUnavailablePhotoSlot();
+    getUnavailableDressSlot();
   }, [])
 
   return (
@@ -150,7 +169,7 @@ function ConfirmationScreen(props) {
               Ngày chụp :
             </Text>
             </View>
-              <DatePicker onConfirm={setStartDate} validRange={{ startDate: ago(3), disabledDates: unavailableSlots }}/>
+              <DatePicker onConfirm={setStartDate} validRange={{ startDate: ago(3), disabledDates: unavailablePhotoSlots }}/>
             </View>
             <View style={styleA.conDate}>
             <View style={styleA.conRow}>

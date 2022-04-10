@@ -38,7 +38,7 @@ export const BookingDetails = (props) => {
   const onCancelBooking = () => {
     // add api cancel booking
     setModalCancel(true);
-    console.log("cancel");
+    console.log(booking);
   }
 
   const onSendFeedback = () => {

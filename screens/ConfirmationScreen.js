@@ -332,4 +332,5 @@ const styleA = StyleSheet.create({
     color:'#fff'
   }
 })
+
 export default ConfirmationScreen;

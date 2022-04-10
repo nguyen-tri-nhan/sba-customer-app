@@ -119,6 +119,8 @@ function Payment(props) {
         let momoToken = response.data;
         let phonenumber = response.phonenumber;
         let message = response.message;
+        let orderId = response.orderId
+        console.log(response.orderId)
         Services.booking({
           showroomId: showroom.id,
           packageId: pkg.id,
@@ -128,7 +130,7 @@ function Payment(props) {
           returnDate: addDate(startDate,pkg.duration - 1),
           photoReceiptDate:getDate,
           adviceDate:dressDate,
-          transactionId:payment.id,
+          transactionId:orderId,
           paid:totalPrice
         }, jwt).then((response) => {
           console.log(response.data.id);

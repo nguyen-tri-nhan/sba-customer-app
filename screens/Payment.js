@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet,SafeAreaView, TouchableOpacity,Modal,View,ActivityIndicator,Platform,ScrollView,Pressable} from 'react-native';
+import { StyleSheet,SafeAreaView, TouchableOpacity,Modal,View,ActivityIndicator,Platform,
+  ScrollView,Pressable} from 'react-native';
 import { useEffect, useState } from 'react';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
@@ -15,6 +16,9 @@ import { addDate } from '../utils/DateHelper';
 
 
 import RNMomosdk from 'react-native-momosdk';
+import { NativeModules,NativeEventEmitter } from 'react-native';
+const RNMoMoPaymentModule = NativeModules.RNMomosdk;
+const EventEmitter = new NativeEventEmitter(RNMoMoPaymentModule);
 
 
 
@@ -91,16 +95,18 @@ function Payment(props) {
     jsonData.merchantnamelabel = merchantNameLabel;
     jsonData.description = pkg.name;
     // jsonData.amount = totalPrice;//order total amount
-    jsonData.amount = 50000;
+    jsonData.amount = totalPrice;
     jsonData.orderId = getCurrentDateYYMMDD() + '_' + new Date().getTime();
     jsonData.orderLabel = "Ma don hang";
-    jsonData.appScheme = "com.fpt.sba.myapp";// iOS App Only , match with Schemes Indentify from your  Info.plist > key URL types > URL Schemes
+    jsonData.appScheme = "momom8av20220409";// iOS App Only , match with Schemes Indentify from your  Info.plist > key URL types > URL Schemes
+    // jsonData.handleAppNotInstalledBySelf = "1";
     console.log("data_request_payment " + JSON.stringify(jsonData));
     if (Platform.OS === 'android'){
       let dataPayment = await RNMomosdk.requestPayment(jsonData);
       momoHandleResponse(dataPayment);
     }else{
-      RNMomosdk.requestPayment(jsonData);
+      console.log("ios open momo json");
+      RNMomosdk.requestPayment(JSON.stringify(jsonData));
     }
   }
   const  momoHandleResponse = async (response) => {
@@ -138,6 +144,36 @@ function Payment(props) {
       }
     }catch(ex){}
   }
+
+
+  useEffect(() =>{
+    // Listen for native events
+    EventEmitter.addListener('RCTMoMoNoficationCenterRequestTokenReceived', (response) => {
+        console.log("<MoMoPay>Listen.Event::" + JSON.stringify(response));
+        try{
+              if (response && response.status == 0) {
+                let fromapp = response.fromapp; //ALWAYS:: fromapp==momotransfer
+                let momoToken = response.data;
+                let phonenumber = response.phonenumber;
+                let message = response.message;
+                let orderId = response.refOrderId; //your orderId
+                let requestId = response.refRequestId; //your requestId
+                //continue to submit momoToken,phonenumber to server
+              } else {
+                console.log( "message: Get token fail")
+              }
+        }catch(ex){}
+
+    });
+    
+    //OPTIONAL
+    EventEmitter.addListener('RCTMoMoNoficationCenterRequestTokenState',(response) => {
+        console.log("<MoMoPay>Listen.RequestTokenState:: " + response.status);
+        // status = 1: Parameters valid & ready to open MoMo app.
+        // status = 2: canOpenURL failed for URL MoMo app 
+        // status = 3: Parameters invalid
+    })
+  },[]);
 
   
   return (

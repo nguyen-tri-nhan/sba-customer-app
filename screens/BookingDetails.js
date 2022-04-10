@@ -11,6 +11,7 @@ import StarReview from 'react-native-star-review'
 import Services from "../utils/Services";
 import { ENTITY, STATUS, STATUS_TRANS } from "../utils/Constants";
 import DataLoader from "../model/Dataloader";
+import StarReview from 'react-native-star-review';
 
 
 export const BookingDetails = (props) => {
@@ -42,7 +43,7 @@ export const BookingDetails = (props) => {
   }
 
   const onSendFeedback = () => {
-    //add api them fb
+    //add api them fb 
     console.log("feedback")
     console.log(star);
     console.log(value);
@@ -81,7 +82,9 @@ export const BookingDetails = (props) => {
     )
   }
 
-  const onEditBookingPress = () => {
+  const onEditPress = () => {
+    navigation.push("EditBooking",{booking,jwt})
+  }
 
   }
 
@@ -94,13 +97,82 @@ export const BookingDetails = (props) => {
   const [cancel, setCancel] = useState(true);
   const [edit, setEdit] = useState(booking.editable);
 
+  const booking_id = booking.id+"";
+
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
       <Card key={'2'} style={[styles.packageDetailsTitleCard, { marginBottom: 0 }]}>
         <ScrollView>
           <View style={styleA.conText}>
-            <Title style={[styles.packageDetailsTitle, styleA.titlePkg]}>{pkg.name}</Title>
-            <Title style={styles.packageDetailsPrice}>Tổng tiền: {toVND(booking.totalPrice)}</Title>
+          <Title style={[styles.packageDetailsTitle,styleA.titlePkg]}>{pkg.name}</Title>
+          <Title style={styles.packageDetailsPrice}>Tổng tiền: {toVND(booking.totalPrice)}</Title>
+          <View style={styleA.conRow}>
+          <Icon
+            name="calendar"
+            type="AntDesign"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Thời gian thực hiện: {pkg.duration} ngày</Text>
+          </View>
+          <View style={styleA.conRow}>
+          <Icon
+            name="location"
+            type="Entypo"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Địa điểm: {pkg.location}</Text>
+          </View>
+          <View style={styleA.conRow}>
+          <Icon
+            name="calendar"
+            type="AntDesign"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Ngày chụp: {booking.departureDate}</Text>
+          </View>
+          <View style={styleA.conRow}>
+          <Icon
+            name="calendar"
+            type="AntDesign"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Ngày nhận: {booking.departureDate}</Text>
+          </View>
+          {booking.adviceDate ? (<View style={styleA.conRow}>
+          <Icon
+              name="back-in-time"
+              type="Entypo"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Ngày thử đồ: {booking.adviceDate}</Text>
+          </View>):<></>}
+          <View style={styleA.conRow}>
+          <Icon
+            name="description"
+            type="MaterialIcons"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Mô tả:</Text>
+          </View>
+          
+          <Paragraph>{pkg.description}</Paragraph>
+          <View style={[styleA.conRow,{marginTop:10}]}>
+          <Icon
+            name="payment"
+            type="MaterialIcons"
+            size={30}
+          />
+          <Text style={styleA.textIcon}>Đã cọc: {toVND(booking.price)} </Text>
+          </View>
+          <View style={styleA.conRow}>
+          <Text style={[styleA.textIcon,{}]}>Xem ảnh thử trang điểm:</Text>
+          </View>
+          
+          
+          {forwardedItems.length>0?(
+            <View style={{flexDirection:"column",justifyContent:"space-around"}}>
+              
+          <View style={styleA.divineLine} />
             <View style={styleA.conRow}>
               <Icon
                 name="calendar"
@@ -174,24 +246,29 @@ export const BookingDetails = (props) => {
               </View>) : <></>}
             {
               forwardedItems.map((item) =>
-              (<View key={item.id} style={styleA.conText}>
-                <Text style={[styleA.text, { marginBottom: 10 }]}>{item.itemName} :</Text>
-                <Text style={[styleA.text, { marginBottom: 10 }]}>{toVND(item.price * item.amount)}</Text>
+              (<View key={item.id} style={[styleA.conText,{flexDirection:"row",justifyContent:'space-between',marginRight:30}]}>
+                  <Text style={[styleA.text,{marginBottom:10}]}>{item.itemName} : x{item.amount} cái  </Text>
+                  <Text style={[styleA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
               </View>
               ))
             }
-
-            <View style={styleA.divineLine} />
-            <View style={[styleA.conRow, { marginTop: 20 }]}>
-              <Icon
-                name="statusnet"
-                type="Zocial"
-                size={30}
-              />
-              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-
-                <Text style={styleA.textIcon}>Trạng thái:</Text>
-                <View style={[styleA.status, { backgroundColor: booking.status == STATUS.CANCELED ? "#E14C4C" : booking.status == STATUS.FINISH ? "#1CC286" : "#2D71D7" }]} >
+          
+          <View style={styleA.divineLine} />
+          {/* qr code */}
+          <View style={styleA.conQR}>
+            <SvgQRCode value={booking_id} size={200}/>
+          </View>
+          <View style={styleA.divineLine} />
+          <View style={[styleA.conRow,{marginTop:20}]}>
+            <Icon
+              name="statusnet"
+              type="Zocial"
+              size={30}
+            />
+            <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+            
+            <Text style={styleA.textIcon}>Trạng thái:</Text>
+            <View style={[styleA.status,{ backgroundColor: booking.status == STATUS.CANCELED ? "#E14C4C" : booking.status == STATUS.FINISH ? "#1CC286" : "#2D71D7" }]} >
                   <Text style={styleA.statusText}>{STATUS_TRANS[booking.status]}</Text>
                 </View>
               </View>
@@ -241,17 +318,17 @@ export const BookingDetails = (props) => {
         </ScrollView>
       </Card>
       <Card style={styleA.footerCard}>
-        <View style={styleA.conRowBtn}>
-          {isCancelButtonRendered() ? (<TouchableOpacity onPress={onShowCancelModal}>
-            <View style={[styleA.conBtn, { backgroundColor: "#E14C4C" }]}>
-              <Text style={styleA.conTextBtn}>Hủy bỏ</Text>
-            </View>
-          </TouchableOpacity>) : <></>}
+            <View style={styleA.conRowBtn}>
+            {isCancelButtonRendered() && (<TouchableOpacity onPress={onShowCancelModal}>
+              <View style={[styleA.conBtn,{backgroundColor:"#E14C4C"}]}>
+                <Text style={styleA.conTextBtn}>Hủy bỏ</Text>
+               </View>
+            </TouchableOpacity>)}
 
-          {edit && (<TouchableOpacity onPress={onEditBookingPress}>
-            <View style={[styleA.conBtn, { backgroundColor: "#2D71D7" }]}>
-              <Text style={styleA.conTextBtn}>Chỉnh sửa</Text>
-            </View>
+            {edit && (<TouchableOpacity onPress={onEditPress}>
+              <View style={[styleA.conBtn,{backgroundColor:"#2D71D7"}]}>
+                <Text style={styleA.conTextBtn}>Chỉnh sửa</Text>
+               </View>
           </TouchableOpacity>)}
 
         </View>
@@ -443,6 +520,11 @@ const styleA = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
+  conQR:{
+    marginTop:20,
+    alignSelf:'center',
+    alignItems:'center',
+  }
 
 })
 

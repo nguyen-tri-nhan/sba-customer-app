@@ -17,7 +17,7 @@ import Feather from 'react-native-vector-icons/Feather';
 function PreviewMakeupScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { showroom,jwt } = params;
+  const { id,jwt } = params;
   const styles = useStyle();
   // const onContinuePress = () => {
   //   navigation.push("SuccessScreen", { pkg });
@@ -114,7 +114,7 @@ function PreviewMakeupScreen(props) {
 
       var formdata = new FormData();
       formdata.append('img',{ uri: image, name: 'image.jpg', type: 'image/jpeg' });
-      formdata.append("bookingId", 1);
+      formdata.append("bookingId", id);
       
       for(const [id, url] of styleList.entries()){
         if(url.length > 0){
@@ -215,7 +215,7 @@ function PreviewMakeupScreen(props) {
           </View>
           <ScrollView style={{ position: 'absolute', bottom: -10, }} horizontal={true}
             showsHorizontalScrollIndicator={false}>
-              <DataLoader entity={ENTITY.STYLE} jwt={jwt} renderData={renderStyle} getAll /> 
+              <DataLoader entity={ENTITY.STYLE} jwt={jwt} renderData={renderStyle} getAll navigation={navigation}/> 
           </ScrollView>
         </View>
       </Card>

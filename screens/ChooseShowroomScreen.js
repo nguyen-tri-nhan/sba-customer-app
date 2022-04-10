@@ -32,7 +32,7 @@ function ChooseShowroomScreen(props) {
     <SafeAreaView style={styles.packageDetailsContainer}>
       <BookingStepIndicator currentStep={0} />
         <ScrollView>
-          <DataLoader key={'1'} jwt={jwt} entity={ENTITY.SHOWROOM} renderData={renderShowrooms} getAll initialStatus={STATUS.ENABLE} /> 
+          <DataLoader key={'1'} jwt={jwt} entity={ENTITY.SHOWROOM} renderData={renderShowrooms} getAll initialStatus={STATUS.ENABLE} navigation={navigation} /> 
         </ScrollView>
     </SafeAreaView>
 

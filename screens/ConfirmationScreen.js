@@ -12,6 +12,7 @@ import { ENTITY } from '../utils/Constants';
 import { ago } from '../utils/DateHelper';
 import Icon from "react-native-dynamic-vector-icons";
 import { before } from 'lodash';
+import Checkbox from 'expo-checkbox';
 
 function ConfirmationScreen(props) {
   const { navigation, route } = props;
@@ -23,11 +24,30 @@ function ConfirmationScreen(props) {
   const [unavailableSlots, setUnavailableSlots] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [isChecked, setChecked] = useState(false);
+  const [slot, setSlot] = useState('');
+  const [isMorning, setMorning] = useState(false);
+  
+  const [isAfternoon, setAfternoon] = useState(false);
+  const [ isAvaiSlot,setAvaiSlot] = useState(true);
+  
+  const handleChooseSlotMorning= () => {
+    setMorning(!isMorning);
+    setSlot('Morning')
+  }
+  const handleChooseSlotAfternoon= () => {
+    setAfternoon(!isAfternoon);
+    setSlot('Afternoon')
+  }
+
+  const onSlected = () => {
+    setSelection(!isSelected);
+  }
 
   const styles = useStyle();
   const onContinuePress = () => {
     if (startDate && getDate){
-    navigation.push("Payment", { pkg, forwardedItems, totalPrice, showroom, dressDate, startDate, getDate });
+    navigation.push("Payment", { pkg, forwardedItems, totalPrice, showroom, dressDate, startDate, getDate,slot });
     }else{
       setModalVisible(true)
     }
@@ -58,7 +78,6 @@ function ConfirmationScreen(props) {
             <Text style={styleA.h1}>
               XÁC NHẬN
             </Text >
-
             <View
               style={{
                 borderBottomColor: '#000',
@@ -78,7 +97,7 @@ function ConfirmationScreen(props) {
               size={30}
             />
             <Text style={[styleA.h3,styleA.textIcon]}>
-              Địa điểm: {pkg.location}
+              Địa điểm chụp: {pkg.location}
             </Text>
             </View>
             <View style={styleA.conRow}>
@@ -101,18 +120,20 @@ function ConfirmationScreen(props) {
               Địa chỉ: {showroom.address}
             </Text>
             </View>
-            <View style={styleA.conRow}>
-            <Icon
-              name="add-to-list"
-              type="Entypo"
-              size={30}
-            />
+            
             {
-              forwardedItems.length>0?(<Text style={[styleA.h3,styleA.textIcon]}>
-                Dịch vụ thêm:
-              </Text>):<></>
+              forwardedItems.length>0?(
+              <View style={styleA.conRow}>
+              <Icon
+                name="add-to-list"
+                type="Entypo"
+                size={30}
+              />
+                <Text style={[styleA.h3,styleA.textIcon]}>
+                  Dịch vụ thêm:
+                </Text>
+              </View>):<></>
             }
-            </View>
             {
               forwardedItems.map((item) =>
               (<View key={item.id}>
@@ -127,7 +148,7 @@ function ConfirmationScreen(props) {
               size={30}
             />
             <Text style={{marginLeft:10,top:5,fontSize:15}}>
-              Ngày đi chụp :
+              Ngày chụp :
             </Text>
             </View>
               <DatePicker onConfirm={setStartDate} validRange={{ startDate: ago(3), disabledDates: unavailableSlots }}/>
@@ -145,21 +166,44 @@ function ConfirmationScreen(props) {
             </View>
               <DatePicker onConfirm={setGetDate} disabled={!startDate} validRange={{ startDate: ago(3, startDate) }}/>
             </View>
-            <View style={styleA.conDate}>
-            <View style={styleA.conRow}>
-            <Icon
-              name="calendar"
-              type="AntDesign"
-              size={30}
-            />
-            <Text style={{marginLeft:10,top:5,fontSize:15}}>
-              Ngày thử đồ:
-            </Text>
+            <View style={[styleA.conRow,{marginTop:10}]}>
+              <Checkbox
+                style={styleA.checkbox}
+                value={isChecked}
+                onValueChange={setChecked}
+                color={isChecked ? '#4630EB' : undefined}
+              />
+
+              <Text style={{bottom:-5}}>Bạn muốn lên thử áo quần trước khi chụp ?</Text>
             </View>
-               <View style={styleA.conText}>
-                <DatePicker onConfirm={setDressDate} disabled={!startDate} validRange={{ startDate: ago(1), endDate: ago(-1, startDate)}}/>
+            {isChecked?
+            (<View style={styleA.conDate} disabled={isChecked}>
+              <View style={styleA.conRow}>
+                <Icon
+                  name="calendar"
+                  type="AntDesign"
+                  size={30}
+                />
+                <Text style={{marginLeft:10,top:5,fontSize:15}}>
+                  Ngày thử :
+                </Text>
+              </View>
+              <View style={styleA.conText}>
+                <DatePicker onConfirm={setDressDate} disabled={!startDate || !isChecked} validRange={{ startDate: ago(1), endDate: ago(-1, startDate)}}/>
               </View>
             </View>
+            ):<></>}
+          {dressDate?
+            (<View style={[styleA.conRow,{justifyContent:'space-around'}]}>
+            <TouchableOpacity disabled={!isAvaiSlot} onPress={handleChooseSlotMorning}>
+              <View style={[styleA.btnSlot,{backgroundColor:isMorning?"#2D71D7":"#A4A6A8"}]}><Text style={styleA.slotText}>Sáng</Text></View>
+            </TouchableOpacity>
+            <TouchableOpacity disabled={!isAvaiSlot} onPress={handleChooseSlotAfternoon}>
+              <View style={[styleA.btnSlot,{backgroundColor:isAfternoon?"#2D71D7":"#A4A6A8"}]}><Text style={styleA.slotText}>Chiều</Text></View>
+            </TouchableOpacity>
+          </View>
+          ):<></>}
+            
           </View>
         </ScrollView>
       </Card>
@@ -269,6 +313,24 @@ const styleA = StyleSheet.create({
   textIcon:{
     top:10,
     marginLeft:20,
+  },
+  checkbox: {
+    alignSelf: "center",
+    marginHorizontal:30,
+    width:30,
+    height:30
+  },
+  btnSlot:{
+    borderRadius:20,
+    width:100,
+    height:30,
+    alignItems:'center',
+  },
+  slotText:{
+    top:5,
+    fontSize:16,
+    fontWeight:'bold',
+    color:'#fff'
   }
 })
 export default ConfirmationScreen;

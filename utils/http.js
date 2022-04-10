@@ -39,7 +39,7 @@ const http = {
           if (errorHandler) {
             errorHandler(response);
           } else {
-            console.log(response);
+            // console.log(response);
             // Notification.pushError(response.data.error || message, response.status);
           }
         });

@@ -27,10 +27,10 @@ function PackageService({ pkg, navigation }) {
             <View
               style={styleA.star}>
               <StarReview
-                ratings={3.5}
+                ratings={pkg.review.score}
                 stars={5}
                 starColor="#FFDF6F"
-                reviews={100}
+                reviews={pkg.review.reviewNumzz}
                 reviewsText="đánh giá"
               />
             </View>

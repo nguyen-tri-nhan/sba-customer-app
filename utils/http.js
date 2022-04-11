@@ -15,6 +15,10 @@ const http = {
     return this.send('put', url, data, params, errorHandler, headers, jwt);
   },
 
+  patch({ url, data, params, errorHandler, headers, jwt }) {
+    return this.send('patch', url, data, params, errorHandler, headers, jwt);
+  },
+
   delete({ url, data, params, errorHandler, headers, jwt }) {
     return this.send('delete', url, data, params, errorHandler, headers, jwt);
   },

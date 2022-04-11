@@ -13,7 +13,7 @@ const Services = {
   },
 
   search(entity, params, jwt) {
-    return http.get({ url: `${URL_PERFIX}/${entity}`, params, jwt});
+    return http.get({ url: `${URL_PERFIX}/${entity}`, params, jwt });
   },
 
   createManager(manager) {
@@ -37,23 +37,27 @@ const Services = {
   },
 
   getShowrooms(jwt) {
-    return http.get({url: URL_PERFIX + Apis.showroom, jwt: jwt, params: { status: 'ENABLE' }});
+    return http.get({ url: URL_PERFIX + Apis.showroom, jwt: jwt, params: { status: 'ENABLE' } });
   },
 
   previewMakeup(data) {
-    return http.post({url: ai_domain, data: data,headers:{"Content-Type": "multipart/form-data"}});
+    return http.post({ url: ai_domain, data: data, headers: { "Content-Type": "multipart/form-data" } });
   },
 
   booking(data, jwt) {
-    return http.post({url: URL_PERFIX + Apis.booking, jwt: jwt, data: data})
+    return http.post({ url: URL_PERFIX + Apis.booking, jwt: jwt, data: data })
   },
 
   feedBack(data, jwt) {
-    return http.post({url: URL_PERFIX + Apis.feedback, jwt: jwt, data: data})
+    return http.post({ url: URL_PERFIX + Apis.feedback, jwt: jwt, data: data })
   },
 
   saveMakeupStyle(data, jwt) {
-    return http.post({url: URL_PERFIX + Apis.style_tracking, jwt: jwt, data: data})
+    return http.post({ url: URL_PERFIX + Apis.style_tracking, jwt: jwt, data: data })
+  },
+
+  updateBookingItems(id, data, jwt) {
+    return http.patch({ url: `${URL_PERFIX + Apis.booking}/${id}/items`, jwt: jwt, data: data });
   }
 };
 

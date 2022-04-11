@@ -50,6 +50,10 @@ const Services = {
 
   feedBack(data, jwt) {
     return http.post({url: URL_PERFIX + Apis.feedback, jwt: jwt, data: data})
+  },
+
+  saveMakeupStyle(data, jwt) {
+    return http.post({url: URL_PERFIX + Apis.style_tracking, jwt: jwt, data: data})
   }
 };
 

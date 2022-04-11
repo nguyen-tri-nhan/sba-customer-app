@@ -8,6 +8,7 @@ const Apis = {
   uploadFile: '/files-upload',
   booking: '/booking',
   feedback: '/feedback',
+  style_tracking: '/style-tracking',
 }
 
 export default Apis;

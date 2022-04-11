@@ -4,7 +4,7 @@ import { useStyle } from '../utils/style';
 import { Card } from 'react-native-paper';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-function ResultItem({ sourceImg, item }) {
+function ResultItem({styleName, item }) {
 
   const styles = useStyle();
 
@@ -26,7 +26,7 @@ function ResultItem({ sourceImg, item }) {
           <View style={stylesA.container}>
           <View style={stylesA.conLink}>
           <View style={stylesA.conImage1}>
-              <Image source={{uri:sourceImg}}
+              <Image source={{uri:item.source}}
                 style={{ flex: 1, width: 200, height: 50, alignSelf: 'center', marginTop: 10, resizeMethod: 'resize', resizeMode: 'contain',marginBottom:20 }}>
               </Image>
               <Text style={stylesA.text}>Ảnh gốc</Text>

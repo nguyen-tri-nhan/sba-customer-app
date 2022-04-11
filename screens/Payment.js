@@ -115,10 +115,6 @@ function Payment(props) {
       if (response && response.status == 0) {
         console.log("momoHandleResponse ==== ", response)
         //SUCCESS continue to submit momoToken,phonenumber to server
-        let fromapp = response.fromapp; //ALWAYS:: fromapp == momotransfer
-        let momoToken = response.data;
-        let phonenumber = response.phonenumber;
-        let message = response.message;
         let orderId = response.orderId
         console.log(response.orderId)
         Services.booking({
@@ -133,7 +129,7 @@ function Payment(props) {
           transactionId:orderId,
           paid:totalPrice
         }, jwt).then((response) => {
-          console.log(response.data.id);
+          console.log("thanh toan momo thanh cong");
   
           onContinuePress(response.data.id);
         })

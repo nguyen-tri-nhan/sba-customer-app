@@ -13,7 +13,6 @@ function Showroom({ showroom, onSelectedShowroom }) {
     }
   }
 
-  console.log(showroom);
   return (
     
     <Card style={styleA.card}>

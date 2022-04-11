@@ -147,10 +147,14 @@ function PreviewMakeupScreen(props) {
         //         "result": "https://fpt-sba-images.s3.ap-southeast-2.amazonaws.com/5a4b586cbbdf4e7cbb0e21c97f0189e2"
         //     }
         // ]
+          console.log(links)
           if(msg == "success"){
             console.log('success');
             setLoading(false);
-            navigation.push("ResultScreen", { sourceImg:image, links:links});
+            const result = links.map((ele) => {
+               
+            })
+            navigation.push("ResultScreen", { links:links});
           }else{
             setErrorModal(true);
             setLoading(false);

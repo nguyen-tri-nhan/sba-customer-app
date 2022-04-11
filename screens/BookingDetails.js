@@ -22,6 +22,16 @@ export const BookingDetails = (props) => {
   const pkg = booking.package;
   const forwardedItems = booking.items;
 
+  const [modalCancel, setModalCancel] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [value, setValue] = useState('');
+  const [star, setStar] = useState();
+  const [feedback, setFeedback] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false)
+  const [cancel, setCancel] = useState(true);
+  const [edit, setEdit] = useState(booking.editable);
+  const [showroom, setShowroom] = useState();
+
   const onSelectedStar = (star) => {
     setStar(star);
   }
@@ -68,8 +78,16 @@ export const BookingDetails = (props) => {
     return cancel && booking.status === STATUS.PENDING;
   }
 
+  const getShowroom = () => {
+    Services.search(`${ENTITY.SHOWROOM}/${booking.showroomId}`, null, jwt)
+      .then(({ data }) => {
+        setShowroom(data)
+      })
+  }
+
   useEffect(() => {
     isShowFeedback();
+    getShowroom();
     navigation.addListener('focus', () => {
       isShowFeedback();
     });
@@ -80,7 +98,7 @@ export const BookingDetails = (props) => {
     console.log('style', data);
     return (
       <View>
-        
+
       </View>
     )
   }
@@ -88,15 +106,6 @@ export const BookingDetails = (props) => {
   const onEditPress = () => {
     navigation.push("EditBooking", { booking, jwt })
   }
-
-  const [modalCancel, setModalCancel] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [value, setValue] = useState('');
-  const [star, setStar] = useState();
-  const [feedback, setFeedback] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false)
-  const [cancel, setCancel] = useState(true);
-  const [edit, setEdit] = useState(booking.editable);
 
   const booking_id = booking.id + "";
 

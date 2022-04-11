@@ -34,8 +34,8 @@ function ConfirmationScreen(props) {
   const [isMorningBtn, setMorningBtn] = useState(false);
   const [isAfternoonBtn, setAfternoonBtn] = useState(false);
   
-  const handleChooseSlotMorning= () => {
-    setSlot('Morning');
+  const handleChooseSlotMorning=  () => {
+     setSlot('T07:00:00');
     setMorningBtn(!isMorningBtn);
     setAfternoonBtn(false);
     if(!isMorningBtn)
@@ -43,23 +43,23 @@ function ConfirmationScreen(props) {
     console.log(dressDate);
   }
   const handleChooseSlotAfternoon= () => {
-    setSlot('Afternoon');
+    setSlot('T14:00:00');
     setAfternoonBtn(!isAfternoonBtn);
     setMorningBtn(false);
     if(!isAfternoonBtn)
       handleChooseSlot();
-    console.log(dressDate);
+    // console.log(dressDate);
   }
 
   const handleChooseSlot = () => {
-    console.log('slot ',slot);
+    // console.log('slot ',slot);
     
   
-    if(slot == 'Morning'){
-      setDressDate(dressDate.split('T')[0] +'T07:00:00')
-    }else if (slot == 'Afternoon'){
-      setDressDate(dressDate.split('T')[0] +'T14:00:00')
-    }
+    // if(slot == 'Morning'){
+    //   setDressDate(dressDate.split('T')[0] +'T07:00:00')
+    // }else if (slot == 'Afternoon'){
+    //   setDressDate(dressDate.split('T')[0] +'T14:00:00')
+    // }
   }
 
   const onCheckDressSlot = (date) => {
@@ -89,6 +89,7 @@ function ConfirmationScreen(props) {
 
   const styles = useStyle();
   const onContinuePress = () => {
+    console.log(isChecked,dressDate,slot);
     if (startDate && getDate && ((isChecked && dressDate && slot != '') || !isChecked)){
     navigation.push("Payment", { pkg, forwardedItems, totalPrice, showroom, dressDate, startDate, getDate,slot });
     }else{
@@ -119,11 +120,11 @@ function ConfirmationScreen(props) {
         const availableObj = content.filter((slot) => slot.availableSlot > 0);
         setAvailableDressSlot(availableObj);
         if (unavailableObj.length > 0) {
-          unavailableDates.forEach((ele1) => {
+          unavailableObj.forEach((ele1) => {
             content.forEach((ele2) => {
 
               if (ele1.date.split('T')[0] == ele2.date.split('T')[0]){
-                let idx = unavailableDates.indexOf(ele1);
+                let idx = unavailableObj.indexOf(ele1);
                 unavailableObj = unavailableObj.splice(idx,1); 
               }
             });

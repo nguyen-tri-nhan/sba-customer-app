@@ -61,7 +61,7 @@ function Payment(props) {
         departureDate: startDate,
         returnDate: addDate(startDate,pkg.duration - 1),
         photoReceiptDate:getDate,
-        adviceDate:dressDate,
+        adviceDate:dressDate+slot,
         transactionId:payment.id,
         paid:totalPrice
       }, jwt).then((response) => {
@@ -125,7 +125,7 @@ function Payment(props) {
           departureDate: startDate,
           returnDate: addDate(startDate,pkg.duration - 1),
           photoReceiptDate:getDate,
-          adviceDate:dressDate,
+          adviceDate:dressDate+slot,
           transactionId:orderId,
           paid:totalPrice
         }, jwt).then((response) => {
@@ -276,7 +276,7 @@ function Payment(props) {
                     />
                     <Text style={[stylesA.text,stylesA.textIcon]}>Thời gian : </Text>
                   </View>
-                  <Text style={[stylesA.text,stylesA.textIcon]}>{slot=='Morning'?'Sáng':'Chiều'}</Text>
+                  <Text style={[stylesA.text,stylesA.textIcon]}>{slot=='T07:00:00'?'Sáng':'Chiều'}</Text>
                 </View>
               ):<></>
             }

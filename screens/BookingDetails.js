@@ -75,14 +75,18 @@ export const BookingDetails = (props) => {
     });
   }, [])
 
+  const [data,setData] = useState()
 
   const renderStyleTracking = (data) => {
-    console.log('style', data);
-    return (
-      <View>
+    setData(data);
+    // return (
+    //   <View>
         
-      </View>
-    )
+    //   </View>
+    // )
+  }
+  const onPressViewStyleTracking = ()=>{
+    navigation.push("BookingStyle", { data })
   }
 
   const onEditPress = () => {
@@ -137,7 +141,7 @@ export const BookingDetails = (props) => {
                 type="AntDesign"
                 size={30}
               />
-              <Text style={styleA.textIcon}>Ngày nhận: {booking.departureDate}</Text>
+              <Text style={styleA.textIcon}>Ngày nhận ảnh: {booking.departureDate}</Text>
             </View>
             {booking.adviceDate && (<View style={styleA.conRow}>
               <Icon
@@ -145,7 +149,7 @@ export const BookingDetails = (props) => {
                 type="Entypo"
                 size={30}
               />
-              <Text style={styleA.textIcon}>Ngày thử đồ: {booking.adviceDate}</Text>
+              <Text style={styleA.textIcon}>Ngày thử đồ: {booking.adviceDate.split('T')[0]}</Text>
             </View>)}
             <View style={styleA.conRow}>
               <Icon
@@ -165,103 +169,46 @@ export const BookingDetails = (props) => {
               />
               <Text style={styleA.textIcon}>Đã cọc: {toVND(booking.price)} </Text>
             </View>
-            <View style={styleA.conRow}>
-              <Text style={[styleA.textIcon, {}]}>Xem ảnh thử trang điểm:</Text>
-            </View>
-
-
-            {forwardedItems.length > 0 && (
-              <View style={{ flexDirection: "column", justifyContent: "space-around" }}>
-                <View style={styleA.divineLine} />
-                <View style={styleA.conRow}>
-                  <Icon
-                    name="calendar"
-                    type="AntDesign"
-                    size={30}
-                  />
-                  <Text style={styleA.textIcon}>Thời gian thực hiện: {pkg.duration} ngày</Text>
-                </View>
-                <View style={styleA.conRow}>
-                  <Icon
-                    name="location"
-                    type="Entypo"
-                    size={30}
-                  />
-                  <Text style={styleA.textIcon}>Địa điểm: {pkg.location}</Text>
-                </View>
-                <View style={styleA.conRow}>
-                  <Icon
-                    name="calendar"
-                    type="AntDesign"
-                    size={30}
-                  />
-                  <Text style={styleA.textIcon}>Ngày chụp: {booking.departureDate}</Text>
-                </View>
-                <View style={styleA.conRow}>
-                  <Icon
-                    name="calendar"
-                    type="AntDesign"
-                    size={30}
-                  />
-                  <Text style={styleA.textIcon}>Ngày nhận: {booking.departureDate}</Text>
-                </View>
-                {booking.adviceDate && (<View style={styleA.conRow}>
-                  <Icon
-                    name="calendar"
-                    type="AntDesign"
-                    size={30}
-                  />
-                  <Text style={styleA.textIcon}>Ngày thử đồ: {booking.adviceDate}</Text>
-                </View>)}
-                <View style={styleA.conRow}>
-                  <Icon
-                    name="description"
-                    type="MaterialIcons"
-                    size={30}
-                  />
-                  <Text style={styleA.textIcon}>Mô tả:</Text>
-                </View>
-
-                <Paragraph>{pkg.description}</Paragraph>
-
-                <View style={styleA.conRow}>
-                  <Text style={[styleA.textIcon, {}]}>Xem ảnh thử trang điểm:</Text>
-                  <DataLoader
+            
+            
+            <TouchableOpacity onPress={onPressViewStyleTracking}>
+              <View style={[styleA.btnRiew]} >
+                  <Text style={styleA.statusText}>Xem lại ảnh trang điểm</Text>
+              </View>
+              <DataLoader
                     entity={ENTITY.STYLE_TRACKING}
                     additionalParams={{ bookingId: booking.id }}
                     jwt={jwt}
                     getAll
                     navigation={navigation}
                     renderData={renderStyleTracking}
-                  />
-                </View>
+              />
+            </TouchableOpacity>
 
 
-                {forwardedItems.length > 0 && (
-                  <View style={{ flexDirection: "column", justifyContent: "space-around" }}>
-
-                    <View style={styleA.divineLine} />
-                    <View style={styleA.conRow}>
-
-                      <Icon
-                        name="add-to-list"
-                        type="Entypo"
-                        size={30}
-                        style={{ top: 5 }}
-                      />
-                      <Text style={[styleA.addition, styleA.textIcon]}>Dịch vụ thêm: </Text>
-                    </View>
-                  </View>)}
-                {
+            {forwardedItems.length>0?(
+            <View style={{flexDirection:"column",justifyContent:"space-around"}}>
+              
+              <View style={styleA.divineLine} />
+                <View style={styleA.conRow}>
+                  
+                <Icon
+                  name="add-to-list"
+                  type="Entypo"
+                  size={30}
+                  style={{top:5}}
+                />
+              <Text style={[styleA.addition,styleA.textIcon]}>Dịch vụ thêm: </Text>
+              </View>
+              </View>):<></>}
+              {
                   forwardedItems.map((item) =>
-                  (<View key={item.id} style={[styleA.conText, { flexDirection: "row", justifyContent: 'space-between', marginRight: 30 }]}>
-                    <Text style={[styleA.text, { marginBottom: 10 }]}>{item.itemName} : x{item.amount} cái  </Text>
-                    <Text style={[styleA.text, { marginBottom: 10 }]}>{toVND(item.price * item.amount)}</Text>
+                  (<View key={item.id} style={[styleA.conText,{flexDirection:"row",justifyContent:'space-between',marginRight:30}]}>
+                      <Text style={[styleA.text,{marginBottom:10}]}>{item.itemName} : x{item.amount} cái  </Text>
+                      <Text style={[styleA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
                   </View>
                   ))
                 }
-
-              </View>)}
             <View style={styleA.divineLine} />
             {/* qr code */}
             <View style={styleA.conQR}>
@@ -438,6 +385,16 @@ const styleA = StyleSheet.create({
     alignSelf: "flex-end",
     height: 30,
     position: "absolute"
+  },
+  
+  btnRiew: {
+    borderRadius: 20,
+    width: 150,
+    alignItems: 'center',
+    alignSelf: "center",
+    height: 30,
+    backgroundColor:"#2D71D7",
+    width:"80%"
   },
   statusText: {
     fontWeight: 'bold',

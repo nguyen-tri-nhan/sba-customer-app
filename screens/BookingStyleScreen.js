@@ -1,20 +1,21 @@
 import React from 'react';
 import {SafeAreaView, Image, ScrollView, View,StyleSheet,Text,TouchableOpacity } from 'react-native';
-import ResultItem from '../components/ResultItem';
 import { useStyle } from '../utils/style';
 import { Card } from 'react-native-paper';
+import StyleTracking from '../components/StyleTracking';
 
-function PreviewResultScreen(props) {
+function BookingStyleScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { links,jwt } = params;
+  const { data } = params;
   const styles = useStyle();
 
   const renderLinks = () => {
+      console.log(data);
       var items = []
-      links.forEach(link => {
-        items.push(<ResultItem item={link} jwt={jwt}  />)
-      });21
+      data.forEach(ele => {
+        items.push(<StyleTracking item={ele} />)
+      });
     return items;
   }
   const onContinuePress = () => {
@@ -27,16 +28,11 @@ function PreviewResultScreen(props) {
     <SafeAreaView style={styles.packageDetailsContainer}>
       <View style={{flex:9}}>
       <ScrollView >
-        {links ?
+        {data ?
           renderLinks() :
           (<View/>)}
       </ScrollView>
       </View>
-      <Card style={[styles.packageDetailsFooter,{marginTop:10}]}>
-        <TouchableOpacity onPress={onContinuePress} style={[styles.packageDetailsBookingButton]}>
-          <Text style={{color:"#FFF",fontWeight:"bold",fontSize:20}}>Trang chủ</Text>
-        </TouchableOpacity>
-      </Card>
     </SafeAreaView>
   );
 }
@@ -55,4 +51,4 @@ const stylesA = StyleSheet.create({
   }
 })
 
-export default PreviewResultScreen;
+export default BookingStyleScreen;

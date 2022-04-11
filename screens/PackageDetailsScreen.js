@@ -59,7 +59,7 @@ function PackageDetailsScreen(props) {
       return;
     }
     setAdditionalItems(data);
-    return data.map((item) => (<AdditionalItem onAmountChange={onAmountChange} key={item.id} item={item} oldAmount={0} />))
+    return data.map((item) => (<AdditionalItem onAmountChange={onAmountChange} key={item.id} item={item} oldAmount={0}  />))
   }
 
   const countTotalPrice = () => {

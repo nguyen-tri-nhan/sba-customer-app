@@ -140,18 +140,18 @@ function PreviewMakeupScreen(props) {
         .then(result => {
           result = JSON.parse(result)
           const msg = result.msg;
-          // const links = result.links;
-          const links = [
-            {
-                "refer": "https://i.pinimg.com/564x/db/cf/e3/dbcfe345c0836740c7811e9beadbfd32.jpg",
-                "result": "https://fpt-sba-images.s3.ap-southeast-2.amazonaws.com/5a4b586cbbdf4e7cbb0e21c97f0189e2",
-                "source":image,
-                "bookingId":"1",
-                "idStyle": "1",
-                "name":"all natural"
+          const links = result.links;
+          // const links = [
+          //   {
+          //       "refer": "https://i.pinimg.com/564x/db/cf/e3/dbcfe345c0836740c7811e9beadbfd32.jpg",
+          //       "result": "https://fpt-sba-images.s3.ap-southeast-2.amazonaws.com/5a4b586cbbdf4e7cbb0e21c97f0189e2",
+          //       "source":image,
+          //       "bookingId":"1",
+          //       "idStyle": "1",
+          //       "name":"all natural"
 
-            }
-          ]
+          //   }
+          // ]
           console.log(result.links);
           if(msg == "success"){
             console.log('success');
@@ -185,7 +185,7 @@ function PreviewMakeupScreen(props) {
                 style={{padding: 13,left:"70%"}}
                 onPress={() => setModalVisible(true)}>
                   <View style={{flexDirection:"row"}}>
-                  <Text style={{fontSize:20,top:-20}}>Trợ giúp </Text>
+                  <Text style={{fontSize:20,top:-30}}>Trợ giúp </Text>
                 </View>
               </TouchableOpacity>
       

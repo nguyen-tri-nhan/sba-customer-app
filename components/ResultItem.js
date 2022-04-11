@@ -3,6 +3,7 @@ import { TouchableOpacity, Image, StyleSheet,View,Text,Modal,Pressable } from 'r
 import { useStyle } from '../utils/style';
 import { Card } from 'react-native-paper';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import Services from '../utils/Services';
 
 function ResultItem({ sourceImg, item }) {
 
@@ -16,6 +17,16 @@ function ResultItem({ sourceImg, item }) {
     images.push(obj)
     return images
   }
+
+  // Services.saveMakeupStyle({
+  //   bookingId: '',
+  //   styleId: '',
+  //   originalImageUrl: '',
+  //   editedImageUrl: '',
+  // }, jwt)
+  //   .then(() => {
+  //     // Do something after finish, if not remove then
+  //   })
   
   const [modalVisible, setModalVisible] = useState(false);
 

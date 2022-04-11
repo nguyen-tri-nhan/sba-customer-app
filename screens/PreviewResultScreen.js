@@ -8,7 +8,6 @@ function PreviewResultScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
   const { sourceImg, links } = params;
-  const styles = useStyle();
 
   const renderLinks = () => {
       var items = []

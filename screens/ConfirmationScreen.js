@@ -226,7 +226,7 @@ function ConfirmationScreen(props) {
               type="AntDesign"
               size={30}
             />
-            <Text style={{marginLeft:10,top:5,fontSize:15}}>
+            <Text style={{marginLeft:10,top:5,fontSize:13}}>
               Ngày chụp :
             </Text>
             </View>
@@ -239,7 +239,7 @@ function ConfirmationScreen(props) {
               type="AntDesign"
               size={30}
             />
-            <Text style={{marginLeft:10,top:5,fontSize:15}}>
+            <Text style={{marginLeft:10,top:5,fontSize:13}}>
               Ngày nhận:
             </Text>
             </View>
@@ -253,7 +253,7 @@ function ConfirmationScreen(props) {
                 color={isChecked ? '#4630EB' : undefined}
               />
 
-              <Text style={{bottom:-5}}>Bạn muốn lên thử áo quần trước khi chụp ?</Text>
+              <Text style={{bottom:-5,fontSize:12,left:-15}}>Bạn muốn lên thử áo quần trước khi chụp ?</Text>
             </View>
             {isChecked?
             (<View style={styleA.conDate} disabled={isChecked}>
@@ -336,7 +336,7 @@ const styleA = StyleSheet.create({
   },
   h3: {
 
-    fontSize: 15,
+    fontSize: 13,
     marginBottom: 15,
   },
   conDate: {
@@ -408,7 +408,7 @@ const styleA = StyleSheet.create({
   },
   slotText:{
     top:5,
-    fontSize:16,
+    fontSize:14,
     fontWeight:'bold',
     color:'#fff'
   }

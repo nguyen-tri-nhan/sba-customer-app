@@ -314,7 +314,7 @@ export const BookingDetails = (props) => {
           <View style={styleA.conRowBtn}>
             {isCancelButtonRendered() && (<TouchableOpacity onPress={onShowCancelModal}>
               <View style={[styleA.conBtn, { backgroundColor: "#E14C4C" }]}>
-                <Text style={styleA.conTextBtn}>Hủy bỏ</Text>
+                <Text style={[styleA.conTextBtn,{top:3}]}>Hủy bỏ</Text>
               </View>
             </TouchableOpacity>)}
 

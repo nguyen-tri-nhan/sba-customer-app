@@ -48,7 +48,9 @@ const styleA = StyleSheet.create({
   },
   
   packageInfomation: {
-    flex: 8,
+    flex: 10,
+    left:40,
+    // width:"80%",
     backgroundColor:"#FFF",
   },
   text:{
@@ -75,10 +77,10 @@ const styleA = StyleSheet.create({
   },
   h2:{
     fontWeight:'bold',
-    fontSize:15,
+    fontSize:13,
   },
   h3:{
-    fontSize:16,
+    fontSize:12,
   },
   containerImg: {
     width: 100,
@@ -92,13 +94,13 @@ const styleA = StyleSheet.create({
     left: -10,
     position: "absolute",
     width: 110,
-    height: 125,
+    height: 110,
     flex: 3,
     borderRadius: 20,
   },
 
   packagesItem: {
-    minWidth: 360,
+    // minWidth: 360,
     width: '80%',
     flex: 1,
     flexDirection: 'row',

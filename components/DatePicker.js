@@ -93,7 +93,8 @@ function DatePicker({ placeHolder = "Chọn ngày", validRange, onConfirm, disab
 const styleA = StyleSheet.create({
   date:{
     alignSelf: "center",
-    top:5
+    top:5,
+    fontSize:12
   },
   conText:{
     backgroundColor: "rgba(0, 0, 0, 0.12)",
@@ -103,7 +104,7 @@ const styleA = StyleSheet.create({
       width: "100%",
     height:30,
     alignItems:'center',
-    width:250,
+    width:200,
     borderRadius:10,
     borderColor:"#7E7C7C"
   }

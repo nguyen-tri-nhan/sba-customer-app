@@ -7,13 +7,13 @@ import { Card } from 'react-native-paper';
 function PreviewResultScreen(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { links } = params;
+  const { links,jwt } = params;
   const styles = useStyle();
 
   const renderLinks = () => {
       var items = []
       links.forEach(link => {
-        items.push(<ResultItem item={link}  />)
+        items.push(<ResultItem item={link} jwt={jwt} />)
       });
     return items;
   }

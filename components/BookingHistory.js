@@ -47,16 +47,17 @@ const styleA = StyleSheet.create({
     width: "100%",
   },
   textDate: {
-    paddingTop: 10,
+    paddingTop: 0,
     textAlign: 'left',
-    color: "#000"
+    color: "#000",
+    fontSize:12
   },
   status: {
     borderRadius: 20,
     width: "35%",
     alignItems: 'center',
-    right: -10,
-    bottom: 15,
+    right: 25,
+    bottom: 20,
     alignSelf: "flex-end",
     height: 30,
     position: "absolute"
@@ -65,12 +66,12 @@ const styleA = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     fontSize: 13,
-    top: 8
+    top: 5
   },
   text: {
     marginLeft: 10,
-    marginTop: 5,
-    marginBottom: 5,
+    marginTop: 0,
+    marginBottom: 0,
     marginRight: 10,
   },
   box: {
@@ -110,16 +111,16 @@ const styleA = StyleSheet.create({
   },
   packageImage: {
     top: -35,
-    left: -40,
+    left: -30,
     position: "absolute",
-    width: 125,
-    height: 125,
+    width: 100,
+    height: 100,
     flex: 3,
     borderRadius: 20,
   },
   containerImg: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     flex: 3,
     borderRadius: 30
 

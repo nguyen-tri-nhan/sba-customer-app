@@ -80,14 +80,14 @@ function PreviewMakeupScreen(props) {
 
   const [styleList,setStyleList] = useState(new Map())
 
-  const onSelectedStyle = (id,url) => {
+  const onSelectedStyle = (id,name,url) => {
     // if(id && url && stylesData && !stylesData[id]){
     //   stylesData[id]=url;
     // }
-    setStyleList(styleList.set(id,url))
+    setStyleList(styleList.set(id,name+"_"+url))
   }
 
-  const onRemoveStyle = (id,url) => {
+  const onRemoveStyle = (id) => {
     // if(id && url && stylesData[id]){
     //   stylesData[id]="";
     // }
@@ -96,7 +96,7 @@ function PreviewMakeupScreen(props) {
 
   const onTryPress = () => {
     
-      console.log(image)
+      console.log(styleList)
       // const file = dataURLtoFile(image,"img.jpg")
         // Services.uploadFile("@aa89e800-f7e6-46a6-ab42-2f06fbd6e689.jpg").then((res) => {
         //   // console.log(res)
@@ -140,21 +140,23 @@ function PreviewMakeupScreen(props) {
         .then(result => {
           result = JSON.parse(result)
           const msg = result.msg;
-          const links = result.links;
-        //   const links = [
-        //     {
-        //         "refer": "https://i.pinimg.com/564x/db/cf/e3/dbcfe345c0836740c7811e9beadbfd32.jpg",
-        //         "result": "https://fpt-sba-images.s3.ap-southeast-2.amazonaws.com/5a4b586cbbdf4e7cbb0e21c97f0189e2"
-        //     }
-        // ]
-          console.log(links)
+          // const links = result.links;
+          const links = [
+            {
+                "refer": "https://i.pinimg.com/564x/db/cf/e3/dbcfe345c0836740c7811e9beadbfd32.jpg",
+                "result": "https://fpt-sba-images.s3.ap-southeast-2.amazonaws.com/5a4b586cbbdf4e7cbb0e21c97f0189e2",
+                "source":image,
+                "bookingId":"1",
+                "idStyle": "1",
+                "name":"all natural"
+
+            }
+          ]
+          console.log(result.links);
           if(msg == "success"){
             console.log('success');
             setLoading(false);
-            const result = links.map((ele) => {
-               
-            })
-            navigation.push("ResultScreen", { links:links});
+            navigation.push("ResultScreen", { links:links,jwt:jwt});
           }else{
             setErrorModal(true);
             setLoading(false);
@@ -183,13 +185,13 @@ function PreviewMakeupScreen(props) {
                 style={{padding: 13,left:"70%"}}
                 onPress={() => setModalVisible(true)}>
                   <View style={{flexDirection:"row"}}>
-                  <Text style={{fontSize:20,top:5}}>Trợ giúp </Text>
+                  <Text style={{fontSize:20,top:-20}}>Trợ giúp </Text>
                 </View>
               </TouchableOpacity>
       
         
      {loading && ( <ActivityIndicator size="large" color="#0000ff" style={{position:'absolute',alignSelf:'center',top:"50%"}} />)}
-        <View style={{width:200,height:200,alignSelf:'center',marginTop:40}}>
+        <View style={{width:200,height:200,alignSelf:'center',marginTop:0}}>
           <Image source={image ? { uri: image } : require("../assets/images/aaa.png")}
             style={{ flex: 1, width: 200, height: 50, alignSelf: 'center', marginTop: 10, resizeMethod: 'resize', resizeMode: 'contain' }}>
           </Image>

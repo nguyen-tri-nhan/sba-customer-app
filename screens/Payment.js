@@ -61,7 +61,7 @@ function Payment(props) {
         departureDate: startDate,
         returnDate: addDate(startDate,pkg.duration - 1),
         photoReceiptDate:getDate,
-        adviceDate:dressDate+slot,
+        adviceDate:dressDate?dressDate+slot:dressDate,
         transactionId:payment.id,
         paid:totalPrice
       }, jwt).then((response) => {
@@ -125,7 +125,7 @@ function Payment(props) {
           departureDate: startDate,
           returnDate: addDate(startDate,pkg.duration - 1),
           photoReceiptDate:getDate,
-          adviceDate:dressDate+slot,
+          adviceDate:dressDate?dressDate+slot:dressDate,
           transactionId:orderId,
           paid:totalPrice
         }, jwt).then((response) => {

@@ -3,8 +3,10 @@ import { TouchableOpacity, Image, StyleSheet,View,Text,Modal,Pressable } from 'r
 import { useStyle } from '../utils/style';
 import { Card } from 'react-native-paper';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import Services from '../utils/Services';
+import Icon from "react-native-dynamic-vector-icons";
 
-function ResultItem({styleName, item }) {
+function ResultItem({item,jwt }) {
 
   const styles = useStyle();
 
@@ -16,7 +18,27 @@ function ResultItem({styleName, item }) {
     images.push(obj)
     return images
   }
+
   
+
+  const onPressSave = () => {
+    console.log("save");
+    if(!isSaved){
+      Services.saveMakeupStyle({
+        bookingId: item.bookingId,
+        styleId: item.idStyle,
+        originalImageUrl: item.source,
+        editedImageUrl: item.result,
+      }, jwt)
+        .then(() => {
+          // Do something after finish, if not remove then
+          setSaved(true);
+        })
+    }
+    
+  }
+  
+  const [isSaved,setSaved] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -24,6 +46,18 @@ function ResultItem({styleName, item }) {
 
       
           <View style={stylesA.container}>
+          <View><Text style={[stylesA.text,{top:10}]}>Kiểu trang điểm : {item.name}</Text></View>
+          
+          <View style={[stylesA.conRowBtn,{top:20}]}>
+            <TouchableOpacity  onPress={onPressSave}>
+            <View style={{flexDirection:'row',alignItems:'center', alignSelf:'center'}}>
+              <Text style={[stylesA.text,]}>Lưu lại</Text>
+              {isSaved?<Icon name="check" type="Entypo" size={30} />:<Icon name="save" type="Entypo" size={30} />}
+              
+            </View>
+            
+            </TouchableOpacity>
+          </View>
           <View style={stylesA.conLink}>
           <View style={stylesA.conImage1}>
               <Image source={{uri:item.source}}
@@ -108,7 +142,8 @@ const stylesA = StyleSheet.create({
   },
   divineLine: {
     width: 1,
-    height: "110%",
+    height: "100%",
+    top:20,
     opacity: 0.5,
     backgroundColor: "#4A4A4A"
   },
@@ -118,7 +153,13 @@ const stylesA = StyleSheet.create({
     opacity: 0.5,
     backgroundColor: "#4A4A4A",
     marginTop:20
-  }
+  },
+  
+  conRowBtn: {
+    justifyContent: "space-around",
+    flexDirection: "row",
+
+  },
 
   
 })

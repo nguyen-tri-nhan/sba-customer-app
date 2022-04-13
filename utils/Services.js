@@ -58,6 +58,10 @@ const Services = {
 
   updateBookingItems(id, data, jwt) {
     return http.patch({ url: `${URL_PERFIX + Apis.booking}/${id}/items`, jwt: jwt, data: data });
+  },
+
+  updateBookingStatus(id, params, jwt) {
+    return http.put({ url: `${URL_PERFIX + Apis.booking}/${id}`, jwt: jwt, params: params})
   }
 };
 

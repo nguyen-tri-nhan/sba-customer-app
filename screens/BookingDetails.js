@@ -46,9 +46,10 @@ export const BookingDetails = (props) => {
   };
 
   const onCancelBooking = () => {
-    // add api cancel booking
-    setModalCancel(true);
-    console.log("cancel");
+    Services.updateBookingStatus(booking.id, { status: STATUS.CANCELED }, jwt)
+    .then(() => {
+      setModalCancel(true);
+    })
   }
 
   const onSendFeedback = () => {

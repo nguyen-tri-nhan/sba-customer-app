@@ -4,4 +4,6 @@
   <color name="iconBackground">#ffffff</color>
   <color name="colorPrimary">#023c69</color>
   <color name="colorPrimaryDark">#ffffff</color>
+  <color name="primary_dark">#000000</color> <!-- No need this line in this article -->
+  <color name="white">#FFF</color>
 </resources>

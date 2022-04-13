@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
 
@@ -193,6 +194,14 @@ dependencies {
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";
 
+    // Enable google analytics for app
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+
+    // Enable direct boot mode message handling in your app
+    implementation 'com.google.firebase:firebase-messaging-directboot:20.2.0'
+    
+    implementation project(':react-native-push-notification') 
+    
     // If your app supports Android versions before Ice Cream Sandwich (API level 14)
     // All fresco packages should use the same version
     if (isGifEnabled || isWebpEnabled) {

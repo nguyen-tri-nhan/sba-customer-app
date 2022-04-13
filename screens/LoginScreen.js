@@ -47,6 +47,7 @@ const LoginScreen = ({ navigation }) => {
 
     GoogleSignin.configure({
       androidClientId: 'AIzaSyBbT1vHm9ecA7S_v15Iwefb7ctmMryUUec',
+      iosClientId:'AIzaSyBDbuLKYfNKRjUsOYmR00QvSDcua7xyoyc'
     });
     try {
       await GoogleSignin.hasPlayServices();

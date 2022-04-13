@@ -25,7 +25,14 @@ target 'sbacustomerapp' do
   pod 'RNLocalize', :path => '../node_modules/react-native-localize'
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+  pod 'Firebase'
+  pod 'Firebase/Core'
+  pod 'Firebase/Messaging'
+  pod 'RNGoogleSignin', :path => '../node_modules/@react-native-google-signin/google-signin'
 
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
 
   post_install do |installer|
     react_native_post_install(installer)

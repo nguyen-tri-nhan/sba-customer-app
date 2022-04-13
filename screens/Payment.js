@@ -35,7 +35,7 @@ function Payment(props) {
   const [showGateway, setShowGateway] = useState(false);
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
-  const url = 'http://192.168.88.171:3000/price='+toUSD(totalPrice);
+  const url = 'http://172.20.10.2:3000/price='+toUSD(totalPrice);
 
   
   const [modalVisible, setModalVisible] = useState(false);

@@ -135,7 +135,7 @@ function PreviewMakeupScreen(props) {
         redirect: 'follow'
       };
 
-      fetch("http://192.168.88.171:8000/make", requestOptions)
+      fetch("http://172.20.10.2:8000/make", requestOptions)
         .then(response => response.text())
         .then(result => {
           result = JSON.parse(result)

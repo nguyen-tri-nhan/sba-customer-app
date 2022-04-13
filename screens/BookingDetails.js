@@ -48,7 +48,7 @@ export const BookingDetails = (props) => {
   const onCancelBooking = () => {
     Services.updateBookingStatus(booking.id, { status: STATUS.CANCELED }, jwt)
     .then(() => {
-      setModalCancel(true);
+      setModalCancel(false);
     })
   }
 

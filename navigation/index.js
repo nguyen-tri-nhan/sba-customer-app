@@ -24,6 +24,7 @@ import AsyncStorageLib from "@react-native-async-storage/async-storage";
 export default function Navigation({ colorScheme }) {
   const [jwt, setJwt] = useState('');
   const [userDetails, setUserDetails] = useState();
+  const [depositsPercentage, setDepositPercentage] = useState();
 
   const authContext = useMemo(() => {
     return {
@@ -57,10 +58,20 @@ export default function Navigation({ colorScheme }) {
     };
   }, []);
 
+  const getConfiguration = (jwt) => {
+    Services.getConfiguration("depositsPercentage", jwt)
+      .then(({data}) => {
+        const { value } = data;
+        setDepositPercentage(value);
+      })
+
+  }
+
   useEffect(() => {
     AsyncStorageLib.getItem("JWT")
       .then((data) => {
         setJwt(data);
+        getConfiguration(data);
         return data;
       })
       .then((token) => {
@@ -94,7 +105,7 @@ export default function Navigation({ colorScheme }) {
               <AuthTabs.Screen
                 name="TabOne"
                 component={PackagesStack}
-                initialParams={{ user: userDetails, jwt: jwt }}
+                initialParams={{ user: userDetails, jwt: jwt, depositsPercentage: depositsPercentage }}
                 options={{
                   title: "Dịch vụ",
                   tabBarIcon: () => (
@@ -105,7 +116,7 @@ export default function Navigation({ colorScheme }) {
               <AuthTabs.Screen
                 name="TabTwo"
                 component={HistoryStack}
-                initialParams={{ user: userDetails, jwt: jwt }}
+                initialParams={{ user: userDetails, jwt: jwt, depositsPercentage: depositsPercentage }}
                 options={{
                   title: "Lịch sử",
                   tabBarIcon: () => (

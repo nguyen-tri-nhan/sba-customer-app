@@ -25,7 +25,18 @@ const EventEmitter = new NativeEventEmitter(RNMoMoPaymentModule);
 function Payment(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { pkg, jwt, forwardedItems, user, totalPrice, showroom, dressDate, startDate, getDate,slot } = params;
+  const { 
+    pkg, 
+    jwt,
+    depositsPercentage,
+    forwardedItems,
+    user,
+    totalPrice,
+    showroom,
+    dressDate,
+    startDate,
+    getDate,
+    slot } = params;
   const isAndroid = Platform.OS === 'android';
   const styles = useStyle();
   const onContinuePress = (id) => {
@@ -35,10 +46,13 @@ function Payment(props) {
   const [showGateway, setShowGateway] = useState(false);
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
-  const url = 'http://192.168.88.171:3000/price='+toUSD(totalPrice);
+  const url = 'http://172.20.10.2:3000/price='+toUSD(totalPrice);
 
   
   const [modalVisible, setModalVisible] = useState(false);
+
+  console.log(depositsPercentage);
+  //TODO: add to price
 
   function onMessage(e) {
     let data = e.nativeEvent.data;

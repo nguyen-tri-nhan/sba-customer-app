@@ -276,7 +276,7 @@ export const BookingDetails = (props) => {
 
             {edit && (<TouchableOpacity onPress={onEditPress}>
               <View style={[styleA.conBtn, { backgroundColor: "#2D71D7" }]}>
-                <Text style={styleA.conTextBtn}>Chỉnh sửa</Text>
+                <Text style={[styleA.conTextBtn,{top:3}]}>Chỉnh sửa</Text>
               </View>
             </TouchableOpacity>)}
             {showFeedback && !feedback && (

@@ -3,13 +3,13 @@ import { useStyle } from '../utils/style';
 import { Text, View, Button,StyleSheet } from 'react-native';
 import { toVND } from '../utils/CurrencyHelper';
 
-function AdditionalItem({ item, onAmountChange, oldAmount }) {
+function AdditionalItem({ item, onAmountChange, oldAmount,currentBookingAmount }) {
 
   const [amount, setAmount] = useState(0);
 
   const styles = useStyle();
 
-  useEffect(() => {
+  useEffect( () => {
     if(!oldAmount) oldAmount = 0;
     setAmount(oldAmount);
   },[])
@@ -23,17 +23,16 @@ function AdditionalItem({ item, onAmountChange, oldAmount }) {
   }
 
   const onSubtract = () => {
-    // if (oldAmount && amount == oldAmount){
-
-    // }else 
-    
-    if (amount > 0) {
+    if (currentBookingAmount && amount == currentBookingAmount){
+        
+    }else 
+   { if (amount > 0) {
       const value = amount - 1;
       setAmount(value);
       if (onAmountChange) {
         onAmountChange(item, value);
       }
-    }
+    }}
   }
 
   return (

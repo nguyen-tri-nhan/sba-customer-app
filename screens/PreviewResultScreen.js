@@ -18,7 +18,11 @@ function PreviewResultScreen(props) {
     return items;
   }
   const onContinuePress = () => {
-      navigation.navigate('Packages');
+      // navigation.navigate('Packages');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Packages' }],
+      });
   }
 
 

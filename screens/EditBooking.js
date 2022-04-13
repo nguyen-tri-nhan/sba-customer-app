@@ -35,6 +35,11 @@ function EditBooking(props) {
     Services.updateBookingItems(booking.id, { items: additionalItems }, jwt)
     .then(() => {
       // TODO: success message.
+      // navigation.goBack();
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'History' }],
+      });
     })
   }
 
@@ -51,12 +56,19 @@ function EditBooking(props) {
     setAdditionalItems(data);
     data.forEach((item) => {
       booking.items.forEach((ele) => {
-        if (item.id === ele.id && !item.amount && item.amount !== ele.amount) {
+        if (item.id === ele.item && !item.amount && item.amount !== ele.amount) {
           item.amount = ele.amount;
         }
       })
     });
-    return data.map((item) => (<AdditionalItem onAmountChange={onAmountChange} key={item.id} item={item} oldAmount={item.amount} />))
+    return data.map((item) => {
+      let amount = 0;
+      booking.items.forEach((ele) => {
+        if (item.id === ele.item ) {
+          amount = ele.amount;
+        }
+      })
+      return (<AdditionalItem onAmountChange={onAmountChange} key={item.id} item={item} oldAmount={item.amount} currentBookingAmount={amount} />)})
   }
 
   const countTotalPrice = () => {

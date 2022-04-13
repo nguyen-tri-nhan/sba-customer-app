@@ -11,7 +11,7 @@ function BookingStyleScreen(props) {
   const styles = useStyle();
 
   const renderLinks = () => {
-      console.log(data);
+      // console.log(data);
       var items = []
       data.forEach(ele => {
         items.push(<StyleTracking item={ele} />)

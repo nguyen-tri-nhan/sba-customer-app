@@ -9,6 +9,7 @@ const Apis = {
   booking: '/booking',
   feedback: '/feedback',
   style_tracking: '/style-tracking',
+  configuration: '/configuration',
 }
 
 export default Apis;

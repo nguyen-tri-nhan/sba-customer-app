@@ -61,7 +61,11 @@ const Services = {
   },
 
   updateBookingStatus(id, params, jwt) {
-    return http.put({ url: `${URL_PERFIX + Apis.booking}/${id}`, jwt: jwt, params: params})
+    return http.put({ url: `${URL_PERFIX + Apis.booking}/${id}`, jwt: jwt, params: params })
+  },
+
+  getConfiguration(key, jwt) {
+    return http.get({ url: `${URL_PERFIX + Apis.booking}/${id}`, params: { key }, jwt });
   }
 };
 

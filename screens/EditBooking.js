@@ -24,6 +24,7 @@ function EditBooking(props) {
   const [additionalItems, setAdditionalItems] = useState([]);
 
 
+
   useEffect(() => {
 
   }, [])
@@ -32,15 +33,16 @@ function EditBooking(props) {
 
 
   const onEditBookingPress = () => {
-    Services.updateBookingItems(booking.id, { items: additionalItems }, jwt)
-    .then(() => {
-      // TODO: success message.
-      // navigation.goBack();
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'History' }],
-      });
-    })
+    // Services.updateBookingItems(booking.id, { items: additionalItems,paid:10000,transactionId:"aaa",paymentType:"" }, jwt)
+    // .then(() => {
+    //   // TODO: success message.
+    //   // navigation.goBack();
+    //   navigation.reset({
+    //     index: 0,
+    //     routes: [{ name: 'History' }],
+    //   });
+    // })
+    navigation.push("PaymentEdit",{booking:booking,additionalItems:additionalItems,jwt:jwt});
   }
 
   const onAmountChange = (item, amount) => {
@@ -73,12 +75,15 @@ function EditBooking(props) {
 
   const countTotalPrice = () => {
     let total = 0;
-    // total += pkg.price;
+    // total += booking.price - booking.paid;
     additionalItems.forEach((item) => {
       if (item.amount) {
         total += item.amount * item.price;
       }
     })
+    booking.items.forEach((item) => {
+      total -= item.amount * item.price;
+    });
     return total;
   }
 

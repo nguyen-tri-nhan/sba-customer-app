@@ -54,9 +54,6 @@ export const BookingDetails = (props) => {
 
   const onSendFeedback = () => {
     //add api them fb 
-    console.log("feedback")
-    console.log(star);
-    console.log(value);
     Services.feedBack({
       bookingId: booking.id,
       stars: star,
@@ -177,7 +174,7 @@ export const BookingDetails = (props) => {
                 type="MaterialIcons"
                 size={30}
               />
-              <Text style={styleA.textIcon}>Đã cọc: {toVND(booking.price)} </Text>
+              <Text style={styleA.textIcon}>Đã cọc: {toVND(booking.paid)} </Text>
             </View>
             
             

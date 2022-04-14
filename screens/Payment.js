@@ -13,6 +13,8 @@ import Icon from "react-native-dynamic-vector-icons";
 import {WebView} from 'react-native-webview';
 import Feather from 'react-native-vector-icons/Feather';
 import { addDate } from '../utils/DateHelper';
+import { paypal } from '../utils/Constants';
+
 
 
 import RNMomosdk from 'react-native-momosdk';
@@ -28,7 +30,7 @@ function Payment(props) {
   const { 
     pkg, 
     jwt,
-    depositsPercentage,
+    // depositsPercentage,
     forwardedItems,
     user,
     totalPrice,
@@ -46,13 +48,19 @@ function Payment(props) {
   const [showGateway, setShowGateway] = useState(false);
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
-  const url = 'http://172.20.10.2:3000/price='+toUSD(totalPrice);
+  const url = paypal+'price='+toUSD(getPaid());
+  const [isSetDeposit,setIsDeposit] = useState(false);
+  const [depositsPercentage,setDepositPercentage] = useState();
 
   
   const [modalVisible, setModalVisible] = useState(false);
 
-  console.log(depositsPercentage);
+  // console.log(depositsPercentage)
   //TODO: add to price
+
+  function getPaid(){
+    return Math.floor(pkg.price*depositsPercentage/100)
+  }
 
   function onMessage(e) {
     let data = e.nativeEvent.data;
@@ -77,7 +85,9 @@ function Payment(props) {
         photoReceiptDate:getDate,
         adviceDate:dressDate?dressDate+slot:dressDate,
         transactionId:payment.id,
-        paid:totalPrice
+        paid:getPaid(),
+        paymentType:"PAYPAL",
+        paymentDesc:"Thanh toan coc"
       }, jwt).then((response) => {
         console.log(response.data.id);
 
@@ -109,7 +119,7 @@ function Payment(props) {
     jsonData.merchantnamelabel = merchantNameLabel;
     jsonData.description = pkg.name;
     // jsonData.amount = totalPrice;//order total amount
-    jsonData.amount = totalPrice;
+    jsonData.amount = getPaid();
     jsonData.orderId = getCurrentDateYYMMDD() + '_' + new Date().getTime();
     jsonData.orderLabel = "Ma don hang";
     jsonData.appScheme = "momom8av20220409";// iOS App Only , match with Schemes Indentify from your  Info.plist > key URL types > URL Schemes
@@ -141,7 +151,9 @@ function Payment(props) {
           photoReceiptDate:getDate,
           adviceDate:dressDate?dressDate+slot:dressDate,
           transactionId:orderId,
-          paid:totalPrice
+          paid:getPaid(),
+          paymentType:"MOMO",
+          paymentDesc:"Thanh toan coc"
         }, jwt).then((response) => {
           console.log("thanh toan momo thanh cong");
   
@@ -157,257 +169,249 @@ function Payment(props) {
     }catch(ex){}
   }
 
-
+  // function loadDeposit(){
+   
+  // }
   useEffect(() =>{
-    // Listen for native events
-    EventEmitter.addListener('RCTMoMoNoficationCenterRequestTokenReceived', (response) => {
-        console.log("<MoMoPay>Listen.Event::" + JSON.stringify(response));
-        try{
-              if (response && response.status == 0) {
-                let fromapp = response.fromapp; //ALWAYS:: fromapp==momotransfer
-                let momoToken = response.data;
-                let phonenumber = response.phonenumber;
-                let message = response.message;
-                let orderId = response.refOrderId; //your orderId
-                let requestId = response.refRequestId; //your requestId
-                //continue to submit momoToken,phonenumber to server
-              } else {
-                console.log( "message: Get token fail")
-              }
-        }catch(ex){}
 
-    });
-    
-    //OPTIONAL
-    EventEmitter.addListener('RCTMoMoNoficationCenterRequestTokenState',(response) => {
-        console.log("<MoMoPay>Listen.RequestTokenState:: " + response.status);
-        // status = 1: Parameters valid & ready to open MoMo app.
-        // status = 2: canOpenURL failed for URL MoMo app 
-        // status = 3: Parameters invalid
-    })
+    if(!isSetDeposit || depositsPercentage == undefined){
+      Services.getConfiguration("depositsPercentage", jwt)
+      .then(({data}) => {
+        const { value } = data;
+        setDepositPercentage(value);
+        setIsDeposit(true);
+      })
+    }
+ 
   },[]);
+
+
 
   
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
       <BookingStepIndicator currentStep={2} />
-      <Card style={[styles.customerInformation,{justifyContent:'space-between'}]}>
-      <ScrollView>
-        <View style={stylesA.container}>
-          <View style={[stylesA.conText,{marginTop:20}]}>
-            <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
-            <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(totalPrice)}</Text>
-          </View>
-          
+      {
+        depositsPercentage!=undefined?(
+          <Card style={[styles.customerInformation,{justifyContent:'space-between'}]}>
+        <ScrollView>
+          <View style={stylesA.container}>
+            <View style={[stylesA.conText,{marginTop:20}]}>
+              <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
+              <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(totalPrice)}</Text>
+            </View>
             
-          <View style={stylesA.divineLine} />
-          <View style={stylesA.conText}>
-              <Text style={[stylesA.text,{marginBottom:10}]}>{pkg.name} :</Text>
-              <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(pkg.price)}</Text>
-          </View>
-          <View style={stylesA.conText}>
-            <View style={stylesA.conRow}>
-              <Icon
-                name="location"
-                type="Entypo"
-                size={30}
-              />
-              <Text style={[stylesA.text,stylesA.textIcon]}>Địa điểm chụp : </Text>
+              
+            <View style={stylesA.divineLine} />
+            <View style={stylesA.conText}>
+                <Text style={[stylesA.text,{marginBottom:10}]}>{pkg.name} :</Text>
+                <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(pkg.price)}</Text>
             </View>
-            <Text style={[stylesA.text,stylesA.textIcon]}>{pkg.location}</Text>
-          </View>
-          <View style={stylesA.conText}>
-            <View style={stylesA.conRow}>
-            <Icon
-              name="add-a-photo"
-              type="MaterialIcons"
-              size={30}
-            />
-            <Text style={[stylesA.text,stylesA.textIcon]}>
-              Chi nhánh thực hiện : 
-            </Text>
+            <View style={stylesA.conText}>
+              <View style={stylesA.conRow}>
+                <Icon
+                  name="location"
+                  type="Entypo"
+                  size={30}
+                />
+                <Text style={[stylesA.text,stylesA.textIcon]}>Địa điểm chụp : </Text>
+              </View>
+              <Text style={[stylesA.text,stylesA.textIcon]}>{pkg.location}</Text>
             </View>
-            <Text style={[stylesA.text,stylesA.textIcon]}>
-              {showroom.name}
-            </Text>
-          </View>
-          <View style={stylesA.conText}>
-            <View style={stylesA.conRow}>
-              <Icon
-                name="location"
-                type="Entypo"
-                size={30}
-              />
-              <Text style={[stylesA.text,stylesA.textIcon]}>Địa chỉ : </Text>
-            </View>
-            <Text style={[stylesA.text,stylesA.textIcon]}>{showroom.address}</Text>
-          </View>
-          <View style={stylesA.conText}>
-            <View style={stylesA.conRow}>
-              <Icon
-                name="ios-today-outline"
-                type="Ionicons"
-                size={30}
-              />
-              <Text style={[stylesA.text,stylesA.textIcon]}>Ngày chụp ảnh : </Text>
-            </View>
-            <Text style={[stylesA.text,stylesA.textIcon]}>{startDate}</Text>
-          </View>
-          <View style={stylesA.conText}>
-            <View style={stylesA.conRow}>
-              <Icon
-                name="ios-today-outline"
-                type="Ionicons"
-                size={30}
-              />
-              <Text style={[stylesA.text,stylesA.textIcon]}>Ngày nhận ảnh : </Text>
-            </View>
-            <Text style={[stylesA.text,stylesA.textIcon]}>{getDate}</Text>
-          </View>
-            {
-              dressDate?(
-                <View style={stylesA.conText}>
-                  <View style={stylesA.conRow}>
-                    <Icon
-                      name="back-in-time"
-                      type="Entypo"
-                      size={30}
-                    />
-                    <Text style={[stylesA.text,stylesA.textIcon]}>Ngày thử đồ : </Text>
-                  </View>
-                  <Text style={[stylesA.text,stylesA.textIcon]}>{dressDate}</Text>
-                </View>
-              ):<></>
-            }
-            {
-              dressDate?(
-                <View style={[stylesA.conText,{marginBottom:20}]}>
-                  <View style={stylesA.conRow}>
-                    <Icon
-                      name="time-slot"
-                      type="Entypo"
-                      size={30}
-                    />
-                    <Text style={[stylesA.text,stylesA.textIcon]}>Thời gian : </Text>
-                  </View>
-                  <Text style={[stylesA.text,stylesA.textIcon]}>{slot=='T07:00:00'?'Sáng':'Chiều'}</Text>
-                </View>
-              ):<></>
-            }
-            {
-              forwardedItems.length>0?<View style={stylesA.divineLine} />:<></>
-            }
-            {
-              forwardedItems.length>0?(
+            <View style={stylesA.conText}>
               <View style={stylesA.conRow}>
               <Icon
-                name="add-to-list"
-                type="Entypo"
+                name="add-a-photo"
+                type="MaterialIcons"
                 size={30}
               />
-                <Text style={[stylesA.text,stylesA.textIcon]}>
-                  Dịch vụ thêm :
-                </Text>
-              </View>):<></>
-            }
-            {
-                forwardedItems.map((item) =>
-                (<View key={item.id} style={stylesA.conText}>
-                    <Text style={[stylesA.text,{marginBottom:10}]}>{item.itemName} :</Text>
-                    <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
-                </View>
-                ))
-              }
-          
-          <View style={stylesA.divineLine} />
-          <View style={stylesA.conText}>
-            <Text style={stylesA.text}>Thanh toán phần cọc :</Text>
-            <Text style={stylesA.text}>{toVND(totalPrice)}</Text>
-          </View>
-          <View style={[stylesA.conText,{marginTop:20}]}>
-            <Text style={stylesA.text}>Số tiền còn lại :</Text>
-            <Text style={stylesA.text}>{toVND(totalPrice-totalPrice)}</Text>
-          </View>
-          
-          <View style={[stylesA.divineLine,{marginTop:10}]} />
-        </View>
-        <View style={[stylesA.containerBtn,{marginBottom:20,marginTop:20}]}>
-          
-          <View style={[stylesA.btnCon,{backgroundColor:"#a50064"}]}>
-            <TouchableOpacity
-              style={stylesA.btn}
-              onPress={() => onPress()}>
-              <Text style={stylesA.btnTxt}>Thanh toán Momo</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={[stylesA.containerBtn,{marginBottom:50}]}>
-          
-          <View style={stylesA.btnCon}>
-            <TouchableOpacity
-              style={stylesA.btn}
-              onPress={() => setShowGateway(true)}>
-              <Text style={stylesA.btnTxt}>Thanh toán PayPal</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        
-      {showGateway ? (
-        <Modal
-          visible={showGateway}
-          onDismiss={() => setShowGateway(false)}
-          onRequestClose={() => setShowGateway(false)}
-          animationType={'fade'}
-          // transparent={true}
-          >
-          <View style={[stylesA.webViewCon,{top:isAndroid?0:50}]}>
-            <View style={stylesA.wbHead}>
-              <TouchableOpacity
-                style={{padding: 13}}
-                onPress={() => setShowGateway(false)}>
-                <Feather name={'x'} size={30} />
-              </TouchableOpacity>
-              <Text
-                style={{
-                  flex: 1,
-                  textAlign: 'center',
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  color: '#00457C',
-                }}>
-                PayPal GateWay
+              <Text style={[stylesA.text,stylesA.textIcon]}>
+                Chi nhánh thực hiện : 
               </Text>
-              <View style={{padding: 13, opacity: prog ? 1 : 0}}>
-                <ActivityIndicator size={24} color={progClr} />
               </View>
+              <Text style={[stylesA.text,stylesA.textIcon]}>
+                {showroom.name}
+              </Text>
             </View>
-            <WebView
-              source={{uri: url}}
-              style={{flex: 1}}
-              onLoadStart={() => {
-                setProg(true);
-                setProgClr('#000');
-              }}
-              onLoadProgress={() => {
-                setProg(true);
-                setProgClr('#00457C');
-              }}
-              onLoadEnd={() => {
-                setProg(false);
-              }}
-              onLoad={() => {
-                setProg(false);
-              }}
-              onMessage={onMessage}
-            />
+            <View style={stylesA.conText}>
+              <View style={stylesA.conRow}>
+                <Icon
+                  name="location"
+                  type="Entypo"
+                  size={30}
+                />
+                <Text style={[stylesA.text,stylesA.textIcon]}>Địa chỉ : </Text>
+              </View>
+              <Text style={[stylesA.text,stylesA.textIcon]}>{showroom.address}</Text>
+            </View>
+            <View style={stylesA.conText}>
+              <View style={stylesA.conRow}>
+                <Icon
+                  name="ios-today-outline"
+                  type="Ionicons"
+                  size={30}
+                />
+                <Text style={[stylesA.text,stylesA.textIcon]}>Ngày chụp ảnh : </Text>
+              </View>
+              <Text style={[stylesA.text,stylesA.textIcon]}>{startDate}</Text>
+            </View>
+            <View style={stylesA.conText}>
+              <View style={stylesA.conRow}>
+                <Icon
+                  name="ios-today-outline"
+                  type="Ionicons"
+                  size={30}
+                />
+                <Text style={[stylesA.text,stylesA.textIcon]}>Ngày nhận ảnh : </Text>
+              </View>
+              <Text style={[stylesA.text,stylesA.textIcon]}>{getDate}</Text>
+            </View>
+              {
+                dressDate?(
+                  <View style={stylesA.conText}>
+                    <View style={stylesA.conRow}>
+                      <Icon
+                        name="back-in-time"
+                        type="Entypo"
+                        size={30}
+                      />
+                      <Text style={[stylesA.text,stylesA.textIcon]}>Ngày thử đồ : </Text>
+                    </View>
+                    <Text style={[stylesA.text,stylesA.textIcon]}>{dressDate}</Text>
+                  </View>
+                ):<></>
+              }
+              {
+                dressDate?(
+                  <View style={[stylesA.conText,{marginBottom:20}]}>
+                    <View style={stylesA.conRow}>
+                      <Icon
+                        name="time-slot"
+                        type="Entypo"
+                        size={30}
+                      />
+                      <Text style={[stylesA.text,stylesA.textIcon]}>Thời gian : </Text>
+                    </View>
+                    <Text style={[stylesA.text,stylesA.textIcon]}>{slot=='T07:00:00'?'Sáng':'Chiều'}</Text>
+                  </View>
+                ):<></>
+              }
+              {
+                forwardedItems.length>0?<View style={stylesA.divineLine} />:<></>
+              }
+              {
+                forwardedItems.length>0?(
+                <View style={stylesA.conRow}>
+                <Icon
+                  name="add-to-list"
+                  type="Entypo"
+                  size={30}
+                />
+                  <Text style={[stylesA.text,stylesA.textIcon]}>
+                    Dịch vụ thêm :
+                  </Text>
+                </View>):<></>
+              }
+              {
+                  forwardedItems.map((item) =>
+                  (<View key={item.id} style={stylesA.conText}>
+                      <Text style={[stylesA.text,{marginBottom:10}]}>{item.itemName} :</Text>
+                      <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
+                  </View>
+                  ))
+                }
+            
+            <View style={stylesA.divineLine} />
+            <View style={stylesA.conText}>
+              <Text style={stylesA.text}>Thanh toán phần cọc :</Text>
+              <Text style={stylesA.text}>{toVND(getPaid())}</Text>
+            </View>
+            <View style={[stylesA.conText,{marginTop:20}]}>
+              <Text style={stylesA.text}>Số tiền còn lại :</Text>
+              <Text style={stylesA.text}>{toVND(totalPrice-getPaid())}</Text>
+            </View>
+            
+            <View style={[stylesA.divineLine,{marginTop:10}]} />
           </View>
-        </Modal>
-       ) : null}
-
-
-      </ScrollView>
-      </Card>
+          <View style={[stylesA.containerBtn,{marginBottom:20,marginTop:20}]}>
+            
+            <View style={[stylesA.btnCon,{backgroundColor:"#a50064"}]}>
+              <TouchableOpacity
+                style={stylesA.btn}
+                onPress={() => onPress()}>
+                <Text style={stylesA.btnTxt}>Thanh toán Momo</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={[stylesA.containerBtn,{marginBottom:50}]}>
+            
+            <View style={stylesA.btnCon}>
+              <TouchableOpacity
+                style={stylesA.btn}
+                onPress={() => setShowGateway(true)}>
+                <Text style={stylesA.btnTxt}>Thanh toán PayPal</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+  
+          
+        {showGateway ? (
+          <Modal
+            visible={showGateway}
+            onDismiss={() => setShowGateway(false)}
+            onRequestClose={() => setShowGateway(false)}
+            animationType={'fade'}
+            // transparent={true}
+            >
+            <View style={[stylesA.webViewCon,{top:isAndroid?0:50}]}>
+              <View style={stylesA.wbHead}>
+                <TouchableOpacity
+                  style={{padding: 13}}
+                  onPress={() => setShowGateway(false)}>
+                  <Feather name={'x'} size={30} />
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    flex: 1,
+                    textAlign: 'center',
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color: '#00457C',
+                  }}>
+                  PayPal GateWay
+                </Text>
+                <View style={{padding: 13, opacity: prog ? 1 : 0}}>
+                  <ActivityIndicator size={24} color={progClr} />
+                </View>
+              </View>
+              <WebView
+                source={{uri: paypal+'price='+toUSD(getPaid())}}
+                style={{flex: 1}}
+                onLoadStart={() => {
+                  setProg(true);
+                  setProgClr('#000');
+                }}
+                onLoadProgress={() => {
+                  setProg(true);
+                  setProgClr('#00457C');
+                }}
+                onLoadEnd={() => {
+                  setProg(false);
+                }}
+                onLoad={() => {
+                  setProg(false);
+                }}
+                onMessage={onMessage}
+              />
+            </View>
+          </Modal>
+         ) : null}
+  
+  
+        </ScrollView>
+        </Card>
+        ):<></>
+      }
     </SafeAreaView>
   );
 }

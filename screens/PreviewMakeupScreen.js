@@ -13,6 +13,7 @@ import axios from 'axios';
 import DataLoader from '../model/Dataloader';
 import { ENTITY } from '../utils/Constants';
 import Feather from 'react-native-vector-icons/Feather';
+import { ai_domain } from '../utils/Constants';
 
 function PreviewMakeupScreen(props) {
   const { navigation, route } = props;
@@ -135,7 +136,7 @@ function PreviewMakeupScreen(props) {
         redirect: 'follow'
       };
 
-      fetch("http://172.20.10.2:8000/make", requestOptions)
+      fetch(ai_domain, requestOptions)
         .then(response => response.text())
         .then(result => {
           result = JSON.parse(result)

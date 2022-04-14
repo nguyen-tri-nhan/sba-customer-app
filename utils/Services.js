@@ -65,8 +65,13 @@ const Services = {
   },
 
   getConfiguration(key, jwt) {
-    return http.get({ url: `${URL_PERFIX + Apis.booking}/${id}`, params: { key }, jwt });
-  }
+    return http.get({ url: `${URL_PERFIX + Apis.configuration}`, params: { key }, jwt });
+  },
+
+  updateBookingTransaction(id, data, jwt) {
+    console.log("call api")
+    return http.post({ url: `${URL_PERFIX + Apis.booking}/${id}/booking-transaction`, jwt: jwt, data: data });
+  },
 };
 
 export default Services;

@@ -1,11 +1,13 @@
 // const domain = 'http://sbaprj-dev.eba-dyjmryhk.ap-southeast-2.elasticbeanstalk.com';
 // const domain = 'http://localhost:5000';
 // const domain = 'http://192.168.3.100:5000';
-const domain = 'http://172.20.10.2:5001';
+const domain = 'http://192.168.88.171:5000';
 // const domain = 'http://192.168.1.173:5000';
 const subService = '/pbs-service';
 
-export const ai_domain = 'http://192.168.88.171:8000/makeup';
+export const ai_domain = 'http://192.168.88.171:8000/make';
+
+export const paypal = 'http://192.168.88.171:3000/';
 
 export const endPoint = `${domain}${subService}`;
 

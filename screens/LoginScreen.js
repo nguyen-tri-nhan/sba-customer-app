@@ -17,9 +17,9 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginFailed, setLoginFailed] = useState(false);
-  const [isSigninInProgress,setSigninInProgress] = useState(false)
+  const [isSigninInProgress, setSigninInProgress] = useState(false)
 
-  const { login } = useContext(AuthContext);
+  const { login, loginWithGoogle } = useContext(AuthContext);
 
   const user = {
     email,
@@ -52,10 +52,10 @@ const LoginScreen = ({ navigation }) => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       // this.setState({ userInfo });
-      console.log('login gamil thanh cong', userInfo.user);
       const email = userInfo.user.email;
-      const name = userInfo.user.name;
-      const photoUrl = user.user.photo
+      const firstname = userInfo.user.familyName;
+      const lastname = userInfo.user.givenName
+      loginWithGoogle(email, firstname, lastname, errorHandler);
     } catch (error) {
       console.log(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -71,10 +71,12 @@ const LoginScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
+      <View style={{alignItems:'center',top:-100}}>
       <Ionicons name="camera-outline" size={100} />
       <Text style={styles.titleText}>Studio Booking Application</Text>
-      <View style={styles.inputView}>
+      </View>
+      {/* <View style={styles.inputView}>
         <TextInput
           style={styles.textInput}
           placeholder="Email"
@@ -106,16 +108,16 @@ const LoginScreen = ({ navigation }) => {
         underlayColor="#91bfe6"
       >
         <Text style={styles.submitText}>Đăng nhập</Text>
-      </TouchableHighlight>
-      <TouchableOpacity
+      </TouchableHighlight> */}
+      {/* <TouchableOpacity
         onPress={() => navigation.navigate("Register")}
         style={styles.link}
       >
         <Text style={styles.linkText}>Chưa có tài khoản? Đăng ký ngay</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <GoogleSigninButton
-        style={{ width: 192, height: 48 }}
+        style={{ width: 192, height: 48 ,top:-60}}
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Dark}
         onPress={_signIn}

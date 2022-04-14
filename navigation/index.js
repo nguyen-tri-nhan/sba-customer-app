@@ -54,13 +54,28 @@ export default function Navigation({ colorScheme }) {
       },
       getJwt: () => {
         return jwt;
+      },
+      loginWithGoogle: (email, firstname, lastname, errorHandler) => {
+        Services.loginWithGoogle({ email, firstname, lastname }, errorHandler)
+          .then(({ data }) => {
+            const jwtToken = `Bearer ${data.accessToken}`;
+            setJwt(jwtToken);
+            AsyncStorageLib.setItem("JWT", jwtToken)
+            return jwtToken;
+          })
+          .then((jwt) => {
+            Services.getMe(jwt)
+              .then(({ data }) => {
+                setUserDetails(data);
+              })
+          })
       }
     };
   }, []);
 
   const getConfiguration = (jwt) => {
     Services.getConfiguration("depositsPercentage", jwt)
-      .then(({data}) => {
+      .then(({ data }) => {
         const { value } = data;
         setDepositPercentage(value);
       })
@@ -77,9 +92,9 @@ export default function Navigation({ colorScheme }) {
       .then((token) => {
         if (token) {
           Services.getMe(token)
-          .then(({ data }) => {
-            setUserDetails(data);
-          })
+            .then(({ data }) => {
+              setUserDetails(data);
+            })
         }
       })
   }, []);

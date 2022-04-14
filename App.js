@@ -10,7 +10,7 @@ import { useColorScheme, LogBox } from "react-native";
 export default function App() {
   const isLoadingComplete = useLoadedAssets();
   const colorScheme = useColorScheme();
-  LogBox.ignoreLogs(['Warning: Cannot update a component','Warning: Cannot update a component (`BookingDetails`)','Each child in a list']);
+  LogBox.ignoreLogs(['Warning: Cannot update a component (`PackageDetailsScreen`)','Warning: Cannot update a component (`BookingDetails`)','Possible Unhandled Promise Rejection','Can\'t perform']);
 
   if (!isLoadingComplete) {
     return null;

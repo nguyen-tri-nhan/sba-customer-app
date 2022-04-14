@@ -12,6 +12,10 @@ const Services = {
     return http.post({ url: URL_PERFIX + Apis.login, data: user, params: { entity: 'CUSTOMER' }, errorHandler: errorHandler });
   },
 
+  loginWithGoogle(user, errorHandler) {
+    return http.post({ url: URL_PERFIX + Apis.loginWithGoogle, data: user, errorHandler: errorHandler });
+  },
+
   search(entity, params, jwt) {
     return http.get({ url: `${URL_PERFIX}/${entity}`, params, jwt });
   },

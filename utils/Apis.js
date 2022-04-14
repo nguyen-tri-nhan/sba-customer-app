@@ -2,6 +2,7 @@
 const Apis = {
   userMe: '/user/me',
   login: '/auth/login',
+  loginWithGoogle: '/auth/login/oauth2',
   register: 'auth/register',
   showroom: '/showroom',
   packAge: '/package',

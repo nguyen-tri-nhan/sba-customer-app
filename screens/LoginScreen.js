@@ -17,9 +17,9 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginFailed, setLoginFailed] = useState(false);
-  const [isSigninInProgress,setSigninInProgress] = useState(false)
+  const [isSigninInProgress, setSigninInProgress] = useState(false)
 
-  const { login } = useContext(AuthContext);
+  const { login, loginWithGoogle } = useContext(AuthContext);
 
   const user = {
     email,
@@ -54,8 +54,9 @@ const LoginScreen = ({ navigation }) => {
       // this.setState({ userInfo });
       console.log('login gamil thanh cong', userInfo.user);
       const email = userInfo.user.email;
-      const name = userInfo.user.name;
-      const photoUrl = user.user.photo
+      const firstname = userInfo.user.familyName;
+      const lastname = user.user.givenName
+      loginWithGoogle(email, firstname, lastname, errorHandler);
     } catch (error) {
       console.log(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {

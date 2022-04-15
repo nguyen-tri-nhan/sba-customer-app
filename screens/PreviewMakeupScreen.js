@@ -97,7 +97,7 @@ function PreviewMakeupScreen(props) {
 
   const onTryPress = () => {
     
-      console.log(styleList)
+      // console.log(styleList)
       // const file = dataURLtoFile(image,"img.jpg")
         // Services.uploadFile("@aa89e800-f7e6-46a6-ab42-2f06fbd6e689.jpg").then((res) => {
         //   // console.log(res)

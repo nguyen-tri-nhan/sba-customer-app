@@ -93,6 +93,10 @@ export const BookingDetails = (props) => {
 
   const [data,setData] = useState()
 
+  const onPayPress = () => {
+    navigation.push("PaymentEdit",{booking:booking,additionalItems:[],jwt:jwt});
+  }
+
   const renderStyleTracking = (data) => {
     setData(data);
     // return (
@@ -113,7 +117,7 @@ export const BookingDetails = (props) => {
 
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
-      <Card key={'2'} style={[styles.packageDetailsTitleCard, { marginBottom: 0 }]}>
+      <Card key={'2'} style={[styles.packageDetailsTitleCard, { marginBottom: 0}]}>
         <ScrollView>
           <View style={styleA.conText}>
             <Title style={[styles.packageDetailsTitle, styleA.titlePkg]}>{pkg.name}</Title>
@@ -259,18 +263,29 @@ export const BookingDetails = (props) => {
                 </View>
               </View>
             )}
-
+             {isCancelButtonRendered() && (
+               
+               <View style={{marginBottom:20}}>
+             <TouchableOpacity onPress={onShowCancelModal}>
+              <View style={[styleA.conBtn, { backgroundColor: "#E14C4C" ,right:10}]}>
+                <Text style={[styleA.conTextBtn,{top:3}]}>Hủy bỏ</Text>
+              </View>
+            </TouchableOpacity>
+            </View>)}
+            
           </View>
         </ScrollView>
       </Card>
       {(isCancelButtonRendered() || edit || (showFeedback && !feedback)) &&
         <Card style={styleA.footerCard}>
           <View style={styleA.conRowBtn}>
-            {isCancelButtonRendered() && (<TouchableOpacity onPress={onShowCancelModal}>
-              <View style={[styleA.conBtn, { backgroundColor: "#E14C4C" }]}>
-                <Text style={[styleA.conTextBtn,{top:3}]}>Hủy bỏ</Text>
+            {booking.paid != booking.totalPrice && (
+              <TouchableOpacity onPress={onPayPress}>
+              <View style={[styleA.conBtn, { height: 45,backgroundColor:"#ee4d2d" }]}>
+                <Text style={[styleA.conTextBtn, { top: 8 }]}>Thanh toán</Text>
               </View>
-            </TouchableOpacity>)}
+            </TouchableOpacity>
+            )}
 
             {edit && (<TouchableOpacity onPress={onEditPress}>
               <View style={[styleA.conBtn, { backgroundColor: "#2D71D7" }]}>
@@ -422,7 +437,7 @@ const styleA = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#2D71D7",
     width: 150,
-    height: "80%",
+    height: 40,
     alignSelf: 'center',
     alignItems: 'center'
   },

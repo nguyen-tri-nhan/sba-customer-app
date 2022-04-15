@@ -12,7 +12,6 @@ import Icon from "react-native-dynamic-vector-icons";
 
 import {WebView} from 'react-native-webview';
 import Feather from 'react-native-vector-icons/Feather';
-import { addDate } from '../utils/DateHelper';
 import { paypal } from '../utils/Constants';
 
 
@@ -41,6 +40,8 @@ function PaymentEdit(props) {
   const [progClr, setProgClr] = useState('#000');
   const url = paypal+'/price='+toUSD(getPaidTotal());
 
+  const [loading,setLoading] = useState(false);
+
 
 
 
@@ -60,6 +61,8 @@ function PaymentEdit(props) {
     };
     let payment = JSON.parse(data);
     if (payment.status === 'COMPLETED') {
+      
+      setLoading(true);
       additionalItems.forEach((ele) => {
         if(!ele.amount) {ele.amount = 0;}
       })
@@ -74,14 +77,28 @@ function PaymentEdit(props) {
       },jwt
       )
       
+      if(additionalItems.length>0){
+        Promise.all([updateItem,updateTransaction]).then(() => {
+          console.log('thanh toan thanh cong paypal');
+          
+          setLoading(false);
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'History' }],
+          });
+        })
+      }else{
+        Promise.all([updateTransaction]).then(() => {
+          console.log('thanh toan thanh cong paypal');
+          
+          setLoading(false);
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'History' }],
+          });
+        })
+      }
     
-    Promise.all([updateItem,updateTransaction]).then(() => {
-        console.log('thanh toan thanh cong paypal');
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'History' }],
-        });
-      })
      
     } else {
       alert('THANH TOÁN LỖI. VUI LÒNG THANH TOÁN LẠI.');
@@ -131,28 +148,67 @@ function PaymentEdit(props) {
       if (response && response.status == 0) {
         console.log("momoHandleResponse ==== ", response)
         //SUCCESS continue to submit momoToken,phonenumber to server
+        setLoading(true);
         let orderId = response.orderId
         additionalItems.forEach((ele) => {
           if(!ele.amount) {ele.amount = 0;}
         })
+
+        
         Services.updateBookingItems(booking.id, { items: additionalItems }, jwt)
         .then(() => {
           // TODO: success message.
           // navigation.goBack();
-          Services.updateBookingTransaction(booking.id,
-            {
-              transactionId:orderId,
-              amount:getPaidTotal(),
-              paymentType:"MOMO",
-              paymentDesc:"Thanh toan " + toVND(getPaidTotal())
-              },jwt).then(() => {
-                console.log('thanh toan thanh cong momo');
-              navigation.reset({
-                index: 0,
-                routes: [{ name: 'History' }],
-              });
-            })
+          
         })
+
+        Services.updateBookingTransaction(booking.id,
+          {
+            transactionId:orderId,
+            amount:getPaidTotal(),
+            paymentType:"MOMO",
+            paymentDesc:"Thanh toan " + toVND(getPaidTotal())
+            },jwt).then(() => {
+              console.log('thanh toan thanh cong momo');
+              setLoading(false);
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'History' }],
+            });
+          })
+
+          const updateItem = Services.updateBookingItems(booking.id, { items: additionalItems }, jwt);
+    const updateTransaction = Services.updateBookingTransaction(booking.id,
+      {
+        transactionId:orderId,
+        amount:getPaidTotal(),
+        paymentType:"MOMO",
+        paymentDesc:"Thanh toan " + toVND(getPaidTotal())
+      },jwt
+      )
+      
+      if(additionalItems.length>0){
+        Promise.all([updateItem,updateTransaction]).then(() => {
+          console.log('thanh toan thanh cong momo');
+          
+          setLoading(false);
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'History' }],
+          });
+        })
+      }else{
+        Promise.all([updateTransaction]).then(() => {
+          console.log('thanh toan thanh cong paypal');
+          
+          setLoading(false);
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'History' }],
+          });
+        })
+      }
+    
   
   
       } else {
@@ -218,11 +274,13 @@ function PaymentEdit(props) {
       return booking.totalPrice +price - booking.paid
   }
   return (
-    <SafeAreaView style={styles.packageDetailsContainer}>
+    <SafeAreaView style={[styles.packageDetailsContainer,{opacity:!loading?1:0.3}]}>
       <BookingStepIndicator currentStep={2} />
       <Card style={[styles.customerInformation,{justifyContent:'space-between'}]}>
       <ScrollView>
         <View style={stylesA.container}>
+          
+      {loading && ( <ActivityIndicator size="large" color="#0000ff" style={{position:'absolute',alignSelf:'center',top:"80%"}} />)}
           <View style={[stylesA.conText,{marginTop:20}]}>
             <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
             <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(getPaidTotal())}</Text>

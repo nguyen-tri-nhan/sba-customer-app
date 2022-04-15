@@ -14,6 +14,7 @@ function StyleTracking({item }) {
     obj["url"]=url;
     obj["props"]={};
     images.push(obj)
+    console.log(item);
     return images
   }
 
@@ -62,7 +63,7 @@ function StyleTracking({item }) {
           setModalVisible(!modalVisible);
         }}
       >
-        <ImageViewer imageUrls={getImgObj(item.result)} enableSwipeDown="true" 
+        <ImageViewer imageUrls={getImgObj(item.editedImageUrl)} enableSwipeDown="true" 
         
         onCancel={() => setModalVisible(!modalVisible)}
         />

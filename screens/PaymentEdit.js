@@ -318,7 +318,7 @@ function PaymentEdit(props) {
           </View>
           <View style={stylesA.divineLine} />
           <View style={stylesA.conText}>
-            <Text style={stylesA.text}>Thanh toán :</Text>
+            <Text style={stylesA.text}>Số tiền còn lại :</Text>
             <Text style={stylesA.text}>{toVND(getPaidTotal())}</Text>
           </View>
           

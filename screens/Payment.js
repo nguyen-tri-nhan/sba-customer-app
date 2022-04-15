@@ -87,7 +87,7 @@ function Payment(props) {
         transactionId:payment.id,
         paid:getPaid(),
         paymentType:"PAYPAL",
-        paymentDesc:"Thanh toan coc"
+        paymentDesc:"Thanh toan coc " + getPaid()
       }, jwt).then((response) => {
         console.log(response.data.id);
 
@@ -153,7 +153,7 @@ function Payment(props) {
           transactionId:orderId,
           paid:getPaid(),
           paymentType:"MOMO",
-          paymentDesc:"Thanh toan coc"
+          paymentDesc:"Thanh toan coc " + getPaid()
         }, jwt).then((response) => {
           console.log("thanh toan momo thanh cong");
   
@@ -180,6 +180,7 @@ function Payment(props) {
         const { value } = data;
         setDepositPercentage(value);
         setIsDeposit(true);
+        // console.log(depositsPercentage);
       })
     }
  
@@ -189,7 +190,7 @@ function Payment(props) {
 
   
   return (
-    <SafeAreaView style={styles.packageDetailsContainer}>
+    <SafeAreaView style={[styles.packageDetailsContainer,{opacity:depositsPercentage!=undefined?1:0.3}]}>
       <BookingStepIndicator currentStep={2} />
       {
         depositsPercentage!=undefined?(
@@ -410,7 +411,7 @@ function Payment(props) {
   
         </ScrollView>
         </Card>
-        ):<></>
+        ):<ActivityIndicator size={50} style={{top:100}} color={progClr} />
       }
     </SafeAreaView>
   );

@@ -14,6 +14,7 @@ import DataLoader from '../model/Dataloader';
 import { ENTITY } from '../utils/Constants';
 import Feather from 'react-native-vector-icons/Feather';
 import { ai_domain } from '../utils/Constants';
+import { next } from "../utils/Count";
 
 function PreviewMakeupScreen(props) {
   const { navigation, route } = props;
@@ -176,7 +177,7 @@ function PreviewMakeupScreen(props) {
 
 
   const renderStyle = (data) => {
-      return data.map((item) => (<StyleItem item={item} onSelectedStyle={onSelectedStyle} onRemoveStyle={onRemoveStyle} disabled={image?false:true} />))
+      return data.map((item) => (<StyleItem key={next()} item={item} onSelectedStyle={onSelectedStyle} onRemoveStyle={onRemoveStyle} disabled={image?false:true} />))
   }
 
   return (

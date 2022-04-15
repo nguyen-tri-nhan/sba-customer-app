@@ -54,7 +54,7 @@ const LoginScreen = ({ navigation }) => {
       // this.setState({ userInfo });
       const email = userInfo.user.email;
       const firstname = userInfo.user.familyName;
-      const lastname = userInfo.user.givenName
+      const lastname = userInfo.user.givenName;
       loginWithGoogle(email, firstname, lastname, errorHandler);
     } catch (error) {
       console.log(error);

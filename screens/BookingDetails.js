@@ -178,7 +178,7 @@ export const BookingDetails = (props) => {
                 type="MaterialIcons"
                 size={30}
               />
-              <Text style={styleA.textIcon}>Đã cọc: {toVND(booking.paid)} </Text>
+              <Text style={styleA.textIcon}>Đã thanh toán: {toVND(booking.paid)} </Text>
             </View>
             
             

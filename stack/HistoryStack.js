@@ -2,6 +2,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { BookingDetails } from "../screens/BookingDetails";
 import { BookingHistoryScreen } from "../screens/BookingHistoryScreen";
 import EditBooking from "../screens/EditBooking";
+import BookingStyleScreen from "../screens/BookingStyleScreen";
+import PaymentEdit from "../screens/PaymentEdit";
 
 
 const Navigation = createStackNavigator();
@@ -37,6 +39,26 @@ export const HistoryStack = (props) => {
           title: "Thêm dịch vụ",
         }}
         component={EditBooking}
+        {...props}
+        initialParams={{ user: user, jwt: jwt }}
+      />
+
+      <Navigation.Screen
+        name="BookingStyle"
+        options={{
+          title: "Xem lại ảnh",
+        }}
+        component={BookingStyleScreen}
+        {...props}
+        initialParams={{ user: user, jwt: jwt }}
+      />
+
+      <Navigation.Screen
+        name="PaymentEdit"
+        options={{
+          title: "Thanh toán",
+        }}
+        component={PaymentEdit}
         {...props}
         initialParams={{ user: user, jwt: jwt }}
       />

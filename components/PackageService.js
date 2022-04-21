@@ -22,8 +22,8 @@ function PackageService({ pkg, navigation }) {
             <Image style={styleA.packageImage} source={{ uri: pkg.images[0].imageUrl }} />
           </View>
           <View style={styles.packageInfomation}>
-            <Text style={styles.packageTitle}>{pkg.name}</Text>
-            <Text style={styles.packageTextSecondary}>Địa điểm: {pkg.location}</Text>
+            <Text style={[styles.packageTitle,{fontSize:13}]}>{pkg.name}</Text>
+            <Text style={[styles.packageTextSecondary]}>Địa điểm: {pkg.location}</Text>
             <View
               style={styleA.star}>
               <StarReview
@@ -35,9 +35,9 @@ function PackageService({ pkg, navigation }) {
               />
             </View>
             <View style={styleA.conPrice}>
-              <Text style={styles.packagesPrice}>Thời gian: {pkg.duration} ngày</Text>
+              <Text style={[styles.packagesPrice,{fontSize:12}]}>Thời gian: {pkg.duration} ngày</Text>
               <View style={styleA.divineLine} />
-              <Text style={styles.packagesPrice}>Giá: {toVND(pkg.price)}</Text>
+              <Text style={[styles.packagesPrice,{fontSize:12}]}>Giá: {toVND(pkg.price)}</Text>
             </View>
           </View>
         </View>
@@ -97,11 +97,11 @@ const styleA = StyleSheet.create({
     borderRadius:10,
   },
   packageImage: {
-    top: -35,
-    left: -40,
+    top: -25,
+    left: -30,
     position: "absolute",
-    width: 125,
-    height: 125,
+    width: 120,
+    height: 120,
     flex: 3,
     borderRadius: 20,
   },
@@ -114,7 +114,7 @@ const styleA = StyleSheet.create({
   },
   conPrice: {
     flexDirection: "row",
-    justifyContent: 'space-between'
+    // justifyContent: 'space-between'
   },
   star: {
     paddingTop: 10,
@@ -122,9 +122,11 @@ const styleA = StyleSheet.create({
   },
   divineLine: {
     width: 1,
-    height: 35,
+    height: 20,
+    top:10,
     opacity: 0.5,
     marginLeft: 10,
+    marginRight:10,
     backgroundColor: "#4A4A4A"
   }
 })

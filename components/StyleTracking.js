@@ -3,10 +3,8 @@ import { TouchableOpacity, Image, StyleSheet,View,Text,Modal,Pressable } from 'r
 import { useStyle } from '../utils/style';
 import { Card } from 'react-native-paper';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import Services from '../utils/Services';
-import Icon from "react-native-dynamic-vector-icons";
 
-function ResultItem({item,jwt }) {
+function StyleTracking({item }) {
 
   const styles = useStyle();
 
@@ -16,29 +14,11 @@ function ResultItem({item,jwt }) {
     obj["url"]=url;
     obj["props"]={};
     images.push(obj)
+    console.log(item);
     return images
   }
 
-  
 
-  const onPressSave = () => {
-    console.log("save");
-    if(!isSaved){
-      Services.saveMakeupStyle({
-        bookingId: item.bookingId,
-        styleId: item.idStyle,
-        originalImageUrl: item.source,
-        editedImageUrl: item.result,
-      }, jwt)
-        .then(() => {
-          // Do something after finish, if not remove then
-          setSaved(true);
-        })
-    }
-    
-  }
-  
-  const [isSaved,setSaved] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -46,28 +26,17 @@ function ResultItem({item,jwt }) {
 
       
           <View style={stylesA.container}>
-          <View><Text style={[stylesA.text,{top:10}]}>Kiểu trang điểm : {item.name}</Text></View>
-          
-          <View style={[stylesA.conRowBtn,{top:20}]}>
-            <TouchableOpacity  onPress={onPressSave}>
-            <View style={{flexDirection:'row',alignItems:'center', alignSelf:'center'}}>
-              <Text style={[stylesA.text,]}>Lưu lại</Text>
-              {isSaved?<Icon name="check" type="Entypo" size={30} />:<Icon name="save" type="Entypo" size={30} />}
-              
-            </View>
-            
-            </TouchableOpacity>
-          </View>
+          <View><Text style={[stylesA.text,{top:10}]}>Kiểu trang điểm : {item.styleDetail.name}</Text></View>
           <View style={stylesA.conLink}>
           <View style={stylesA.conImage1}>
-              <Image source={{uri:item.source}}
+              <Image source={{uri:item.originalImageUrl}}
                 style={{ flex: 1, width: 200, height: 50, alignSelf: 'center', marginTop: 10, resizeMethod: 'resize', resizeMode: 'contain',marginBottom:20 }}>
               </Image>
               <Text style={stylesA.text}>Ảnh gốc</Text>
           </View>
               <View style={stylesA.divineLine} />
           <View style={stylesA.conImage1}>
-              <Image source={{uri:item.refer}}
+              <Image source={{uri:item.styleDetail.imageUrl}}
                 style={{ flex: 1, width: 200, height: 50, alignSelf: 'center', marginTop: 10, resizeMethod: 'resize', resizeMode: 'contain',marginBottom:20 }}>
               </Image>
               <Text style={stylesA.text}>Ảnh tham chiếu</Text>
@@ -80,7 +49,7 @@ function ResultItem({item,jwt }) {
             onPress={() => {setModalVisible(true)}}
           >
             <View style={stylesA.conImage2}>
-              <Image source={{uri:item.result}}
+              <Image source={{uri:item.editedImageUrl}}
                 style={{ flex: 1, width: 200, height: 50, alignSelf: 'center', marginTop: 10, resizeMethod: 'resize', resizeMode: 'contain' }}>
               </Image>
               <Text style={[stylesA.text,{bottom:20}]}>Kết quả</Text>
@@ -94,7 +63,7 @@ function ResultItem({item,jwt }) {
           setModalVisible(!modalVisible);
         }}
       >
-        <ImageViewer imageUrls={getImgObj(item.result)} enableSwipeDown="true" 
+        <ImageViewer imageUrls={getImgObj(item.editedImageUrl)} enableSwipeDown="true" 
         
         onCancel={() => setModalVisible(!modalVisible)}
         />
@@ -164,4 +133,4 @@ const stylesA = StyleSheet.create({
   
 })
 
-export default ResultItem;
+export default StyleTracking;

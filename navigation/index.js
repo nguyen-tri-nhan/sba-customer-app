@@ -24,6 +24,7 @@ import AsyncStorageLib from "@react-native-async-storage/async-storage";
 export default function Navigation({ colorScheme }) {
   const [jwt, setJwt] = useState('');
   const [userDetails, setUserDetails] = useState();
+  const [depositsPercentage, setDepositPercentage] = useState();
 
   const authContext = useMemo(() => {
     return {
@@ -53,22 +54,47 @@ export default function Navigation({ colorScheme }) {
       },
       getJwt: () => {
         return jwt;
+      },
+      loginWithGoogle: (email, firstname, lastname, errorHandler) => {
+        Services.loginWithGoogle({ email, firstname, lastname }, errorHandler)
+          .then(({ data }) => {
+            const jwtToken = `Bearer ${data.accessToken}`;
+            setJwt(jwtToken);
+            AsyncStorageLib.setItem("JWT", jwtToken)
+            return jwtToken;
+          })
+          .then((jwt) => {
+            Services.getMe(jwt)
+              .then(({ data }) => {
+                setUserDetails(data);
+              })
+          })
       }
     };
   }, []);
+
+  const getConfiguration = (jwt) => {
+    Services.getConfiguration("depositsPercentage", jwt)
+      .then(({ data }) => {
+        const { value } = data;
+        setDepositPercentage(value);
+      })
+
+  }
 
   useEffect(() => {
     AsyncStorageLib.getItem("JWT")
       .then((data) => {
         setJwt(data);
+        getConfiguration(data);
         return data;
       })
       .then((token) => {
         if (token) {
           Services.getMe(token)
-          .then(({ data }) => {
-            setUserDetails(data);
-          })
+            .then(({ data }) => {
+              setUserDetails(data);
+            })
         }
       })
   }, []);
@@ -94,7 +120,7 @@ export default function Navigation({ colorScheme }) {
               <AuthTabs.Screen
                 name="TabOne"
                 component={PackagesStack}
-                initialParams={{ user: userDetails, jwt: jwt }}
+                initialParams={{ user: userDetails, jwt: jwt, depositsPercentage: depositsPercentage }}
                 options={{
                   title: "Dịch vụ",
                   tabBarIcon: () => (
@@ -105,7 +131,7 @@ export default function Navigation({ colorScheme }) {
               <AuthTabs.Screen
                 name="TabTwo"
                 component={HistoryStack}
-                initialParams={{ user: userDetails, jwt: jwt }}
+                initialParams={{ user: userDetails, jwt: jwt, depositsPercentage: depositsPercentage }}
                 options={{
                   title: "Lịch sử",
                   tabBarIcon: () => (

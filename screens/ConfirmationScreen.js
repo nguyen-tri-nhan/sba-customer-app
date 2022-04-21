@@ -23,31 +23,74 @@ function ConfirmationScreen(props) {
   const [getDate, setGetDate] = useState();
   const [unavailablePhotoSlots, setUnavailablePhotoSlots] = useState();
   const [unavailableDressSlots, setUnavailableDressSlots] = useState();
+  const [availableDressSlot,setAvailableDressSlot] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [isChecked, setChecked] = useState(false);
   const [slot, setSlot] = useState('');
   const [isMorning, setMorning] = useState(false);
-  
   const [isAfternoon, setAfternoon] = useState(false);
-  const [ isAvaiSlot,setAvaiSlot] = useState(true);
   
-  const handleChooseSlotMorning= () => {
-    setMorning(!isMorning);
-    setSlot('Morning')
+  const [isMorningBtn, setMorningBtn] = useState(false);
+  const [isAfternoonBtn, setAfternoonBtn] = useState(false);
+  
+  const handleChooseSlotMorning=  () => {
+     setSlot('T07:00:00');
+    setMorningBtn(!isMorningBtn);
+    setAfternoonBtn(false);
+    if(!isMorningBtn)
+      handleChooseSlot();
+    console.log(dressDate);
   }
   const handleChooseSlotAfternoon= () => {
-    setAfternoon(!isAfternoon);
-    setSlot('Afternoon')
+    setSlot('T14:00:00');
+    setAfternoonBtn(!isAfternoonBtn);
+    setMorningBtn(false);
+    if(!isAfternoonBtn)
+      handleChooseSlot();
+    // console.log(dressDate);
   }
 
-  const onSlected = () => {
-    setSelection(!isSelected);
+  const handleChooseSlot = () => {
+    // console.log('slot ',slot);
+    
+  
+    // if(slot == 'Morning'){
+    //   setDressDate(dressDate.split('T')[0] +'T07:00:00')
+    // }else if (slot == 'Afternoon'){
+    //   setDressDate(dressDate.split('T')[0] +'T14:00:00')
+    // }
   }
+
+  const onCheckDressSlot = (date) => {
+    setDressDate(date);
+    setMorning(false);
+    setAfternoon(false);
+    setMorningBtn(false);
+    setAfternoonBtn(false);
+    setSlot('');
+    // console.log(availableDressSlot);
+    if (date && availableDressSlot){
+      let slotAvailable = availableDressSlot.filter((obj) => {if (obj.date.split('T')[0] == date) return obj;});
+      
+      slotAvailable.forEach(element => {
+        let data = element.date.split('T');
+        if(data[1] == "07:00:00") {
+          setMorning(true);
+        };
+        if(data[1] == "14:00:00") {
+          setAfternoon(true);
+        }
+      });
+    }
+  }
+
+
 
   const styles = useStyle();
   const onContinuePress = () => {
-    if (startDate && getDate){
+    console.log(isChecked,dressDate,slot);
+    if (startDate && getDate && ((isChecked && dressDate && slot != '') || !isChecked)){
     navigation.push("Payment", { pkg, forwardedItems, totalPrice, showroom, dressDate, startDate, getDate,slot });
     }else{
       setModalVisible(true)
@@ -73,13 +116,31 @@ function ConfirmationScreen(props) {
     .then(({ data }) => {
       const { content } = data;
       if (content) {
-        const unavailableObj = content.filter((slot) => slot.availableSlot < 1);
+        let unavailableObj = content.filter((slot) => slot.availableSlot < 1);
+        const availableObj = content.filter((slot) => slot.availableSlot > 0);
+        setAvailableDressSlot(availableObj);
         if (unavailableObj.length > 0) {
+          unavailableObj.forEach((ele1) => {
+            content.forEach((ele2) => {
+
+              if (ele1.date.split('T')[0] == ele2.date.split('T')[0]){
+                let idx = unavailableObj.indexOf(ele1);
+                unavailableObj = unavailableObj.splice(idx,1); 
+              }
+            });
+          });
+          
           const unavailableDates = unavailableObj.map((slot) => new Date(slot.date));
           setUnavailableDressSlots(unavailableDates);
         }
       }
     });
+  }
+
+  const onChecked = () => {
+    setChecked(!isChecked);
+    setDressDate();
+    // console.log(dressDate)
   }
 
   useEffect(() => {
@@ -165,7 +226,7 @@ function ConfirmationScreen(props) {
               type="AntDesign"
               size={30}
             />
-            <Text style={{marginLeft:10,top:5,fontSize:15}}>
+            <Text style={{marginLeft:10,top:5,fontSize:13}}>
               Ngày chụp :
             </Text>
             </View>
@@ -178,7 +239,7 @@ function ConfirmationScreen(props) {
               type="AntDesign"
               size={30}
             />
-            <Text style={{marginLeft:10,top:5,fontSize:15}}>
+            <Text style={{marginLeft:10,top:5,fontSize:13}}>
               Ngày nhận:
             </Text>
             </View>
@@ -188,11 +249,11 @@ function ConfirmationScreen(props) {
               <Checkbox
                 style={styleA.checkbox}
                 value={isChecked}
-                onValueChange={setChecked}
+                onValueChange={onChecked}
                 color={isChecked ? '#4630EB' : undefined}
               />
 
-              <Text style={{bottom:-5}}>Bạn muốn lên thử áo quần trước khi chụp ?</Text>
+              <Text style={{bottom:-5,fontSize:12,left:-15}}>Bạn muốn lên thử áo quần trước khi chụp ?</Text>
             </View>
             {isChecked?
             (<View style={styleA.conDate} disabled={isChecked}>
@@ -207,17 +268,18 @@ function ConfirmationScreen(props) {
                 </Text>
               </View>
               <View style={styleA.conText}>
-                <DatePicker onConfirm={setDressDate} disabled={!startDate || !isChecked} validRange={{ startDate: ago(1), endDate: ago(-1, startDate)}}/>
+                <DatePicker onConfirm={onCheckDressSlot} disabled={!startDate || !isChecked} 
+                  validRange={{ startDate: ago(1), endDate: ago(-1, startDate), disabledDates:unavailableDressSlots}}/>
               </View>
             </View>
             ):<></>}
-          {dressDate?
+          {(dressDate && isChecked )?
             (<View style={[styleA.conRow,{justifyContent:'space-around'}]}>
-            <TouchableOpacity disabled={!isAvaiSlot} onPress={handleChooseSlotMorning}>
-              <View style={[styleA.btnSlot,{backgroundColor:isMorning?"#2D71D7":"#A4A6A8"}]}><Text style={styleA.slotText}>Sáng</Text></View>
+            <TouchableOpacity disabled={!isMorning} onPress={handleChooseSlotMorning}>
+              <View style={[styleA.btnSlot,{backgroundColor:isMorningBtn?"#2D71D7":"#A4A6A8"}]}><Text style={styleA.slotText}>Sáng</Text></View>
             </TouchableOpacity>
-            <TouchableOpacity disabled={!isAvaiSlot} onPress={handleChooseSlotAfternoon}>
-              <View style={[styleA.btnSlot,{backgroundColor:isAfternoon?"#2D71D7":"#A4A6A8"}]}><Text style={styleA.slotText}>Chiều</Text></View>
+            <TouchableOpacity disabled={!isAfternoon} onPress={handleChooseSlotAfternoon}>
+              <View style={[styleA.btnSlot,{backgroundColor:isAfternoonBtn?"#2D71D7":"#A4A6A8"}]}><Text style={styleA.slotText}>Chiều</Text></View>
             </TouchableOpacity>
           </View>
           ):<></>}
@@ -239,7 +301,7 @@ function ConfirmationScreen(props) {
       >
         <View style={styleA.centeredView}>
           <View style={styleA.modalView}>
-            <Text style={styleA.modalText}>Bạn chưa chọn ngày</Text>
+            <Text style={styleA.modalText}>Bạn chưa chọn xong ngày.</Text>
             <Pressable
               style={[styleA.button, styleA.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
@@ -274,7 +336,7 @@ const styleA = StyleSheet.create({
   },
   h3: {
 
-    fontSize: 15,
+    fontSize: 13,
     marginBottom: 15,
   },
   conDate: {
@@ -346,9 +408,10 @@ const styleA = StyleSheet.create({
   },
   slotText:{
     top:5,
-    fontSize:16,
+    fontSize:14,
     fontWeight:'bold',
     color:'#fff'
   }
 })
+
 export default ConfirmationScreen;

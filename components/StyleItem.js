@@ -9,9 +9,9 @@ function StyleItem({ item, onSelectedStyle,onRemoveStyle,disabled}) {
 
     const handleChoose = () => {
         if(!choose){
-        onSelectedStyle(item.id,item.imageUrl)
+        onSelectedStyle(item.id,item.name,item.imageUrl)
         }else{
-            onRemoveStyle(item.id,item.imageUrl)
+            onRemoveStyle(item.id)
         }
         setChoose(!choose)
     }

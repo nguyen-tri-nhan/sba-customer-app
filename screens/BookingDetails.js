@@ -54,9 +54,6 @@ export const BookingDetails = (props) => {
 
   const onSendFeedback = () => {
     //add api them fb 
-    console.log("feedback")
-    console.log(star);
-    console.log(value);
     Services.feedBack({
       bookingId: booking.id,
       stars: star,
@@ -94,14 +91,22 @@ export const BookingDetails = (props) => {
     });
   }, [])
 
+  const [data,setData] = useState()
+
+  const onPayPress = () => {
+    navigation.push("PaymentEdit",{booking:booking,additionalItems:[],jwt:jwt});
+  }
 
   const renderStyleTracking = (data) => {
-    console.log('style', data);
-    return (
-      <View>
-
-      </View>
-    )
+    setData(data);
+    // return (
+    //   <View>
+        
+    //   </View>
+    // )
+  }
+  const onPressViewStyleTracking = ()=>{
+    navigation.push("BookingStyle", { data })
   }
 
   const onEditPress = () => {
@@ -112,7 +117,7 @@ export const BookingDetails = (props) => {
 
   return (
     <SafeAreaView style={styles.packageDetailsContainer}>
-      <Card key={'2'} style={[styles.packageDetailsTitleCard, { marginBottom: 0 }]}>
+      <Card key={'2'} style={[styles.packageDetailsTitleCard, { marginBottom: 0}]}>
         <ScrollView>
           <View style={styleA.conText}>
             <Title style={[styles.packageDetailsTitle, styleA.titlePkg]}>{pkg.name}</Title>
@@ -147,7 +152,7 @@ export const BookingDetails = (props) => {
                 type="AntDesign"
                 size={30}
               />
-              <Text style={styleA.textIcon}>Ngày nhận: {booking.departureDate}</Text>
+              <Text style={styleA.textIcon}>Ngày nhận ảnh: {booking.departureDate}</Text>
             </View>
             {booking.adviceDate && (<View style={styleA.conRow}>
               <Icon
@@ -155,7 +160,7 @@ export const BookingDetails = (props) => {
                 type="Entypo"
                 size={30}
               />
-              <Text style={styleA.textIcon}>Ngày thử đồ: {booking.adviceDate}</Text>
+              <Text style={styleA.textIcon}>Ngày thử đồ: {booking.adviceDate.split('T')[0]}</Text>
             </View>)}
             <View style={styleA.conRow}>
               <Icon
@@ -173,105 +178,48 @@ export const BookingDetails = (props) => {
                 type="MaterialIcons"
                 size={30}
               />
-              <Text style={styleA.textIcon}>Đã cọc: {toVND(booking.price)} </Text>
+              <Text style={styleA.textIcon}>Đã thanh toán: {toVND(booking.paid)} </Text>
             </View>
-            <View style={styleA.conRow}>
-              <Text style={[styleA.textIcon, {}]}>Xem ảnh thử trang điểm:</Text>
-            </View>
-
-
-            {forwardedItems.length > 0 && (
-              <View style={{ flexDirection: "column", justifyContent: "space-around" }}>
-                <View style={styleA.divineLine} />
-                <View style={styleA.conRow}>
-                  <Icon
-                    name="calendar"
-                    type="AntDesign"
-                    size={30}
-                  />
-                  <Text style={styleA.textIcon}>Thời gian thực hiện: {pkg.duration} ngày</Text>
-                </View>
-                <View style={styleA.conRow}>
-                  <Icon
-                    name="location"
-                    type="Entypo"
-                    size={30}
-                  />
-                  <Text style={styleA.textIcon}>Địa điểm: {pkg.location}</Text>
-                </View>
-                <View style={styleA.conRow}>
-                  <Icon
-                    name="calendar"
-                    type="AntDesign"
-                    size={30}
-                  />
-                  <Text style={styleA.textIcon}>Ngày chụp: {booking.departureDate}</Text>
-                </View>
-                <View style={styleA.conRow}>
-                  <Icon
-                    name="calendar"
-                    type="AntDesign"
-                    size={30}
-                  />
-                  <Text style={styleA.textIcon}>Ngày nhận: {booking.departureDate}</Text>
-                </View>
-                {booking.adviceDate && (<View style={styleA.conRow}>
-                  <Icon
-                    name="calendar"
-                    type="AntDesign"
-                    size={30}
-                  />
-                  <Text style={styleA.textIcon}>Ngày thử đồ: {booking.adviceDate}</Text>
-                </View>)}
-                <View style={styleA.conRow}>
-                  <Icon
-                    name="description"
-                    type="MaterialIcons"
-                    size={30}
-                  />
-                  <Text style={styleA.textIcon}>Mô tả:</Text>
-                </View>
-
-                <Paragraph>{pkg.description}</Paragraph>
-
-                <View style={styleA.conRow}>
-                  <Text style={[styleA.textIcon, {}]}>Xem ảnh thử trang điểm:</Text>
-                  <DataLoader
+            
+            
+            <TouchableOpacity onPress={onPressViewStyleTracking}>
+              <View style={[styleA.btnRiew]} >
+                  <Text style={styleA.statusText}>Xem lại ảnh trang điểm</Text>
+              </View>
+              <DataLoader
                     entity={ENTITY.STYLE_TRACKING}
                     additionalParams={{ bookingId: booking.id }}
                     jwt={jwt}
                     getAll
                     navigation={navigation}
                     renderData={renderStyleTracking}
-                  />
-                </View>
+              />
+            </TouchableOpacity>
 
 
-                {forwardedItems.length > 0 && (
-                  <View style={{ flexDirection: "column", justifyContent: "space-around" }}>
-
-                    <View style={styleA.divineLine} />
-                    <View style={styleA.conRow}>
-
-                      <Icon
-                        name="add-to-list"
-                        type="Entypo"
-                        size={30}
-                        style={{ top: 5 }}
-                      />
-                      <Text style={[styleA.addition, styleA.textIcon]}>Dịch vụ thêm: </Text>
-                    </View>
-                  </View>)}
-                {
+            {forwardedItems.length>0?(
+            <View style={{flexDirection:"column",justifyContent:"space-around"}}>
+              
+              <View style={styleA.divineLine} />
+                <View style={styleA.conRow}>
+                  
+                <Icon
+                  name="add-to-list"
+                  type="Entypo"
+                  size={30}
+                  style={{top:5}}
+                />
+              <Text style={[styleA.addition,styleA.textIcon]}>Dịch vụ thêm: </Text>
+              </View>
+              </View>):<></>}
+              {
                   forwardedItems.map((item) =>
-                  (<View key={item.id} style={[styleA.conText, { flexDirection: "row", justifyContent: 'space-between', marginRight: 30 }]}>
-                    <Text style={[styleA.text, { marginBottom: 10 }]}>{item.itemName} : x{item.amount} cái  </Text>
-                    <Text style={[styleA.text, { marginBottom: 10 }]}>{toVND(item.price * item.amount)}</Text>
+                  (<View key={item.id} style={[styleA.conText,{flexDirection:"row",justifyContent:'space-between',marginRight:30}]}>
+                      <Text style={[styleA.text,{marginBottom:10}]}>{item.itemName} : x{item.amount} cái  </Text>
+                      <Text style={[styleA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
                   </View>
                   ))
                 }
-
-              </View>)}
             <View style={styleA.divineLine} />
             {/* qr code */}
             <View style={styleA.conQR}>
@@ -315,22 +263,33 @@ export const BookingDetails = (props) => {
                 </View>
               </View>
             )}
-
+             {isCancelButtonRendered() && (
+               
+               <View style={{marginBottom:20}}>
+             <TouchableOpacity onPress={onShowCancelModal}>
+              <View style={[styleA.conBtn, { backgroundColor: "#E14C4C" ,right:10}]}>
+                <Text style={[styleA.conTextBtn,{top:3}]}>Hủy bỏ</Text>
+              </View>
+            </TouchableOpacity>
+            </View>)}
+            
           </View>
         </ScrollView>
       </Card>
       {(isCancelButtonRendered() || edit || (showFeedback && !feedback)) &&
         <Card style={styleA.footerCard}>
           <View style={styleA.conRowBtn}>
-            {isCancelButtonRendered() && (<TouchableOpacity onPress={onShowCancelModal}>
-              <View style={[styleA.conBtn, { backgroundColor: "#E14C4C" }]}>
-                <Text style={styleA.conTextBtn}>Hủy bỏ</Text>
+            {booking.paid != booking.totalPrice && (
+              <TouchableOpacity onPress={onPayPress}>
+              <View style={[styleA.conBtn, { height: 45,backgroundColor:"#ee4d2d" }]}>
+                <Text style={[styleA.conTextBtn, { top: 8 }]}>Thanh toán</Text>
               </View>
-            </TouchableOpacity>)}
+            </TouchableOpacity>
+            )}
 
             {edit && (<TouchableOpacity onPress={onEditPress}>
               <View style={[styleA.conBtn, { backgroundColor: "#2D71D7" }]}>
-                <Text style={styleA.conTextBtn}>Chỉnh sửa</Text>
+                <Text style={[styleA.conTextBtn,{top:3}]}>Chỉnh sửa</Text>
               </View>
             </TouchableOpacity>)}
             {showFeedback && !feedback && (
@@ -449,6 +408,16 @@ const styleA = StyleSheet.create({
     height: 30,
     position: "absolute"
   },
+  
+  btnRiew: {
+    borderRadius: 20,
+    width: 150,
+    alignItems: 'center',
+    alignSelf: "center",
+    height: 30,
+    backgroundColor:"#2D71D7",
+    width:"80%"
+  },
   statusText: {
     fontWeight: 'bold',
     color: '#fff',
@@ -468,7 +437,7 @@ const styleA = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#2D71D7",
     width: 150,
-    height: "80%",
+    height: 40,
     alignSelf: 'center',
     alignItems: 'center'
   },

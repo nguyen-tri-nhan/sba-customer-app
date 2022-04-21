@@ -11,7 +11,7 @@ import PreviewResultScreen from "../screens/PreviewResultScreen";
 const Navigation = createStackNavigator();
 
 export const PackagesStack = (props) => {
-  const { jwt, user } = props.route.params;
+  const { jwt, user, depositsPercentage } = props.route.params;
   return (
     <Navigation.Navigator>
       <Navigation.Screen
@@ -57,7 +57,7 @@ export const PackagesStack = (props) => {
         }}
         component={Payment}
         {...props}
-        initialParams={{ user: user, jwt: jwt }}
+        initialParams={{ user: user, jwt: jwt, depositsPercentage: depositsPercentage }}
       />
       <Navigation.Screen
         name="PreviewMakeup"

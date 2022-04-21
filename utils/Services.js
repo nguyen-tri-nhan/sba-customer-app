@@ -12,6 +12,10 @@ const Services = {
     return http.post({ url: URL_PERFIX + Apis.login, data: user, params: { entity: 'CUSTOMER' }, errorHandler: errorHandler });
   },
 
+  loginWithGoogle(user, errorHandler) {
+    return http.post({ url: URL_PERFIX + Apis.loginWithGoogle, data: user, errorHandler: errorHandler });
+  },
+
   search(entity, params, jwt) {
     return http.get({ url: `${URL_PERFIX}/${entity}`, params, jwt });
   },
@@ -61,8 +65,17 @@ const Services = {
   },
 
   updateBookingStatus(id, params, jwt) {
-    return http.put({ url: `${URL_PERFIX + Apis.booking}/${id}`, jwt: jwt, params: params})
-  }
+    return http.put({ url: `${URL_PERFIX + Apis.booking}/${id}`, jwt: jwt, params: params })
+  },
+
+  getConfiguration(key, jwt) {
+    return http.get({ url: `${URL_PERFIX + Apis.configuration}`, params: { key }, jwt });
+  },
+
+  updateBookingTransaction(id, data, jwt) {
+    console.log("call api")
+    return http.post({ url: `${URL_PERFIX + Apis.booking}/${id}/booking-transaction`, jwt: jwt, data: data });
+  },
 };
 
 export default Services;

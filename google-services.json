@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "887573718630",
+    "project_id": "sbaloginsocial",
+    "storage_bucket": "sbaloginsocial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887573718630:android:fc7d09ca8fcb92ebc7efa7",
+        "android_client_info": {
+          "package_name": "com.fpt.sba"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "887573718630-tf501mtvodv6a7avjn0t5trovk3ka40m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fpt.sba",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "887573718630-057ijvohgj88pktfck585966pdlta744.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbT1vHm9ecA7S_v15Iwefb7ctmMryUUec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "887573718630-057ijvohgj88pktfck585966pdlta744.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -11,7 +11,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { result } from 'lodash';
 import axios from 'axios';
 import DataLoader from '../model/Dataloader';
-import { ENTITY } from '../utils/Constants';
+import { ENTITY, STATUS } from '../utils/Constants';
 import Feather from 'react-native-vector-icons/Feather';
 import { ai_domain } from '../utils/Constants';
 import { next } from "../utils/Count";
@@ -223,7 +223,7 @@ function PreviewMakeupScreen(props) {
           </View>
           <ScrollView style={{ position: 'absolute', bottom: -10, }} horizontal={true}
             showsHorizontalScrollIndicator={false}>
-              <DataLoader entity={ENTITY.STYLE} jwt={jwt} renderData={renderStyle} getAll navigation={navigation}/> 
+              <DataLoader initialStatus={STATUS.ENABLE} entity={ENTITY.STYLE} jwt={jwt} renderData={renderStyle} getAll navigation={navigation}/> 
           </ScrollView>
         </View>
       </Card>

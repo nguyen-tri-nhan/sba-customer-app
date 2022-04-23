@@ -28,7 +28,7 @@ const DataLoader = ({
     page,
     size,
     searchText,
-    // status,
+    status,
     ...additionalParams //  showroomId, etc
   }
 

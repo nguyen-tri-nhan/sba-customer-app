@@ -20,6 +20,9 @@ import Services from "../utils/Services";
 import { PackagesStack } from "../stack/PackageStack";
 import { HistoryStack } from "../stack/HistoryStack";
 import AsyncStorageLib from "@react-native-async-storage/async-storage";
+import {
+  GoogleSignin
+} from '@react-native-google-signin/google-signin';
 
 export default function Navigation({ colorScheme }) {
   const [jwt, setJwt] = useState('');
@@ -47,10 +50,12 @@ export default function Navigation({ colorScheme }) {
           })
       },
       logout: () => {
-        AsyncStorageLib.clear(() => {
-          setJwt('');
-          setUserDetails();
-        })
+        GoogleSignin.signOut().then(() => {
+          AsyncStorageLib.clear(() => {
+            setJwt('');
+            setUserDetails();
+          })
+        });
       },
       getJwt: () => {
         return jwt;

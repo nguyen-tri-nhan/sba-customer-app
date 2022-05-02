@@ -33,6 +33,22 @@ function ConfirmationScreen(props) {
   
   const [isMorningBtn, setMorningBtn] = useState(false);
   const [isAfternoonBtn, setAfternoonBtn] = useState(false);
+
+  const [delayPhotoDay, setDelayPhotoDay] = useState();
+  const [processingImageDates, setProcessingImageDates] = useState();
+
+  const getConfiguration = () => {
+    Services.getConfiguration("delayPhotoDay", jwt)
+      .then(({ data }) => {
+        const { value } = data;
+        setDelayPhotoDay(value);
+      });
+    Services.getConfiguration("processingImageDates", jwt)
+    .then(({ data }) => {
+      const { value } = data;
+      setProcessingImageDates(value);
+    })
+  }
   
   const handleChooseSlotMorning=  () => {
      setSlot('T07:00:00');
@@ -146,6 +162,7 @@ function ConfirmationScreen(props) {
   useEffect(() => {
     getUnavailablePhotoSlot();
     getUnavailableDressSlot();
+    getConfiguration();
   }, [])
 
   return (
@@ -230,7 +247,7 @@ function ConfirmationScreen(props) {
               Ngày chụp :
             </Text>
             </View>
-              <DatePicker onConfirm={setStartDate} validRange={{ startDate: ago(3), disabledDates: unavailablePhotoSlots }}/>
+              <DatePicker onConfirm={setStartDate} validRange={{ startDate: ago(delayPhotoDay), disabledDates: unavailablePhotoSlots }}/>
             </View>
             <View style={styleA.conDate}>
             <View style={styleA.conRow}>
@@ -243,7 +260,7 @@ function ConfirmationScreen(props) {
               Ngày nhận:
             </Text>
             </View>
-              <DatePicker onConfirm={setGetDate} disabled={!startDate} validRange={{ startDate: ago(3, startDate) }}/>
+              <DatePicker onConfirm={setGetDate} disabled={!startDate} validRange={{ startDate: ago(processingImageDates, startDate) }}/>
             </View>
             <View style={[styleA.conRow,{marginTop:10}]}>
               <Checkbox

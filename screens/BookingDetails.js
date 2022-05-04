@@ -31,6 +31,7 @@ export const BookingDetails = (props) => {
   const [cancel, setCancel] = useState(true);
   const [edit, setEdit] = useState(booking.editable);
   const [showroom, setShowroom] = useState();
+  // const [id,setId] = useState();
 
   const onSelectedStar = (star) => {
     setStar(star);
@@ -86,6 +87,7 @@ export const BookingDetails = (props) => {
   useEffect(() => {
     isShowFeedback();
     getShowroom();
+    console.log(booking);
     navigation.addListener('focus', () => {
       isShowFeedback();
     });
@@ -98,7 +100,8 @@ export const BookingDetails = (props) => {
   }
 
   const renderStyleTracking = (data) => {
-    setData(data);
+     setData(data);
+    // await setId(booking.id);
     // return (
     //   <View>
         
@@ -106,7 +109,12 @@ export const BookingDetails = (props) => {
     // )
   }
   const onPressViewStyleTracking = ()=>{
-    navigation.push("BookingStyle", { data })
+    if (data && data.length > 0){
+      navigation.push("BookingStyle", { data })
+    }else{
+      const id = booking.id;
+      navigation.push('PreviewMakeup',{id});
+    }
   }
 
   const onEditPress = () => {
@@ -152,7 +160,7 @@ export const BookingDetails = (props) => {
                 type="AntDesign"
                 size={30}
               />
-              <Text style={styleA.textIcon}>Ngày nhận ảnh: {booking.departureDate}</Text>
+              <Text style={styleA.textIcon}>Ngày nhận ảnh: {booking.photoReceiptDate}</Text>
             </View>
             {booking.adviceDate && (<View style={styleA.conRow}>
               <Icon
@@ -288,8 +296,8 @@ export const BookingDetails = (props) => {
             )}
 
             {edit && (<TouchableOpacity onPress={onEditPress}>
-              <View style={[styleA.conBtn, { backgroundColor: "#2D71D7" }]}>
-                <Text style={[styleA.conTextBtn,{top:3}]}>Chỉnh sửa</Text>
+              <View style={[styleA.conBtn, { height: 45,backgroundColor: "#2D71D7" }]}>
+                <Text style={[styleA.conTextBtn,{top:8}]}>Chỉnh sửa</Text>
               </View>
             </TouchableOpacity>)}
             {showFeedback && !feedback && (

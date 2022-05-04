@@ -4,6 +4,7 @@ export const VietNameseDate = [
 
 export const ago = (days, date = new Date()) => {
   let modifiedDate = new Date(date);
+  days = parseInt(days)
   modifiedDate.setDate(modifiedDate.getDate() + days);
   return modifiedDate;
 }

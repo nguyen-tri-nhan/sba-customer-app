@@ -22,7 +22,12 @@ function ResultItem({item,jwt }) {
   
 
   const onPressSave = () => {
-    console.log("save");
+    console.log({
+      bookingId: item.bookingId,
+      styleId: item.idStyle,
+      originalImageUrl: item.source,
+      editedImageUrl: item.result,
+    })
     if(!isSaved){
       Services.saveMakeupStyle({
         bookingId: item.bookingId,
@@ -33,6 +38,7 @@ function ResultItem({item,jwt }) {
         .then(() => {
           // Do something after finish, if not remove then
           setSaved(true);
+          console.log("save");
         })
     }
     

@@ -1,14 +1,14 @@
-// const domain = 'http://sbaprj-dev.eba-dyjmryhk.ap-southeast-2.elasticbeanstalk.com';
-// const domain = 'http://localhost:5000';
+const domain = 'http://sbaprj-dev.eba-dyjmryhk.ap-southeast-2.elasticbeanstalk.com';
+// const domain = 'http://253a-171-227-206-160.ngrok.io';
 // const domain = 'http://192.168.3.100:5000';
-// const domain = 'http://172.20.10.2:5001';
+// const domain = 'http://10.1.130.24:5001';
 // const domain = 'http://192.168.88.171:5000';
-const domain = 'http://123.20.254.120:5000';
+// const domain = 'http://123.20.254.120:5000';
 const subService = '/pbs-service';
 
-export const ai_domain = 'http://123.20.254.120:8000/make';
+export const ai_domain = 'http://103.170.255.245:8000/make';
 
-export const paypal = 'http://123.20.254.120:3000/';
+export const paypal = 'http://103.170.255.245:3000/';
 
 export const endPoint = `${domain}${subService}`;
 

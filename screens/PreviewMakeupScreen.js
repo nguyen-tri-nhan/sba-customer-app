@@ -187,7 +187,7 @@ function PreviewMakeupScreen(props) {
                 style={{padding: 13,left:"70%"}}
                 onPress={() => setModalVisible(true)}>
                   <View style={{flexDirection:"row"}}>
-                  <Text style={{fontSize:20,top:-30}}>Trợ giúp </Text>
+                  <Text style={{fontSize:20,top:0}}>Trợ giúp </Text>
                 </View>
               </TouchableOpacity>
       
@@ -246,7 +246,6 @@ function PreviewMakeupScreen(props) {
             <Text style={stylesA.modalText}>1: Hãy chọn một bức ảnh đẹp của bạn, ảnh đẹp là khi thấy được đầy đủ khuôn mặt của bạn.</Text>
             <Text style={stylesA.modalText}>2: Chúng ta chỉ có thể xem được diện mạo của mình khi không bị che khuất. Vui lòng không mang khẩu trang.</Text>
             <Text style={stylesA.modalText}>3: Vui lòng sử dụng ứng dụng trên khuôn mặt của con người.</Text>
-            <Text style={stylesA.modalText}>4: Trong trường hợp không chọn được style, ứng dụng sẽ chọn ngẫu nhiên 3 style cho bạn.</Text>
             <Pressable
               style={[stylesA.button, stylesA.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}

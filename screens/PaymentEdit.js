@@ -282,8 +282,8 @@ function PaymentEdit(props) {
           
       {loading && ( <ActivityIndicator size="large" color="#0000ff" style={{position:'absolute',alignSelf:'center',top:"80%"}} />)}
           <View style={[stylesA.conText,{marginTop:20}]}>
-            <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
-            <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(getPaidTotal())}</Text>
+            <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
+            <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(getPaidTotal() + booking.paid)}</Text>
           </View>
 
             {
@@ -318,7 +318,7 @@ function PaymentEdit(props) {
           </View>
           <View style={stylesA.divineLine} />
           <View style={stylesA.conText}>
-            <Text style={stylesA.text}>Số tiền còn lại :</Text>
+            <Text style={stylesA.text}>Số tiền phải thanh toán :</Text>
             <Text style={stylesA.text}>{toVND(getPaidTotal())}</Text>
           </View>
           

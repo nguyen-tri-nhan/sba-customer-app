@@ -114,7 +114,7 @@ function EditBooking(props) {
       </Card>
       <Card style={[styles.packageDetailsFooter]}>
         <TouchableOpacity onPress={onEditBookingPress} style={styles.packageDetailsBookingButton}>
-          <Text style={{ color: "#FFF", fontWeight: "bold", fontSize: 20 }}>Đặt ngay: {toVND(countTotalPrice())}</Text>
+          <Text style={{ color: "#FFF", fontWeight: "bold", fontSize: 20 }}>Thanh toán</Text>
         </TouchableOpacity>
       </Card>
     </SafeAreaView>

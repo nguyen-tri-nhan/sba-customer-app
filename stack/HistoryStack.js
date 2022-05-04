@@ -4,6 +4,8 @@ import { BookingHistoryScreen } from "../screens/BookingHistoryScreen";
 import EditBooking from "../screens/EditBooking";
 import BookingStyleScreen from "../screens/BookingStyleScreen";
 import PaymentEdit from "../screens/PaymentEdit";
+import PreviewMakeupScreen from "../screens/PreviewMakeupScreen";
+import PreviewResultScreen from "../screens/PreviewResultScreen";
 
 
 const Navigation = createStackNavigator();
@@ -59,6 +61,25 @@ export const HistoryStack = (props) => {
           title: "Thanh toán",
         }}
         component={PaymentEdit}
+        {...props}
+        initialParams={{ user: user, jwt: jwt }}
+      />
+
+      <Navigation.Screen
+        name="PreviewMakeup"
+        options={{
+          title: "Trang điểm thử",
+        }}
+        component={PreviewMakeupScreen}
+        {...props}
+        initialParams={{ user: user, jwt: jwt }}
+      />
+      <Navigation.Screen
+        name="ResultScreen"
+        options={{
+          title: "Kết quả trang điểm thử",
+        }}
+        component={PreviewResultScreen}
         {...props}
         initialParams={{ user: user, jwt: jwt }}
       />

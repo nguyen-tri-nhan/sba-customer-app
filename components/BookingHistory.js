@@ -25,7 +25,7 @@ function BookingHistory({ booking, navigation }) {
             {/* <View style={styleA.conPrice}> */}
             <View style={{ flexDirection: "column" }}>
               <Text style={styleA.textDate}>Ngày chụp: {booking.departureDate}</Text>
-              <Text style={styleA.textDate}>Ngày nhận: {booking.returnDate}</Text>
+              <Text style={styleA.textDate}>Ngày nhận: {booking.photoReceiptDate}</Text>
             </View>
             <View style={[styleA.status, { backgroundColor: booking.status == STATUS.CANCELED ? "#E14C4C" : booking.status == STATUS.FINISH ? "#1CC286" : "#2D71D7" }]} >
               <Text style={styleA.statusText}>{STATUS_TRANS[booking.status]}</Text>
@@ -65,7 +65,7 @@ const styleA = StyleSheet.create({
   statusText: {
     fontWeight: 'bold',
     color: '#fff',
-    fontSize: 13,
+    fontSize: 12,
     top: 5
   },
   text: {

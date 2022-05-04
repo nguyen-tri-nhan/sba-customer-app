@@ -51,7 +51,7 @@ function Payment(props) {
   const url = paypal+'price='+toUSD(getPaid());
   const [isSetDeposit,setIsDeposit] = useState(false);
   const [depositsPercentage,setDepositPercentage] = useState();
-
+  const [loading,setLoading] = useState(false);
   
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -75,6 +75,7 @@ function Payment(props) {
     let payment = JSON.parse(data);
     console.log(payment)
     if (payment.status === 'COMPLETED') {
+      setLoading(true);
       Services.booking({
         showroomId: showroom.id,
         packageId: pkg.id,
@@ -90,6 +91,7 @@ function Payment(props) {
         paymentDesc:"Thanh toan coc " + getPaid()
       }, jwt).then((response) => {
         console.log(response.data.id);
+        setLoading(false);
 
         onContinuePress(response.data.id);
       })
@@ -140,7 +142,8 @@ function Payment(props) {
         console.log("momoHandleResponse ==== ", response)
         //SUCCESS continue to submit momoToken,phonenumber to server
         let orderId = response.orderId
-        console.log(response.orderId)
+        console.log(response.orderId);
+        setLoading(true);
         Services.booking({
           showroomId: showroom.id,
           packageId: pkg.id,
@@ -156,6 +159,7 @@ function Payment(props) {
           paymentDesc:"Thanh toan coc " + getPaid()
         }, jwt).then((response) => {
           console.log("thanh toan momo thanh cong");
+          setLoading(false);
   
           onContinuePress(response.data.id);
         })
@@ -192,11 +196,15 @@ function Payment(props) {
   return (
     <SafeAreaView style={[styles.packageDetailsContainer,{opacity:depositsPercentage!=undefined?1:0.3}]}>
       <BookingStepIndicator currentStep={2} />
+      
       {
         depositsPercentage!=undefined?(
-          <Card style={[styles.customerInformation,{justifyContent:'space-between'}]}>
+          <Card style={[styles.customerInformation,{justifyContent:'space-between',opacity:!loading?1:0.3}]}>
         <ScrollView>
+        
           <View style={stylesA.container}>
+          {loading && ( <ActivityIndicator size="large" color="#0000ff" style={{position:'absolute',alignSelf:'center',top:"80%"}} />)}
+       
             <View style={[stylesA.conText,{marginTop:20}]}>
               <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
               <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(totalPrice)}</Text>
@@ -339,7 +347,7 @@ function Payment(props) {
             <View style={[stylesA.btnCon,{backgroundColor:"#a50064"}]}>
               <TouchableOpacity
                 style={stylesA.btn}
-                onPress={() => onPress()}>
+                onPress={() => onPress()} disabled={loading}>
                 <Text style={stylesA.btnTxt}>Thanh toán Momo</Text>
               </TouchableOpacity>
             </View>
@@ -349,7 +357,7 @@ function Payment(props) {
             <View style={stylesA.btnCon}>
               <TouchableOpacity
                 style={stylesA.btn}
-                onPress={() => setShowGateway(true)}>
+                onPress={() => setShowGateway(true)} disabled={loading}>
                 <Text style={stylesA.btnTxt}>Thanh toán PayPal</Text>
               </TouchableOpacity>
             </View>

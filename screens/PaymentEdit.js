@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet,SafeAreaView, TouchableOpacity,Modal,View,ActivityIndicator,Platform,
-  ScrollView,Pressable} from 'react-native';
+import {
+  StyleSheet, SafeAreaView, TouchableOpacity, Modal, View, ActivityIndicator, Platform,
+  ScrollView, Pressable
+} from 'react-native';
 import { useEffect, useState } from 'react';
 import BookingStepIndicator from '../components/BookingStepIndicator';
 import { Text } from '../components/Themed';
@@ -10,13 +12,13 @@ import { useStyle } from '../utils/style';
 import { toVND, toUSD } from '../utils/CurrencyHelper';
 import Icon from "react-native-dynamic-vector-icons";
 
-import {WebView} from 'react-native-webview';
+import { WebView } from 'react-native-webview';
 import Feather from 'react-native-vector-icons/Feather';
 import { paypal } from '../utils/Constants';
 
 
 import RNMomosdk from 'react-native-momosdk';
-import { NativeModules,NativeEventEmitter } from 'react-native';
+import { NativeModules, NativeEventEmitter } from 'react-native';
 const RNMoMoPaymentModule = NativeModules.RNMomosdk;
 const EventEmitter = new NativeEventEmitter(RNMoMoPaymentModule);
 
@@ -25,9 +27,9 @@ const EventEmitter = new NativeEventEmitter(RNMoMoPaymentModule);
 function PaymentEdit(props) {
   const { navigation, route } = props;
   const { params } = route;
-  const { 
+  const {
     booking,
-    additionalItems, 
+    additionalItems,
     jwt, } = params;
   const isAndroid = Platform.OS === 'android';
   const styles = useStyle();
@@ -38,9 +40,9 @@ function PaymentEdit(props) {
   const [showGateway, setShowGateway] = useState(false);
   const [prog, setProg] = useState(false);
   const [progClr, setProgClr] = useState('#000');
-  const url = paypal+'/price='+toUSD(getPaidTotal());
+  const url = paypal + '/price=' + toUSD(getPaidTotal());
 
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
 
@@ -52,7 +54,7 @@ function PaymentEdit(props) {
   function onMessage(e) {
     let data = e.nativeEvent.data;
     setShowGateway(false);
-    
+
 
     Date.prototype.addDays = function (days) {
       const date = new Date(this.valueOf());
@@ -61,52 +63,61 @@ function PaymentEdit(props) {
     };
     let payment = JSON.parse(data);
     if (payment.status === 'COMPLETED') {
-      
+
       setLoading(true);
       additionalItems.forEach((ele) => {
-        if(!ele.amount) {ele.amount = 0;}
+        if (!ele.amount) { ele.amount = 0; }
       })
 
 
-    const updateItem = Services.updateBookingItems(booking.id, { items: additionalItems }, jwt);
-    const updateTransaction = Services.updateBookingTransaction(booking.id,
-      {transactionId:payment.id,
-        amount:getPaidTotal(),
-        paymentType:"PAYPAL",
-        paymentDesc:"Thanh toan " + toVND(getPaidTotal())
-      },jwt
-      )
-      
-      if(additionalItems.length>0){
-        Promise.all([updateItem,updateTransaction]).then(() => {
-          console.log('thanh toan thanh cong paypal');
-          
-          setLoading(false);
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'History' }],
-          });
-        })
-      }else{
-        Promise.all([updateTransaction]).then(() => {
-          console.log('thanh toan thanh cong paypal');
-          
-          setLoading(false);
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'History' }],
-          });
-        })
+      if (additionalItems.length > 0) {
+        Services.updateBookingItems(booking.id, { items: additionalItems }, jwt)
+          .then(() => {
+            Services.updateBookingTransaction(booking.id,
+              {
+                transactionId: payment.id,
+                amount: getPaidTotal(),
+                paymentType: "PAYPAL",
+                paymentDesc: "Thanh toan " + toVND(getPaidTotal())
+              }, jwt
+            )
+              .then(() => {
+                console.log('thanh toan thanh cong paypal');
+                setLoading(false);
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'History' }],
+                });
+              })
+          })
+      } else {
+        Services.updateBookingTransaction(booking.id,
+          {
+            transactionId: payment.id,
+            amount: getPaidTotal(),
+            paymentType: "PAYPAL",
+            paymentDesc: "Thanh toan " + toVND(getPaidTotal())
+          }, jwt
+        )
+          .then(() => {
+            console.log('thanh toan thanh cong paypal');
+
+            setLoading(false);
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'History' }],
+            });
+          })
       }
-    
-     
+
+
     } else {
       alert('THANH TOÁN LỖI. VUI LÒNG THANH TOÁN LẠI.');
     }
   }
 
 
- 
+
   const merchantcode = "MOMOM8AV20220409";
   const merchantNameLabel = "Nhà cung cấp";
   const enviroment = "0"; //"0": SANBOX , "1": PRODUCTION
@@ -132,123 +143,132 @@ function PaymentEdit(props) {
     jsonData.appScheme = "momom8av20220409";// iOS App Only , match with Schemes Indentify from your  Info.plist > key URL types > URL Schemes
     // jsonData.handleAppNotInstalledBySelf = "1";
     console.log("data_request_payment " + JSON.stringify(jsonData));
-    if (Platform.OS === 'android'){
+    if (Platform.OS === 'android') {
       let dataPayment = await RNMomosdk.requestPayment(jsonData);
       momoHandleResponse(dataPayment);
-    }else{
+    } else {
       console.log("ios open momo json");
       RNMomosdk.requestPayment(JSON.stringify(jsonData));
     }
-    
-   
+
+
   }
-  const  momoHandleResponse = async (response) => {
-    
-    try{
+  const momoHandleResponse = async (response) => {
+
+    try {
       if (response && response.status == 0) {
         console.log("momoHandleResponse ==== ", response)
         //SUCCESS continue to submit momoToken,phonenumber to server
         setLoading(true);
         let orderId = response.orderId
         additionalItems.forEach((ele) => {
-          if(!ele.amount) {ele.amount = 0;}
+          if (!ele.amount) { ele.amount = 0; }
         })
 
-        
+
         Services.updateBookingItems(booking.id, { items: additionalItems }, jwt)
-        .then(() => {
-          // TODO: success message.
-          // navigation.goBack();
-          
-        })
+          .then(() => {
+            // TODO: success message.
+            // navigation.goBack();
+
+          })
 
         Services.updateBookingTransaction(booking.id,
           {
-            transactionId:orderId,
-            amount:getPaidTotal(),
-            paymentType:"MOMO",
-            paymentDesc:"Thanh toan " + toVND(getPaidTotal())
-            },jwt).then(() => {
-              console.log('thanh toan thanh cong momo');
-              setLoading(false);
+            transactionId: orderId,
+            amount: getPaidTotal(),
+            paymentType: "MOMO",
+            paymentDesc: "Thanh toan " + toVND(getPaidTotal())
+          }, jwt).then(() => {
+            console.log('thanh toan thanh cong momo');
+            setLoading(false);
             navigation.reset({
               index: 0,
               routes: [{ name: 'History' }],
             });
           })
 
-          const updateItem = Services.updateBookingItems(booking.id, { items: additionalItems }, jwt);
-    const updateTransaction = Services.updateBookingTransaction(booking.id,
-      {
-        transactionId:orderId,
-        amount:getPaidTotal(),
-        paymentType:"MOMO",
-        paymentDesc:"Thanh toan " + toVND(getPaidTotal())
-      },jwt
-      )
-      
-      if(additionalItems.length>0){
-        Promise.all([updateItem,updateTransaction]).then(() => {
-          console.log('thanh toan thanh cong momo');
-          
-          setLoading(false);
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'History' }],
-          });
-        })
-      }else{
-        Promise.all([updateTransaction]).then(() => {
-          console.log('thanh toan thanh cong paypal');
-          
-          setLoading(false);
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'History' }],
-          });
-        })
-      }
-    
-  
-  
+        if (additionalItems.length > 0) {
+          Services.updateBookingItems(booking.id, { items: additionalItems }, jwt)
+            .then(() => {
+              Services.updateBookingTransaction(booking.id,
+                {
+                  transactionId: orderId,
+                  amount: getPaidTotal(),
+                  paymentType: "MOMO",
+                  paymentDesc: "Thanh toan " + toVND(getPaidTotal())
+                }, jwt
+              )
+                .then(() => {
+                  console.log('thanh toan thanh cong momo');
+                  setLoading(false);
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'History' }],
+                  });
+                })
+            })
+
+        } else {
+          Services.updateBookingTransaction(booking.id,
+            {
+              transactionId: orderId,
+              amount: getPaidTotal(),
+              paymentType: "MOMO",
+              paymentDesc: "Thanh toan " + toVND(getPaidTotal())
+            }, jwt
+          )
+            .then(() => {
+              console.log('thanh toan thanh cong paypal');
+
+              setLoading(false);
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'History' }],
+              });
+            })
+        }
+
+
+
       } else {
         //let message = response.message;
         //Has Error: show message here
-        console.log("error ",response)
+        console.log("error ", response)
         alert('THANH TOÁN LỖI. VUI LÒNG THANH TOÁN LẠI.');
       }
-    }catch(ex){}
+    } catch (ex) { }
   }
 
 
-  useEffect(() =>{
+  useEffect(() => {
     // Listen for native events
     EventEmitter.addListener('RCTMoMoNoficationCenterRequestTokenReceived', (response) => {
-        console.log("<MoMoPay>Listen.Event::" + JSON.stringify(response));
-        try{
-              if (response && response.status == 0) {
-                let fromapp = response.fromapp; //ALWAYS:: fromapp==momotransfer
-                let momoToken = response.data;
-                let phonenumber = response.phonenumber;
-                let message = response.message;
-                let orderId = response.refOrderId; //your orderId
-                let requestId = response.refRequestId; //your requestId
-                //continue to submit momoToken,phonenumber to server
-              } else {
-                console.log( "message: Get token fail")
-              }
-        }catch(ex){}
+      console.log("<MoMoPay>Listen.Event::" + JSON.stringify(response));
+      try {
+        if (response && response.status == 0) {
+          let fromapp = response.fromapp; //ALWAYS:: fromapp==momotransfer
+          let momoToken = response.data;
+          let phonenumber = response.phonenumber;
+          let message = response.message;
+          let orderId = response.refOrderId; //your orderId
+          let requestId = response.refRequestId; //your requestId
+          //continue to submit momoToken,phonenumber to server
+        } else {
+          console.log("message: Get token fail")
+        }
+      } catch (ex) { }
 
     });
-    
+
     //OPTIONAL
-    EventEmitter.addListener('RCTMoMoNoficationCenterRequestTokenState',(response) => {
-        console.log("<MoMoPay>Listen.RequestTokenState:: " + response.status);
-        // status = 1: Parameters valid & ready to open MoMo app.
-        // status = 2: canOpenURL failed for URL MoMo app 
-        // status = 3: Parameters invalid
+    EventEmitter.addListener('RCTMoMoNoficationCenterRequestTokenState', (response) => {
+      console.log("<MoMoPay>Listen.RequestTokenState:: " + response.status);
+      // status = 1: Parameters valid & ready to open MoMo app.
+      // status = 2: canOpenURL failed for URL MoMo app 
+      // status = 3: Parameters invalid
     })
-  },[]);
+  }, []);
 
   const checkEdit = () => {
     let total = 0;
@@ -259,147 +279,147 @@ function PaymentEdit(props) {
     booking.items.forEach((ele) => {
       price += ele.amount * ele.price
     });
-      return total!=price
+    return total != price
   }
 
-  function getPaidTotal()  {
-      let price = 0;
-      additionalItems.forEach((ele) => {
-        price += ele.amount * ele.price
-      });
-      booking.items.forEach((ele) => {
-        price -= ele.amount * ele.price
-      });
-      if(price < 0) price=0
-      return booking.totalPrice +price - booking.paid
+  function getPaidTotal() {
+    let price = 0;
+    additionalItems.forEach((ele) => {
+      price += ele.amount * ele.price
+    });
+    booking.items.forEach((ele) => {
+      price -= ele.amount * ele.price
+    });
+    if (price < 0) price = 0
+    return booking.totalPrice + price - booking.paid
   }
   return (
-    <SafeAreaView style={[styles.packageDetailsContainer,{opacity:!loading?1:0.3}]}>
+    <SafeAreaView style={[styles.packageDetailsContainer, { opacity: !loading ? 1 : 0.3 }]}>
       <BookingStepIndicator currentStep={2} />
-      <Card style={[styles.customerInformation,{justifyContent:'space-between'}]}>
-      <ScrollView>
-        <View style={stylesA.container}>
-          
-      {loading && ( <ActivityIndicator size="large" color="#0000ff" style={{position:'absolute',alignSelf:'center',top:"80%"}} />)}
-          <View style={[stylesA.conText,{marginTop:20}]}>
-            <Text style={[stylesA.h1,{marginBottom:20}]}>Tổng tiền : </Text>
-            <Text style={[stylesA.h1,{marginBottom:20}]}>{toVND(getPaidTotal() + booking.paid)}</Text>
-          </View>
+      <Card style={[styles.customerInformation, { justifyContent: 'space-between' }]}>
+        <ScrollView>
+          <View style={stylesA.container}>
+
+            {loading && (<ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', alignSelf: 'center', top: "80%" }} />)}
+            <View style={[stylesA.conText, { marginTop: 20 }]}>
+              <Text style={[stylesA.h1, { marginBottom: 20 }]}>Tổng tiền : </Text>
+              <Text style={[stylesA.h1, { marginBottom: 20 }]}>{toVND(getPaidTotal() + booking.paid)}</Text>
+            </View>
 
             {
-              (additionalItems.length>0 && checkEdit())?<View style={stylesA.divineLine} />:<></>
+              (additionalItems.length > 0 && checkEdit()) ? <View style={stylesA.divineLine} /> : <></>
             }
             {
-              (additionalItems.length>0 && checkEdit())?(
-              <View style={stylesA.conRow}>
-              <Icon
-                name="add-to-list"
-                type="Entypo"
-                size={30}
-              />
-                <Text style={[stylesA.text,stylesA.textIcon]}>
-                  Dịch vụ thêm :
-                </Text>
-              </View>):<></>
+              (additionalItems.length > 0 && checkEdit()) ? (
+                <View style={stylesA.conRow}>
+                  <Icon
+                    name="add-to-list"
+                    type="Entypo"
+                    size={30}
+                  />
+                  <Text style={[stylesA.text, stylesA.textIcon]}>
+                    Dịch vụ thêm :
+                  </Text>
+                </View>) : <></>
             }
             {
-                (checkEdit())?
+              (checkEdit()) ?
                 (additionalItems.map((item) =>
                 (<View key={item.id} style={stylesA.conText}>
-                    <Text style={[stylesA.text,{marginBottom:10}]}>{item.itemName} :</Text>
-                    <Text style={[stylesA.text,{marginBottom:10}]}>{toVND(item.price * item.amount)}</Text>
+                  <Text style={[stylesA.text, { marginBottom: 10 }]}>{item.itemName} :</Text>
+                  <Text style={[stylesA.text, { marginBottom: 10 }]}>{toVND(item.price * item.amount)}</Text>
                 </View>
-                ))):<></>
-              }
-          <View style={stylesA.divineLine} />
-          <View style={stylesA.conText}>
-            <Text style={stylesA.text}>Đã thanh toán :</Text>
-            <Text style={stylesA.text}>{toVND(booking.paid)}</Text>
-          </View>
-          <View style={stylesA.divineLine} />
-          <View style={stylesA.conText}>
-            <Text style={stylesA.text}>Số tiền phải thanh toán :</Text>
-            <Text style={stylesA.text}>{toVND(getPaidTotal())}</Text>
-          </View>
-          
-          <View style={[stylesA.divineLine,{marginTop:10}]} />
-        </View>
-        <View style={[stylesA.containerBtn,{marginBottom:20,marginTop:20}]}>
-          
-          <View style={[stylesA.btnCon,{backgroundColor:"#a50064"}]}>
-            <TouchableOpacity
-              style={stylesA.btn}
-              onPress={() => onPress()}>
-              <Text style={stylesA.btnTxt}>Thanh toán Momo</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={[stylesA.containerBtn,{marginBottom:50}]}>
-          
-          <View style={stylesA.btnCon}>
-            <TouchableOpacity
-              style={stylesA.btn}
-              onPress={() => setShowGateway(true)}>
-              <Text style={stylesA.btnTxt}>Thanh toán PayPal</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        
-      {showGateway ? (
-        <Modal
-          visible={showGateway}
-          onDismiss={() => setShowGateway(false)}
-          onRequestClose={() => setShowGateway(false)}
-          animationType={'fade'}
-          // transparent={true}
-          >
-          <View style={[stylesA.webViewCon,{top:isAndroid?0:50}]}>
-            <View style={stylesA.wbHead}>
-              <TouchableOpacity
-                style={{padding: 13}}
-                onPress={() => setShowGateway(false)}>
-                <Feather name={'x'} size={30} />
-              </TouchableOpacity>
-              <Text
-                style={{
-                  flex: 1,
-                  textAlign: 'center',
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  color: '#00457C',
-                }}>
-                PayPal GateWay
-              </Text>
-              <View style={{padding: 13, opacity: prog ? 1 : 0}}>
-                <ActivityIndicator size={24} color={progClr} />
-              </View>
+                ))) : <></>
+            }
+            <View style={stylesA.divineLine} />
+            <View style={stylesA.conText}>
+              <Text style={stylesA.text}>Đã thanh toán :</Text>
+              <Text style={stylesA.text}>{toVND(booking.paid)}</Text>
             </View>
-            <WebView
-              source={{uri: url}}
-              style={{flex: 1}}
-              onLoadStart={() => {
-                setProg(true);
-                setProgClr('#000');
-              }}
-              onLoadProgress={() => {
-                setProg(true);
-                setProgClr('#00457C');
-              }}
-              onLoadEnd={() => {
-                setProg(false);
-              }}
-              onLoad={() => {
-                setProg(false);
-              }}
-              onMessage={onMessage}
-            />
+            <View style={stylesA.divineLine} />
+            <View style={stylesA.conText}>
+              <Text style={stylesA.text}>Số tiền phải thanh toán :</Text>
+              <Text style={stylesA.text}>{toVND(getPaidTotal())}</Text>
+            </View>
+
+            <View style={[stylesA.divineLine, { marginTop: 10 }]} />
           </View>
-        </Modal>
-       ) : null}
+          <View style={[stylesA.containerBtn, { marginBottom: 20, marginTop: 20 }]}>
+
+            <View style={[stylesA.btnCon, { backgroundColor: "#a50064" }]}>
+              <TouchableOpacity
+                style={stylesA.btn}
+                onPress={() => onPress()}>
+                <Text style={stylesA.btnTxt}>Thanh toán Momo</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={[stylesA.containerBtn, { marginBottom: 50 }]}>
+
+            <View style={stylesA.btnCon}>
+              <TouchableOpacity
+                style={stylesA.btn}
+                onPress={() => setShowGateway(true)}>
+                <Text style={stylesA.btnTxt}>Thanh toán PayPal</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
 
 
-      </ScrollView>
+          {showGateway ? (
+            <Modal
+              visible={showGateway}
+              onDismiss={() => setShowGateway(false)}
+              onRequestClose={() => setShowGateway(false)}
+              animationType={'fade'}
+            // transparent={true}
+            >
+              <View style={[stylesA.webViewCon, { top: isAndroid ? 0 : 50 }]}>
+                <View style={stylesA.wbHead}>
+                  <TouchableOpacity
+                    style={{ padding: 13 }}
+                    onPress={() => setShowGateway(false)}>
+                    <Feather name={'x'} size={30} />
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      flex: 1,
+                      textAlign: 'center',
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                      color: '#00457C',
+                    }}>
+                    PayPal GateWay
+                  </Text>
+                  <View style={{ padding: 13, opacity: prog ? 1 : 0 }}>
+                    <ActivityIndicator size={24} color={progClr} />
+                  </View>
+                </View>
+                <WebView
+                  source={{ uri: url }}
+                  style={{ flex: 1 }}
+                  onLoadStart={() => {
+                    setProg(true);
+                    setProgClr('#000');
+                  }}
+                  onLoadProgress={() => {
+                    setProg(true);
+                    setProgClr('#00457C');
+                  }}
+                  onLoadEnd={() => {
+                    setProg(false);
+                  }}
+                  onLoad={() => {
+                    setProg(false);
+                  }}
+                  onMessage={onMessage}
+                />
+              </View>
+            </Modal>
+          ) : null}
+
+
+        </ScrollView>
       </Card>
     </SafeAreaView>
   );
@@ -457,31 +477,31 @@ const stylesA = StyleSheet.create({
     zIndex: 25,
     elevation: 2,
   },
-  conText:{
-    flexDirection:"row",
-    justifyContent:"space-between",
+  conText: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     // backgroundColor:"#000",
-    width:"90%",
-    marginHorizontal:15,
+    width: "90%",
+    marginHorizontal: 15,
   },
-  
+
   divineLine: {
     width: "90%",
     height: 1,
     opacity: 0.5,
     marginBottom: 5,
     backgroundColor: "#4A4A4A",
-    alignSelf:'center'
+    alignSelf: 'center'
   },
-  conRow:{
-    flexDirection:"row",
-    marginBottom:15
+  conRow: {
+    flexDirection: "row",
+    marginBottom: 15
   },
-  textIcon:{
-    top:10,
-    marginLeft:20,
+  textIcon: {
+    top: 10,
+    marginLeft: 20,
   }
-  ,centeredView: {
+  , centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -501,14 +521,14 @@ const stylesA = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    
-    width:"80%"
+
+    width: "80%"
   },
   button: {
     borderRadius: 10,
     padding: 10,
     elevation: 2,
-    width:80
+    width: 80
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
@@ -525,7 +545,7 @@ const stylesA = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center"
   },
-  modalTitle:{
+  modalTitle: {
     marginBottom: 15,
     textAlign: "center",
     fontSize: 20,
